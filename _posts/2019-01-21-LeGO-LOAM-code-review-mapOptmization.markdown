@@ -201,8 +201,6 @@ The return value (if any) is ignored.
 
 ---
 
-
-
 ### visualizeMapThread
 
 `visualizeGlobalMapThread()`代码：
@@ -274,7 +272,6 @@ The return value (if any) is ignored.
 
 ---
 
-
 ### run
 
 `run()`是`mapOptimization`类的一个成员变量
@@ -330,6 +327,7 @@ The return value (if any) is ignored.
     }
 
 ---
+
 ### mapOptimization
 mapOptimization类主要是其构造函数`mapOptimization()`的操作上有一些内容：
 
@@ -442,6 +440,7 @@ mapOptimization类主要是其构造函数`mapOptimization()`的操作上有一�
 
 
 ---
+
 ### saveKeyFramesAndFactor
 `void saveKeyFramesAndFactor()`保存关键帧和进行优化的功能。
 整个函数的运行流程如下:

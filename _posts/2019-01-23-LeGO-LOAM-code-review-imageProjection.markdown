@@ -34,7 +34,7 @@ tags:
 ## imageProjecion.cpp
 >imageProjecion.cpp进行的数据处理是图像映射，将得到的激光数据分割，并在得到的激光数据上进行坐标变换。
 
-### imageProjecion
+#### imageProjecion
 imageProjecion()构造函数的内容如下：
 1. 订阅话题：订阅来自velodyne雷达驱动的topic
 	* `"/velodyne_points"`(`sensor_msgs::PointCloud2`)，订阅的subscriber是`subLaserCloud`。
@@ -52,7 +52,7 @@ imageProjecion()构造函数的内容如下：
 
 ---
 
-### cloudHandler
+#### cloudHandler
 `void cloudHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg)`是这个文件中最主要的一个函数。由它调用其他的函数：
 
     void cloudHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg){
@@ -79,7 +79,7 @@ imageProjecion()构造函数的内容如下：
 
 ---
 
-### findStartEndAngle
+#### findStartEndAngle
 `void findStartEndAngle()`进行`segMsg`的开始和结束姿态的标记。因为开始和结束时的角度无法确定，而且两者之间的相对误差也是在一个范围之内的，所以代码要对这个问题进行处理。具体过程如下：
 1. 计算开始和结束的角度值`segMsg.startOrientation`和`segMsg.endOrientation`。
 2. 考虑结束的角度比开始时的角度值小的问题，对它进行处理。
@@ -100,7 +100,7 @@ segMsg.orientationDiff = segMsg.endOrientation - segMsg.startOrientation;
 
 
 
-### projectPointCloud
+#### projectPointCloud
 `void projectPointCloud()`将激光雷达得到的数据看成一个16x1800的点云阵列。然后根据每个点云返回的XYZ数据将他们对应到这个阵列里去。
 1. 计算竖直角度，用`atan2`函数进行计算。
 2. 通过计算的竖直角度得到对应的行的序号`rowIdn`，`rowIdn`计算出该点激光雷达是水平方向上第几线的。从下往上计数，-15度记为初始线，第0线，一共16线(`N_SCAN=16`)。
@@ -126,7 +126,7 @@ if (columnIdn < 0 || columnIdn >= Horizon_SCAN)
 ---
 
 
-### groundRemoval
+#### groundRemoval
 `void groundRemoval()`由三个部分的程序组成。
 1. 由上下两线之间点的XYZ位置得到两线之间的俯仰角，如果俯仰角在10度以内，则判定(i,j)为地面点,`groundMat[i][j]=1`，否则，则不是地面点，进行后续操作；
 2. 找到所有点中的地面点，并将他们标记为-1，`rangeMat[i][j]==FLT_MAX`??? 判定为地面点的另一个条件。
@@ -136,7 +136,7 @@ if (columnIdn < 0 || columnIdn >= Horizon_SCAN)
 ---
 
 
-### cloudSegmentation
+#### cloudSegmentation
 `void cloudSegmentation()`进行的是点云分割的操作，将不同类型的点云放到不同的点云块中去，例如`outlierCloud`，`segmentedCloudPure`等。具体步骤：
 1. 首先判断点云标签，这个点云没有进行过分类（在原先的处理中没有被分到地面点中去），则通过`labelComponents(i, j);`对点云进行分类。进行分类的过程在[labelComponents](#labelComponents)中进行介绍。
 2. 分类完成后，找到可用的特征点或者地面点(不选择labelMat[i][j]=0的点)，按照它的标签值进行判断，将部分界外点放进`outlierCloud`中。`continue`继续处理下一个点。
@@ -147,7 +147,7 @@ if (columnIdn < 0 || columnIdn >= Horizon_SCAN)
 ---
 
 
-### publishCloud
+#### publishCloud
 `void publishCloud()`发布各类点云数据。
 
     // 发布各类点云内容
@@ -203,7 +203,7 @@ if (columnIdn < 0 || columnIdn >= Horizon_SCAN)
 ---
 
 
-### resetParameters
+#### resetParameters
 `void resetParameters()`贴一下代码凑字数：
 
 	// 初始化/重置各类参数内容
@@ -227,7 +227,7 @@ if (columnIdn < 0 || columnIdn >= Horizon_SCAN)
 ---
 
 
-### labelComponents
+#### labelComponents
 ` void labelComponents(int row, int col)`对点云进行标记。
 - 用`queueIndX`，`queueIndY`保存进行分割的点云行列值，用`queueStartInd`作为索引。
 - 求这个点的4个邻接点，求其中离原点距离的最大值`d1`最小值`d2`。根据下面这部分代码来评价这两点之间是否具有平面特征。注意因为两个点上下或者水平对应的分辨率不一样，所以`alpha`是用来选择分辨率的。
