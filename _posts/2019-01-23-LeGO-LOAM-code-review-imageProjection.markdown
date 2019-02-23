@@ -4,7 +4,7 @@ title:      "LeGO-LOAM 源码阅读笔记(imageProjecion.cpp)"
 subtitle:   "Code Review of LeGO-LOAM(imageProjecion.cpp)"
 date:       2019-01-23
 author:     "wykxwyc"
-header-img: "img/post-bg-slam-loam.jpg"
+header-img: "img/post-bg-slam-legoloam.jpg"
 tags:
     - SLAM
     - LeGO-LOAM
@@ -25,7 +25,11 @@ tags:
 	7. [publishCloud](#publishCloud)
 	8. [resetParameters](#resetParameters)
 	9. [labelComponents](#labelComponents)
+
+
+
 ---
+
 
 ## imageProjecion.cpp
 >imageProjecion.cpp进行的数据处理是图像映射，将得到的激光数据分割，并在得到的激光数据上进行坐标变换。

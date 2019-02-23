@@ -4,7 +4,7 @@ title:      "LeGO-LOAM 源码阅读笔记（mapOptmization.cpp）"
 subtitle:   "Code Review of LeGO-LOAM(mapOptmization.cpp)"
 date:       2019-01-21
 author:     "wykxwyc"
-header-img: "img/post-bg-slam-loam.jpg"
+header-img: "img/post-bg-slam-legoloam.jpg"
 tags:
     - SLAM
     - LeGO-LOAM
@@ -33,6 +33,9 @@ tags:
 	15. [cornerOptimization](#cornerOptimization)
 	16. [surfOptimization](#surfOptimization)
 	17. [LMOptimization](#surfOptimization)
+
+
+
 ---
 
 ## mapOptmization.cpp
@@ -195,6 +198,7 @@ The return value (if any) is ignored.
         aLoopIsClosed = true;
     }
 
+
 ---
 
 
@@ -202,7 +206,7 @@ The return value (if any) is ignored.
 ### visualizeMapThread
 
 `visualizeGlobalMapThread()`代码：
-
+```
     void visualizeGlobalMapThread(){
         ros::Rate rate(0.2);
         while (ros::ok()){
@@ -210,9 +214,7 @@ The return value (if any) is ignored.
             publishGlobalMap();
         }
     }
-
----
-
+```
 
 `publishGlobalMap()`主要进行了3个步骤：
 1. 通过KDTree进行最近邻搜索;
@@ -267,6 +269,7 @@ The return value (if any) is ignored.
         globalMapKeyFrames->clear();
         globalMapKeyFramesDS->clear();     
     }
+
 
 
 ---
@@ -589,7 +592,9 @@ aftMappedTrans.child_frame_id_ = "/aft_mapped";
 如果有节点订阅`"/key_pose_origin"`这个话题，则用`pubKeyPoses`发布`cloudKeyPoses3D`；
 如果有节点订阅`"/recent_cloud"`这个话题，则用`pubRecentKeyFrames`发布`laserCloudSurfFromMapDS`；
 
+
 ---
+
 ### clearCloud
 `clearCloud()`很简单，一共四条语句，代码如下：
 
@@ -600,7 +605,10 @@ aftMappedTrans.child_frame_id_ = "/aft_mapped";
         laserCloudSurfFromMapDS->clear();   
     }
 
+
 ---
+
+
 ### cornerOptimization
 函数` void cornerOptimization(int)`基本都是数学公式转化成代码。
 该函数分成了几个部分：

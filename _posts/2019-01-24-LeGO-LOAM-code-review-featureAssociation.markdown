@@ -4,7 +4,7 @@ title:      "LeGO-LOAM 源码阅读笔记(featureAssociation.cpp)"
 subtitle:   "Code Review of LeGO-LOAM(featureAssociation.cpp)"
 date:       2019-01-24
 author:     "wykxwyc"
-header-img: "img/post-bg-slam-loam.jpg"
+header-img: "img/post-bg-slam-legoloam.jpg"
 tags:
     - SLAM
     - LeGO-LOAM
