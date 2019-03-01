@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "Linux使用命令行收集"
-subtitle:   "提高Linux使用效率"
+title:      "Linux常用命令行记录"
+subtitle:   ""
 date:       2019-01-21
 author:     "wykxwyc"
 header-img: "img/post-bg-linux-shell.jpg"
@@ -13,7 +13,7 @@ tags:
 > This document is not completed and will be updated anytime.
 
 
-## ros常用命令
+#### ros常用命令
 `rosnode list`
 当前运行node信息
 
@@ -79,57 +79,57 @@ tags:
 `rosrun map_server map_server my_map.yaml`
 
 
-## cmake编译
+#### cmake编译
 	cmake ..
 	make
 	make install
 
-## 权限设置
+#### 权限设置
 `chmod -R a+rwx <filename>`
 
-## g++编译生成hello.out
+#### g++编译生成hello.out
 `g++ -o hello main.cpp`
 
 
-## 打印寻找core的结果及时间
+#### 打印寻找core的结果及时间
 `time find / -name core`
 
-## 将/user/local/bin加入路径
+#### 将/user/local/bin加入路径
 `PATH=$PATH:/user/local/bin`
 
-## 在[当前.]目录下搜索含有boost内容的所有文件
+#### 在[当前.]目录下搜索含有boost内容的所有文件
 `find ./ -name "*" | xargs grep "boost"`
 
-## dg_console的依赖
+#### dg_console的依赖
 `sudo apt-get install libedit-dev`
 
-## 手柄查看信息
+#### 手柄查看信息
 `sudo jstest /dev/input/js0`
 
-## 列出/dev及其子目录下ttyUSB有关的文件与文件夹
+#### 列出/dev及其子目录下ttyUSB有关的文件与文件夹
 ls -Rl /dev |grep ttyUSB
 
-## 脚本开头
+#### 脚本开头
 `#!/user/bin/env bash 或者 #!/bin/bash`
 
-## 脚本只有读权限时执行
+#### 脚本只有读权限时执行
 `bash thescript.sh  等价于有x权限  ./ thescript.sh`
 
-## 删除变量
+#### 删除变量
 `unset variable_name `
 
-## 得到一份shell 变量的拷贝
+#### 得到一份shell 变量的拷贝
 `export mynewvar `或者  `declare -x mynewvar`
 
-## 得到同一目录下的终端
+#### 得到同一目录下的终端
 ***Ctrl+shift+T***
 
 
-## 查看硬盘容量
+#### 查看硬盘容量
 `df -h`
 
 
-## terminator使用
+#### terminator使用
 ***Ctrl+Shift+E*** 
 垂直分割窗口
 

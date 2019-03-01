@@ -54,7 +54,7 @@ imageProjecion()构造函数的内容如下：
 
 #### cloudHandler
 `void cloudHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg)`是这个文件中最主要的一个函数。由它调用其他的函数：
-
+```cpp
     void cloudHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg){
         copyPointCloud(laserCloudMsg);
         findStartEndAngle();
@@ -64,6 +64,7 @@ imageProjecion()构造函数的内容如下：
         publishCloud();
         resetParameters();
     }
+```
 
 ```
 整体过程：
@@ -83,7 +84,7 @@ imageProjecion()构造函数的内容如下：
 `void findStartEndAngle()`进行`segMsg`的开始和结束姿态的标记。因为开始和结束时的角度无法确定，而且两者之间的相对误差也是在一个范围之内的，所以代码要对这个问题进行处理。具体过程如下：
 1. 计算开始和结束的角度值`segMsg.startOrientation`和`segMsg.endOrientation`。
 2. 考虑结束的角度比开始时的角度值小的问题，对它进行处理。
-```
+```cpp
 // 开始和结束的角度差一般是多少？
 // 一个velodyne 雷达数据包转过的角度多大？
 // segMsg.endOrientation - segMsg.startOrientation范围为(0,4PI)
@@ -109,7 +110,7 @@ segMsg.orientationDiff = segMsg.endOrientation - segMsg.startOrientation;
 这里对数据的处理比较巧妙，一开始觉得很奇怪，但后来发现这样做其实让数据更不容易失真。
 计算`columnIdn`主要是下面这三个语句：
 
-```
+```cpp
 columnIdn = -round((horizonAngle-90.0)/ang_res_x) + Horizon_SCAN/2;
 if (columnIdn >= Horizon_SCAN)
 		columnIdn -= Horizon_SCAN;
@@ -149,80 +150,80 @@ if (columnIdn < 0 || columnIdn >= Horizon_SCAN)
 
 #### publishCloud
 `void publishCloud()`发布各类点云数据。
+```cpp
+// 发布各类点云内容
+void publishCloud(){
+	// 发布cloud_msgs::cloud_info消息
+    segMsg.header = cloudHeader;
+    pubSegmentedCloudInfo.publish(segMsg);
 
-    // 发布各类点云内容
-    void publishCloud(){
-    	// 发布cloud_msgs::cloud_info消息
-        segMsg.header = cloudHeader;
-        pubSegmentedCloudInfo.publish(segMsg);
+    sensor_msgs::PointCloud2 laserCloudTemp;
 
-        sensor_msgs::PointCloud2 laserCloudTemp;
+	// pubOutlierCloud发布界外点云
+    pcl::toROSMsg(*outlierCloud, laserCloudTemp);
+    laserCloudTemp.header.stamp = cloudHeader.stamp;
+    laserCloudTemp.header.frame_id = "base_link";
+    pubOutlierCloud.publish(laserCloudTemp);
 
-		// pubOutlierCloud发布界外点云
-        pcl::toROSMsg(*outlierCloud, laserCloudTemp);
+	// pubSegmentedCloud发布分块点云
+    pcl::toROSMsg(*segmentedCloud, laserCloudTemp);
+    laserCloudTemp.header.stamp = cloudHeader.stamp;
+    laserCloudTemp.header.frame_id = "base_link";
+    pubSegmentedCloud.publish(laserCloudTemp);
+
+    if (pubFullCloud.getNumSubscribers() != 0){
+        pcl::toROSMsg(*fullCloud, laserCloudTemp);
         laserCloudTemp.header.stamp = cloudHeader.stamp;
         laserCloudTemp.header.frame_id = "base_link";
-        pubOutlierCloud.publish(laserCloudTemp);
-
-		// pubSegmentedCloud发布分块点云
-        pcl::toROSMsg(*segmentedCloud, laserCloudTemp);
-        laserCloudTemp.header.stamp = cloudHeader.stamp;
-        laserCloudTemp.header.frame_id = "base_link";
-        pubSegmentedCloud.publish(laserCloudTemp);
-
-        if (pubFullCloud.getNumSubscribers() != 0){
-            pcl::toROSMsg(*fullCloud, laserCloudTemp);
-            laserCloudTemp.header.stamp = cloudHeader.stamp;
-            laserCloudTemp.header.frame_id = "base_link";
-            pubFullCloud.publish(laserCloudTemp);
-        }
-
-        if (pubGroundCloud.getNumSubscribers() != 0){
-            pcl::toROSMsg(*groundCloud, laserCloudTemp);
-            laserCloudTemp.header.stamp = cloudHeader.stamp;
-            laserCloudTemp.header.frame_id = "base_link";
-            pubGroundCloud.publish(laserCloudTemp);
-        }
-
-        if (pubSegmentedCloudPure.getNumSubscribers() != 0){
-            pcl::toROSMsg(*segmentedCloudPure, laserCloudTemp);
-            laserCloudTemp.header.stamp = cloudHeader.stamp;
-            laserCloudTemp.header.frame_id = "base_link";
-            pubSegmentedCloudPure.publish(laserCloudTemp);
-        }
-
-        if (pubFullInfoCloud.getNumSubscribers() != 0){
-            pcl::toROSMsg(*fullInfoCloud, laserCloudTemp);
-            laserCloudTemp.header.stamp = cloudHeader.stamp;
-            laserCloudTemp.header.frame_id = "base_link";
-            pubFullInfoCloud.publish(laserCloudTemp);
-        }
+        pubFullCloud.publish(laserCloudTemp);
     }
 
+    if (pubGroundCloud.getNumSubscribers() != 0){
+        pcl::toROSMsg(*groundCloud, laserCloudTemp);
+        laserCloudTemp.header.stamp = cloudHeader.stamp;
+        laserCloudTemp.header.frame_id = "base_link";
+        pubGroundCloud.publish(laserCloudTemp);
+    }
+
+    if (pubSegmentedCloudPure.getNumSubscribers() != 0){
+        pcl::toROSMsg(*segmentedCloudPure, laserCloudTemp);
+        laserCloudTemp.header.stamp = cloudHeader.stamp;
+        laserCloudTemp.header.frame_id = "base_link";
+        pubSegmentedCloudPure.publish(laserCloudTemp);
+    }
+
+    if (pubFullInfoCloud.getNumSubscribers() != 0){
+        pcl::toROSMsg(*fullInfoCloud, laserCloudTemp);
+        laserCloudTemp.header.stamp = cloudHeader.stamp;
+        laserCloudTemp.header.frame_id = "base_link";
+        pubFullInfoCloud.publish(laserCloudTemp);
+    }
+}
+```
 
 ---
 
 
 #### resetParameters
 `void resetParameters()`贴一下代码凑字数：
+```cpp
+// 初始化/重置各类参数内容
+void resetParameters(){
+    laserCloudIn->clear();
+    groundCloud->clear();
+    segmentedCloud->clear();
+    segmentedCloudPure->clear();
+    outlierCloud->clear();
 
-	// 初始化/重置各类参数内容
-    void resetParameters(){
-        laserCloudIn->clear();
-        groundCloud->clear();
-        segmentedCloud->clear();
-        segmentedCloudPure->clear();
-        outlierCloud->clear();
+    rangeMat = cv::Mat(N_SCAN, Horizon_SCAN, CV_32F, cv::Scalar::all(FLT_MAX));
+    groundMat = cv::Mat(N_SCAN, Horizon_SCAN, CV_8S, cv::Scalar::all(0));
+    labelMat = cv::Mat(N_SCAN, Horizon_SCAN, CV_32S, cv::Scalar::all(0));
+    labelCount = 1;
 
-        rangeMat = cv::Mat(N_SCAN, Horizon_SCAN, CV_32F, cv::Scalar::all(FLT_MAX));
-        groundMat = cv::Mat(N_SCAN, Horizon_SCAN, CV_8S, cv::Scalar::all(0));
-        labelMat = cv::Mat(N_SCAN, Horizon_SCAN, CV_32S, cv::Scalar::all(0));
-        labelCount = 1;
-
-        std::fill(fullCloud->points.begin(), fullCloud->points.end(), nanPoint);
-        std::fill(fullInfoCloud->points.begin(), fullInfoCloud->points.end(), nanPoint);
-    }
-
+    std::fill(fullCloud->points.begin(), fullCloud->points.end(), nanPoint);
+    std::fill(fullInfoCloud->points.begin(), fullInfoCloud->points.end(), nanPoint);
+}
+```
 
 ---
 
@@ -232,7 +233,7 @@ if (columnIdn < 0 || columnIdn >= Horizon_SCAN)
 - 用`queueIndX`，`queueIndY`保存进行分割的点云行列值，用`queueStartInd`作为索引。
 - 求这个点的4个邻接点，求其中离原点距离的最大值`d1`最小值`d2`。根据下面这部分代码来评价这两点之间是否具有平面特征。注意因为两个点上下或者水平对应的分辨率不一样，所以`alpha`是用来选择分辨率的。
 
-```
+```cpp
 // alpha代表角度分辨率，
 // Y方向上角度分辨率是segmentAlphaY(rad)
 if ((*iter).first == 0)

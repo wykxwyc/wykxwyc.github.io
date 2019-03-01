@@ -64,29 +64,30 @@ FeatureAssociation()构造函数的内容如下：
 
 ### laserCloudInfoHandler
 函数比较小:
-
-    void laserCloudInfoHandler(const cloud_msgs::cloud_infoConstPtr& msgIn)
-    {
-        timeNewSegmentedCloudInfo = msgIn->header.stamp.toSec();
-        segInfo = *msgIn;
-        newSegmentedCloudInfo = true;
-    }
-
+```cpp
+void laserCloudInfoHandler(const cloud_msgs::cloud_infoConstPtr& msgIn)
+{
+    timeNewSegmentedCloudInfo = msgIn->header.stamp.toSec();
+    segInfo = *msgIn;
+    newSegmentedCloudInfo = true;
+}
+```
 
 ---
 
 
 ### outlierCloudHandler
-    void outlierCloudHandler(const sensor_msgs::PointCloud2ConstPtr& msgIn){
+```cpp
+void outlierCloudHandler(const sensor_msgs::PointCloud2ConstPtr& msgIn){
 
-        timeNewOutlierCloud = msgIn->header.stamp.toSec();
+    timeNewOutlierCloud = msgIn->header.stamp.toSec();
 
-        outlierCloud->clear();
-        pcl::fromROSMsg(*msgIn, *outlierCloud);
+    outlierCloud->clear();
+    pcl::fromROSMsg(*msgIn, *outlierCloud);
 
-        newOutlierCloud = true;
-    }
-
+    newOutlierCloud = true;
+}
+```
 
 ---
 
@@ -122,14 +123,14 @@ FeatureAssociation()构造函数的内容如下：
 ### adjustDistortion
 `void adjustDistortion()`将点云数据进行坐标变换，进行插补等工作。
 1. 对每个点进行处理，首先进行和laboshin_loam代码中的一样的坐标轴变换过程。
-```
+```cpp
 point.x = segmentedCloud->points[i].y;
 point.y = segmentedCloud->points[i].z;
 point.z = segmentedCloud->points[i].x;
 ```
 2. 针对每个点计算偏航角yaw，然后根据不同的偏航角，可以知道激光雷达扫过的位置有没有超过一半，计算的时候有一部分需要注意一下：
 函数原型：
-```
+```cpp
 // -atan2(p.x,p.z)==>-atan2(y,x)
 // ori表示的是偏航角yaw，因为前面有负号，ori=[-M_PI,M_PI)
 // 因为segInfo.orientationDiff表示的范围是(PI,3PI)，在2PI附近
@@ -146,7 +147,7 @@ float ori = -atan2(point.x, point.z);
 对齐时候有两种情况，一种不能用插补来优化，一种可以通过插补进行优化。
 * 不能通过插补进行优化：imu数据比激光数据早，但是没有更后面的数据(打个比方,激光在9点时出现，imu现在只有8点的)
 这种情况下while循环是以imuPointerFront == imuPointerLast结束的：
-```
+```cpp
 // while循环内进行时间轴对齐
 while (imuPointerFront != imuPointerLast) {
     if (timeScanCur + pointTime < imuTime[imuPointerFront]) {
@@ -161,7 +162,7 @@ while (imuPointerFront != imuPointerLast) {
 而且imuPointerFront是最早一个时间大于timeScanCur + pointTime的imu数据指针。
 imuPointerBack是imuPointerFront的前一个imu数据指针。
 插补的代码：
-```
+```cpp
 int imuPointerBack = (imuPointerFront + imuQueLength - 1) % imuQueLength;
 float ratioFront = (timeScanCur + pointTime - imuTime[imuPointerBack]) 
                                  / (imuTime[imuPointerFront] - imuTime[imuPointerBack]);
@@ -171,7 +172,7 @@ float ratioBack = (imuTime[imuPointerFront] - timeScanCur - pointTime)
 通过上面计算的ratioFront以及ratioBack进行插补,
 因为imuRollCur和imuPitchCur通常都在0度左右，变化不会很大，因此不需要考虑超过2M_PI的情况,
 imuYaw转的角度比较大，需要考虑超过2*M_PI的情况。
-```
+```cpp
 imuRollCur = imuRoll[imuPointerFront] * ratioFront + imuRoll[imuPointerBack] * ratioBack;
 imuPitchCur = imuPitch[imuPointerFront] * ratioFront + imuPitch[imuPointerBack] * ratioBack;
 if (imuYaw[imuPointerFront] - imuYaw[imuPointerBack] > M_PI) {
@@ -194,7 +195,7 @@ if (imuYaw[imuPointerFront] - imuYaw[imuPointerBack] > M_PI) {
 `void calculateSmoothness()`用于计算光滑性，这里的计算没有完全按照公式LOAM论文中的进行。
 此处的公式计算中没有除以总点数i及r[i].
 注释后的代码如下：
-```
+```cpp
 void calculateSmoothness()
 {
     int cloudSize = segmentedCloud->points.size();
@@ -230,7 +231,7 @@ void calculateSmoothness()
 `void markOccludedPoints()`选择了距离比较远的那些点，并将他们标记为1，还选择了距离变换大的点，并将他们标记为1。
 标记阻塞点??? 阻塞点是哪种点???
 函数代码如下：
-```
+```cpp
 void markOccludedPoints()
 {
     int cloudSize = segmentedCloud->points.size();
@@ -284,7 +285,7 @@ void markOccludedPoints()
 另外还对点进行了标记。
 最后，因为点云太多时，计算量过大，因此需要对点云进行下采样，减少计算量。
 代码如下：
-```
+```cpp
 void extractFeatures()
 {
     cornerPointsSharp->clear();
@@ -417,7 +418,7 @@ void extractFeatures()
 该函数主要由其他四个部分组成：`findCorrespondingSurfFeatures`,`calculateTransformationSurf`
 `findCorrespondingCornerFeatures`,`calculateTransformationCorner`
 这四个函数分别是对应于寻找对应面、通过面对应计算变换矩阵、寻找对应角/边特征、通过角/边特征计算变换矩阵。
-```
+```cpp
 void updateTransformation(){
 
     if (laserCloudCornerLastNum < 10 || laserCloudSurfLastNum < 100)
