@@ -68,7 +68,7 @@ Qt有时候就是因为这个额外的代码生成器影响了语言的纯正性
 
 #### Magic Macros
 你能认出这些*关键字*中不是C++关键字的吗？`signals`, `slots`, `Q_OBJECT`, `emit`, `SIGNAL`, `SLOT`。这些都是Qt对C++的扩展。他们其实都是一些简单的宏，定义在[qobjectdefs.h](!https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobjectdefs.h.html#66)中：
-```cpp
+```
 #define signals public
 #define slots /* nothing */
 ```
@@ -77,7 +77,7 @@ Qt有时候就是因为这个额外的代码生成器影响了语言的纯正性
 
 `Signals`在Qt4及以前是`protected`的。但他们在Qt5以后成为了`public`，为了能够使[新的语法](!https://woboq.com/blog/new-signals-slots-syntax-in-qt5.html)成立。
 
-```cpp
+```
 #define Q_OBJECT \
 public: \
     static const QMetaObject staticMetaObject; \
@@ -95,7 +95,7 @@ private: \
 ```
 `emit`是一个空的宏。它甚至不被`MOC`解析。也就是说`emit`屁用没有，除了能对开发者起到点提示作用外。
 
-```cpp
+```
 Q_CORE_EXPORT const char *qFlagLocation(const char *method);
 #ifndef QT_NO_DEBUG
 # define QLOCATION "\0" __FILE__ ":" QTOSTRING(__LINE__)
@@ -114,7 +114,7 @@ Q_CORE_EXPORT const char *qFlagLocation(const char *method);
 我们现在就来看看Qt5的moc生成的部分代码。
 
 ##### The QMetaObject
-```cpp
+```
 const QMetaObject Counter::staticMetaObject = {
     { &QObject::staticMetaObject, qt_meta_stringdata_Counter.data,
       qt_meta_data_Counter,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
@@ -130,7 +130,7 @@ const QMetaObject *Counter::metaObject() const
 
 `staticMetaObject`被构造成为只读数据。`QMetaObject`在[qobjectdefs.h](https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobjectdefs.h.html#QMetaObject)中定义：
 
-```cpp
+```
 struct QMetaObject
 {
     /* ... Skiped all the public functions ... */
@@ -156,7 +156,7 @@ struct QMetaObject
 
 ##### Introspection Tables
 首先让我们来分析一下QMetaObject的整型数据。
-```cpp
+```
 static const uint qt_meta_data_Counter[] = {
 
  // content:
@@ -193,7 +193,7 @@ static const uint qt_meta_data_Counter[] = {
 
 
 ##### String Table
-```cpp
+```
 struct qt_meta_stringdata_Counter_t {
     QByteArrayData data[6];
     char stringdata0[46];
@@ -205,13 +205,12 @@ struct qt_meta_stringdata_Counter_t {
     )
 static const qt_meta_stringdata_Counter_t qt_meta_stringdata_Counter = {
     {
-QT_MOC_LITERAL(0, 0, 7), // "Counter"
-QT_MOC_LITERAL(1, 8, 12), // "valueChanged"
-QT_MOC_LITERAL(2, 21, 0), // ""
-QT_MOC_LITERAL(3, 22, 8), // "newValue"
-QT_MOC_LITERAL(4, 31, 8), // "setValue"
-QT_MOC_LITERAL(5, 40, 5) // "value"
-
+		QT_MOC_LITERAL(0, 0, 7), // "Counter"
+		QT_MOC_LITERAL(1, 8, 12), // "valueChanged"
+		QT_MOC_LITERAL(2, 21, 0), // ""
+		QT_MOC_LITERAL(3, 22, 8), // "newValue"
+		QT_MOC_LITERAL(4, 31, 8), // "setValue"
+		QT_MOC_LITERAL(5, 40, 5) // "value"
     },
     "Counter\0valueChanged\0\0newValue\0setValue\0"
     "value"
@@ -275,7 +274,7 @@ void Counter::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
 
 这是在[qobject_p.h](!https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobject_p.h.html#QObjectPrivate::Connection)中定义的`QObjectPrivate::Connection`。
 
-```cpp
+```
 struct QObjectPrivate::Connection
 {
     QObject *sender;
@@ -330,7 +329,7 @@ struct QObjectPrivate::Connection
 
 下面是一段截取自[qobject.cpp](!https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobject.cpp.html#_ZN11QMetaObject8activateEP7QObjectPKS_iPPv),并经过注释的代码。
 
-```cpp
+```
 void QMetaObject::activate(QObject *sender, const QMetaObject *m, int local_signal_index,
                            void **argv)
 {
