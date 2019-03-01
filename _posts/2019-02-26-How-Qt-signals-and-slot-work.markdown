@@ -224,7 +224,7 @@ static const qt_meta_stringdata_Counter_t qt_meta_stringdata_Counter = {
 ##### Signals
 `MOC`也实现了信号`signals`（注：signals其实就是public，而我们在开发中并不写信号的定义，这是因为这些都由MOC来完成）。所有的信号都是很简单的函数而已，他们只是为参数创建一个指针数组并传递给`QMetaObject::activate`函数。指针数组的第一个元素是属于返回值的。在我们的例子中将它设置为了0，这是因为我们的返回类型是`void`。
 传递给`activate`函数的第3个参数﻿﻿是信号的索引（在这里，该索引为0）。
-```cpp
+```
 // SIGNAL 0
 void Counter::valueChanged(int _t1)
 {

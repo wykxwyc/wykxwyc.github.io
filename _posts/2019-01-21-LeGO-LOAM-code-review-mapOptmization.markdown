@@ -51,7 +51,7 @@ MO.run();
 ```
 详细的`main()`函数的内容如下：
 
-```cpp
+```
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "lego_loam");
@@ -128,7 +128,7 @@ void loopClosureThread(){
 
 
 `performLoopClosure()`函数代码：
-```cpp
+```
 void performLoopClosure(){
 
     if (cloudKeyPoses3D->points.empty() == true)
@@ -224,7 +224,7 @@ void visualizeGlobalMapThread(){
 3. 通过两次下采样，减小数据量;
 
 `publishGlobalMap()`代码：
-```cpp
+```
 void publishGlobalMap(){
 
     if (pubLaserCloudSurround.getNumSubscribers() == 0)
@@ -367,7 +367,7 @@ mapOptimization类主要是其构造函数`mapOptimization()`的操作上有一�
 ### extractSurroundingKeyFrames
 `extractSurroundingKeyFrames()`抽取周围关键帧。
 该部分的自然语言表述如下：
-```cpp
+```
 extractSurroundingKeyFrames(){
 	if(cloudKeyPoses3D为空)
 		return；
@@ -501,7 +501,7 @@ Pose3 (const Rot3 &R, const Point3 &t) Construct from R,t. 从旋转和平移构
 
 
 在源码中，有对update的调用：
->```cpp
+>```
 >// gtSAMgraph是新加到系统中的因子
 >// initialEstimate是加到系统中的新变量的初始点
 >isam->update(gtSAMgraph, initialEstimate);
@@ -519,7 +519,7 @@ Pose3 (const Rot3 &R, const Point3 &t) Construct from R,t. 从旋转和平移构
 
 
 在`saveKeyFramesAndFactor()`函数中的更新过程：
->```cpp
+>```
 >isamCurrentEstimate = isam->calculateEstimate();
 >```
 
@@ -559,19 +559,19 @@ aftMappedTrans.child_frame_id_ = "/aft_mapped";
 >```
 
 上面`std_msgs/Header header`的定义：
->```cpp
+>```
 >uint32 seq         // 连续增加的ID
 >time stamp         // 时间戳有两个整形变量，stamp.sec代表秒，stamp.nsec表示纳秒
 >string frame_id    // 0: no frame，1: global frame
 >```
 
 `geometry_msgs/PoseWithCovariance`的定义：
->```cpp
+>```
 >geometry_msgs/Pose pose
 >float64[36] covariance   // 6x6协方差的行主表示
 >```
 
->```cpp
+>```
 >上面pose的定义：
 >geometry_msgs/Point position         // 位置
 >geometry_msgs/Quaternion orientation // 方向
@@ -584,7 +584,7 @@ aftMappedTrans.child_frame_id_ = "/aft_mapped";
 >float64[36] covariance
 >```
 
->```cpp
+>```
 >上面twist的定义：
 >geometry_msgs/Vector3 linear   // 线速度向量
 >geometry_msgs/Vector3 angular  // 角速度向量
@@ -645,12 +645,12 @@ float z2 = cz - 0.1 * matV1.at<float>(0, 2);
 ```
 然后求`[(x0-x1),(y0-y1),(z0-z1)]`与`[(x0-x2),(y0-y2),(z0-z2)]`叉乘得到的向量的模长,即[XXX,YYY,ZZZ]=[(y0-y1)(z0-z2)-(y0-y2)(z0-z1),-(x0-x1)(z0-z2)+(x0-x2)(z0-z1),(x0-x1)(y0-y2)-(x0-x2)(y0-y1)]的模长。
 接着：
-```cpp
+```
 // l12表示的是0.2*(||V1[0]||)
 float l12 = sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2) + (z1 - z2)*(z1 - z2));
 ```
 最后再求一次叉乘：
-```cpp
+```
 // 求叉乘结果[la',lb',lc']=[(x1-x2),(y1-y2),(z1-z2)]x[XXX,YYY,ZZZ]
 // [la,lb,lc]=[la',lb',lc']/a012/l12
 float la =...
@@ -725,7 +725,7 @@ float arz = ((crz*srx*sry - cry*srz)*pointOri.x + (-cry*crz-srx*sry*srz)*pointOr
           + ((sry*srz + cry*crz*srx)*pointOri.x + (crz*sry-cry*srx*srz)*pointOri.y)*coeff.z;
 ```
 求完matA之后，再计算`matAtA`，`matAtB`，`matX`
-```cpp
+```
 cv::transpose(matA, matAt);
 matAtA = matAt * matA;
 matAtB = matAt * matB;// matB每个对应点的coeff.intensity = s * pd2(在surfOptimization中和cornerOptimization中有)

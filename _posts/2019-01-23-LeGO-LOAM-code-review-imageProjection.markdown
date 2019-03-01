@@ -84,7 +84,7 @@ imageProjecion()构造函数的内容如下：
 `void findStartEndAngle()`进行`segMsg`的开始和结束姿态的标记。因为开始和结束时的角度无法确定，而且两者之间的相对误差也是在一个范围之内的，所以代码要对这个问题进行处理。具体过程如下：
 1. 计算开始和结束的角度值`segMsg.startOrientation`和`segMsg.endOrientation`。
 2. 考虑结束的角度比开始时的角度值小的问题，对它进行处理。
-```cpp
+```
 // 开始和结束的角度差一般是多少？
 // 一个velodyne 雷达数据包转过的角度多大？
 // segMsg.endOrientation - segMsg.startOrientation范围为(0,4PI)
@@ -150,7 +150,7 @@ if (columnIdn < 0 || columnIdn >= Horizon_SCAN)
 
 #### publishCloud
 `void publishCloud()`发布各类点云数据。
-```cpp
+```
 // 发布各类点云内容
 void publishCloud(){
 	// 发布cloud_msgs::cloud_info消息
@@ -206,7 +206,7 @@ void publishCloud(){
 
 #### resetParameters
 `void resetParameters()`贴一下代码凑字数：
-```cpp
+```
 // 初始化/重置各类参数内容
 void resetParameters(){
     laserCloudIn->clear();
@@ -233,7 +233,7 @@ void resetParameters(){
 - 用`queueIndX`，`queueIndY`保存进行分割的点云行列值，用`queueStartInd`作为索引。
 - 求这个点的4个邻接点，求其中离原点距离的最大值`d1`最小值`d2`。根据下面这部分代码来评价这两点之间是否具有平面特征。注意因为两个点上下或者水平对应的分辨率不一样，所以`alpha`是用来选择分辨率的。
 
-```cpp
+```
 // alpha代表角度分辨率，
 // Y方向上角度分辨率是segmentAlphaY(rad)
 if ((*iter).first == 0)
