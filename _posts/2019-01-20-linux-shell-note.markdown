@@ -18,7 +18,7 @@ tags:
 当前运行node信息
 
 `rosnode info node_name`
-   node详细信息
+node详细信息
 
 `rosnode kill node_name  `   
 结束某个node
@@ -80,9 +80,11 @@ tags:
 
 
 #### cmake编译
-	cmake ..
-	make
-	make install
+```
+cmake ..
+make
+make install
+```
 
 #### 权限设置
 `chmod -R a+rwx <filename>`
@@ -122,7 +124,7 @@ ls -Rl /dev |grep ttyUSB
 `export mynewvar `或者  `declare -x mynewvar`
 
 #### 得到同一目录下的终端
-***Ctrl+shift+T***
+`Ctrl+shift+T`
 
 
 #### 查看硬盘容量
@@ -130,17 +132,42 @@ ls -Rl /dev |grep ttyUSB
 
 
 #### terminator使用
-***Ctrl+Shift+E*** 
+`Ctrl+Shift+E`
 垂直分割窗口
 
-***Ctrl+Shift+O ***
+`Ctrl+Shift+O`
 水平分割窗口
 
-***F11***
+`F11`
 全屏
 
-***exit***
+`exit`
  退出命令
 
-***切换窗口***
-alt+up/down/left/right
+`alt+up/down/left/right`
+切换窗口
+
+
+#### git命令记录
+从初始化一个workspace到上传并完全配置完的命令如下：
+
+初始化
+`git init`
+
+配置本地用户
+`git config --global user.name "my_user_name"`
+
+配置本地邮箱
+`git config --global user.email "my_email@email.com"`
+
+产生公匙并保存在本地
+`ssh-keygen -t rsa -C "my_email@email.com"`
+
+显示保存在/c/Users/user_name/.ssh/下的公匙并复制，然后打开github.com，在setting的ssh中增加一个公匙，并将复制的填入
+cat /c/Users/user_name/.ssh/id_rsa.pub
+
+从远端仓库中获得代码并与本地的合并
+git pull origin master
+
+
+
