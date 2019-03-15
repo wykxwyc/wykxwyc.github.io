@@ -130,7 +130,7 @@ point.z = segmentedCloud->points[i].x;
 ```
 2. 针对每个点计算偏航角yaw，然后根据不同的偏航角，可以知道激光雷达扫过的位置有没有超过一半，计算的时候有一部分需要注意一下：
 函数原型：
-```cpp
+```
 // -atan2(p.x,p.z)==>-atan2(y,x)
 // ori表示的是偏航角yaw，因为前面有负号，ori=[-M_PI,M_PI)
 // 因为segInfo.orientationDiff表示的范围是(PI,3PI)，在2PI附近

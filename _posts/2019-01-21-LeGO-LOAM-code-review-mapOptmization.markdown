@@ -450,7 +450,7 @@ void scan2MapOptimization(){
 ### saveKeyFramesAndFactor
 `void saveKeyFramesAndFactor()`保存关键帧和进行优化的功能。
 整个函数的运行流程如下:
-```cpp
+```
 saveKeyFramesAndFactor(){
 	1. 把上次优化得到的transformAftMapped(3:5)坐标点作为当前的位置，
 		计算和再之前的位置的欧拉距离，距离太小并且cloudKeyPoses3D不为空(初始化时为空)，则结束；
@@ -677,7 +677,8 @@ float s = 1 - 0.9 * fabs(ld2);
 3. 将搜索结果全部保存到`matA0`中，形成一个5x3的矩阵；
 4. 解这个矩阵`cv::solve(matA0, matB0, matX0, cv::DECOMP_QR);`,关于`cv::solve`函数，参考[官网](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga12b43690dbd31fed96f213eefead2373 "opencv官网")。`matB0`是一个5x1的矩阵，需要求解的`matX0`是3x1的矩阵；
 ```cpp
-bool cv::solve	(	InputArray 	src1,
+bool cv::solve	(	
+InputArray 	src1,
 InputArray 	src2,
 OutputArray 	dst,
 int 	flags = DECOMP_LU 
