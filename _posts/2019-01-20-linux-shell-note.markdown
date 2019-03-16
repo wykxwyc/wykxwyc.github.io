@@ -20,10 +20,10 @@ tags:
 `rosnode info node_name`
 node详细信息
 
-`rosnode kill node_name  `   
+`rosnode kill node_name`   
 结束某个node
 
-`roslaunch pkg_name file_name.launch   `
+`roslaunch pkg_name file_name.launch`
 开启多个节点
 
 `rosbag record <topic-name>`
@@ -79,55 +79,55 @@ node详细信息
 `rosrun map_server map_server my_map.yaml`
 
 
-#### cmake编译
+###### cmake编译
 ```
 cmake ..
 make
 make install
 ```
 
-#### 权限设置
+###### 权限设置
 `chmod -R a+rwx <filename>`
 
-#### g++编译生成hello.out
+###### g++编译生成hello.out
 `g++ -o hello main.cpp`
 
 
-#### 打印寻找core的结果及时间
+###### 打印寻找core的结果及时间
 `time find / -name core`
 
-#### 将/user/local/bin加入路径
+###### 将/user/local/bin加入路径
 `PATH=$PATH:/user/local/bin`
 
-#### 在[当前.]目录下搜索含有boost内容的所有文件
+###### 在[当前.]目录下搜索含有boost内容的所有文件
 `find ./ -name "*" | xargs grep "boost"`
 
-#### dg_console的依赖
+###### dg_console的依赖
 `sudo apt-get install libedit-dev`
 
-#### 手柄查看信息
+###### 手柄查看信息
 `sudo jstest /dev/input/js0`
 
-#### 列出/dev及其子目录下ttyUSB有关的文件与文件夹
-ls -Rl /dev |grep ttyUSB
+###### 列出/dev及其子目录下ttyUSB有关的文件与文件夹
+`ls -Rl /dev |grep ttyUSB`
 
-#### 脚本开头
+###### 脚本开头
 `#!/user/bin/env bash 或者 #!/bin/bash`
 
-#### 脚本只有读权限时执行
+###### 脚本只有读权限时执行
 `bash thescript.sh  等价于有x权限  ./ thescript.sh`
 
-#### 删除变量
+###### 删除变量
 `unset variable_name `
 
-#### 得到一份shell 变量的拷贝
+###### 得到一份shell 变量的拷贝
 `export mynewvar `或者  `declare -x mynewvar`
 
-#### 得到同一目录下的终端
+###### 得到同一目录下的终端
 `Ctrl+shift+T`
 
 
-#### 查看硬盘容量
+###### 查看硬盘容量
 `df -h`
 
 
@@ -163,11 +163,14 @@ ls -Rl /dev |grep ttyUSB
 产生公匙并保存在本地
 `ssh-keygen -t rsa -C "my_email@email.com"`
 
-显示保存在/c/Users/user_name/.ssh/下的公匙并复制，然后打开github.com，在setting的ssh中增加一个公匙，并将复制的填入
-cat /c/Users/user_name/.ssh/id_rsa.pub
+显示保存在/c/Users/user_name/.ssh/下的公匙并复制，然后打开github.com，在`Account settings`的`SSH and GPG Keys`中点击`New SSH Key`，并将复制的填入
+`cat /c/Users/my_user_name/.ssh/id_rsa.pub`
+
+添加远程仓库（如果没有则先新建远程仓库）
+`git remote add origin git@github.com:user_name/repertory.git`
 
 从远端仓库中获得代码并与本地的合并
-git pull origin master
+`git pull origin master`
 
 
 
