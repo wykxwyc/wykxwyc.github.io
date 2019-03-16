@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "操作系统(内存管理)"
+title:      "操作系统（内存管理）"
 subtitle:   "Operating System (memory management)"
 date:       2019-03-13
 author:     "wykxwyc"

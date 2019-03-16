@@ -11,12 +11,12 @@ tags:
 ---
 > Qt is well known for its signals and slots mechanism. But how does it work?
 > 
-> 原文链接：[woboq](!https://woboq.com/blog/how-qt-signals-slots-work.html)
+> 原文链接：[woboq](https://woboq.com/blog/how-qt-signals-slots-work.html)
 > 
 > 参考译文链接：[NewThinker_Jiwey@CSDN](https://blog.csdn.net/newthinker_wei/article/details/22701695)
 
 #### Signals and Slots
-首先来看一下官方给出的[示例](!https://doc.qt.io/archives/qt-4.8/signalsandslots.html "Signals & Slots")是怎样的？
+首先来看一下官方给出的[示例](https://doc.qt.io/archives/qt-4.8/signalsandslots.html "Signals & Slots")是怎样的？
 它的头文件是这样的：
 
 ```cpp
@@ -63,11 +63,11 @@ C++语言本省不支持实时省察功能。因此Qt搞了一个工具来提供
 
 它解析头文件，然后产生一个额外的C++文件用于和其他程序一起进行编译。这个产生的额外的C++文件就包含实时省察所需要的各种信息。
 
-Qt有时候就是因为这个额外的代码生成器影响了语言的纯正性，因为广受批判。对于这种争议，这里不作讨论，与这种争议有关的回应可以参看[这里](!https://doc.qt.io/archives/qt-4.8/templates.html "Why Doesn't Qt Use Templates for Signals and Slots?")。这个代码生成器本身并没有什么错，而且`MOC`的十分有用。
+Qt有时候就是因为这个额外的代码生成器影响了语言的纯正性，因为广受批判。对于这种争议，这里不作讨论，与这种争议有关的回应可以参看[这里](https://doc.qt.io/archives/qt-4.8/templates.html "Why Doesn't Qt Use Templates for Signals and Slots?")。这个代码生成器本身并没有什么错，而且`MOC`的十分有用。
 
 
 #### Magic Macros
-你能认出这些*关键字*中不是C++关键字的吗？`signals`, `slots`, `Q_OBJECT`, `emit`, `SIGNAL`, `SLOT`。这些都是Qt对C++的扩展。他们其实都是一些简单的宏，定义在[qobjectdefs.h](!https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobjectdefs.h.html#66)中：
+你能认出这些*关键字*中不是C++关键字的吗？`signals`, `slots`, `Q_OBJECT`, `emit`, `SIGNAL`, `SLOT`。这些都是Qt对C++的扩展。他们其实都是一些简单的宏，定义在[qobjectdefs.h](https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobjectdefs.h.html#66)中：
 ```
 #define signals public
 #define slots /* nothing */
@@ -75,7 +75,7 @@ Qt有时候就是因为这个额外的代码生成器影响了语言的纯正性
 
 信号与槽其实只是简单的函数，编译器会像处理任何其他函数一样对待他们。但是这两个宏还有另一个功能：`MOC`能够看到他们。
 
-`Signals`在Qt4及以前是`protected`的。但他们在Qt5以后成为了`public`，为了能够使[新的语法](!https://woboq.com/blog/new-signals-slots-syntax-in-qt5.html)成立。
+`Signals`在Qt4及以前是`protected`的。但他们在Qt5以后成为了`public`，为了能够使[新的语法](https://woboq.com/blog/new-signals-slots-syntax-in-qt5.html)成立。
 
 ```
 #define Q_OBJECT \
@@ -272,7 +272,7 @@ void Counter::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
 
 对于每个连接，哪些信息需要被存储进来？我们需要一种能根据信号索引signal index快速访问到对应的connection的方法。因为可能会同时有不止一个槽连接到同一个信号上，所以每一个信号都要有一个槽列表。每个connection必须包含接收对象(的指针)以及被连接的槽的索引。我们也希望当接收对象呗销毁时连接也会被自动销毁，因此每个接收对象（receiver）需要知道谁连着它以便于它可以清除这些连接（connection）。
 
-这是在[qobject_p.h](!https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobject_p.h.html#QObjectPrivate::Connection)中定义的`QObjectPrivate::Connection`。
+这是在[qobject_p.h](https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobject_p.h.html#QObjectPrivate::Connection)中定义的`QObjectPrivate::Connection`。
 
 ```
 struct QObjectPrivate::Connection
@@ -327,7 +327,7 @@ struct QObjectPrivate::Connection
 #### Signal Emission
 当我们调用一个信号时，我们会发现这个信号会调用`MOC`产生的代码，这些代码里面调用了`QMetaObject::activate`。
 
-下面是一段截取自[qobject.cpp](!https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobject.cpp.html#_ZN11QMetaObject8activateEP7QObjectPKS_iPPv),并经过注释的代码。
+下面是一段截取自[qobject.cpp](https://code.woboq.org/qt5/qtbase/src/corelib/kernel/qobject.cpp.html#_ZN11QMetaObject8activateEP7QObjectPKS_iPPv),并经过注释的代码。
 
 ```
 void QMetaObject::activate(QObject *sender, const QMetaObject *m, int local_signal_index,
