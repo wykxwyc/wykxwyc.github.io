@@ -130,6 +130,8 @@ make install
 ###### 查看硬盘容量
 `df -h`
 
+###### 让隐藏文件显示/隐藏 快捷键
+`Ctrl+H`
 
 #### terminator使用
 `Ctrl+Shift+E`
@@ -171,6 +173,7 @@ make install
 
 从远端仓库中获得代码并与本地的合并
 `git pull origin master`
+
 
 
 

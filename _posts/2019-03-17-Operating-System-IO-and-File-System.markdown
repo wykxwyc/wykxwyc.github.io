@@ -15,8 +15,11 @@ tags:
 #### IO系统
 
 ##### IO硬件
-IO的硬件分为3个部分：
+IO的硬件分为3个部分：轮询，中断，DMA
+
 * 轮询
+cpu不断查询的过程，浪费时间，效率低下
+
 * 中断
 采用中断驱动的I/O循环如下：
 
@@ -36,9 +39,9 @@ IO的硬件分为3个部分：
 
 * 时钟和定时器
 三个基本函数：
-1. 获取当前时间
-2. 获取已经逝去的时间
-3. 设置定时器，在时间T时触发操作X
+1.获取当前时间
+2.获取已经逝去的时间
+3.设置定时器，在时间T时触发操作X
 
 #### 磁盘的使用
 cpu使用磁盘：
@@ -65,7 +68,7 @@ cpu使用磁盘：
 
 其中，寻道时间最长，因此磁盘调度的主要目标是使磁盘的平均寻道时间最短。
 
-1. 先来先服务
+1.先来先服务
 > FCFS, First Come First Served
 
 按照磁盘请求的顺序进行调度。
@@ -74,7 +77,7 @@ cpu使用磁盘：
 
 ![FCFS](/img/in-post/post-OS-IO-and-file/FCFS.png)
 
-2. 最短寻道时间优先
+2.最短寻道时间优先
 > SSTF, Shortest Seek Time First
 
 优先调度与当前磁头所在磁道距离最近的磁道。
@@ -83,7 +86,7 @@ cpu使用磁盘：
 
 ![SSTF](/img/in-post/post-OS-IO-and-file/SSTF.png)
 
-3. 电梯算法
+3.电梯算法
 > 也称为 SCAN 算法
 
 电梯总是保持一个方向运行，直到该方向没有请求为止，然后改变运行方向。
@@ -95,14 +98,14 @@ cpu使用磁盘：
 ![SCAN](/img/in-post/post-OS-IO-and-file/SCAN.png)
 
 
-4. C-SCAN调度
+4.C-SCAN调度
 > C-SCAN Circular SCAN
 与SCAN一样，C-SCAN将磁头从磁盘一段移到磁盘的另一端，随着移动不断地处理请求。不过当磁头移到另一端时，它会马上返回到磁盘开始，返回时并不处理请求。
 
 ![C-SCAN](/img/in-post/post-OS-IO-and-file/C-SCAN.png)
 
 
-5. LOOK调度
+5.LOOK调度
 SCAN和C-SCAN使磁头在整个磁盘宽度内进行移动。事实上，这两个算法都不是这么现实的。通常磁头只移动到一个方向上最远的请求为止。接着，它马上回头，而不是继续到磁盘的尽头。这种形式的SCAN和C-SCAN称为LOOK和C-LOOK调度。因为他们在朝一个方向移动会看是否有请求。
 
 ![LOOK](/img/in-post/post-OS-IO-and-file/LOOK.png)
@@ -161,27 +164,27 @@ SCAN和C-SCAN使磁头在整个磁盘宽度内进行移动。事实上，这两�
 * 重命名文件
 * 跟踪文件系统
 
-1. 单层结构目录
+1.单层结构目录
 所有文件都包含在同一目录中，其特点是便于理解和支持。
 
 ![single-struct.png](/img/in-post/post-OS-IO-and-file/single-struct.png)
 
-2. 双层结构目录
+2.双层结构目录
 单层结构目录通常会在不同用户之间引起文件名的混淆。标准解决办法是为每个用户创建独立目录。
 
 ![double-struct.png](/img/in-post/post-OS-IO-and-file/double-struct.png)
 
-3. 树状结构目录
+3.树状结构目录
 
 ![tree-struct.png](/img/in-post/post-OS-IO-and-file/tree-struct.png)
 
-4. 无环图结构目录
+4.无环图结构目录
 
 ![none-loop-struct.png](/img/in-post/post-OS-IO-and-file/none-loop-struct.png)
 
-5. 通用图目录
+5.通用图目录
 
-![universal-graph-struct.PNG](/img/in-post/post-OS-IO-and-file/universal-graph-struct.PNG)
+![universal-graph-struct.png](/img/in-post/post-OS-IO-and-file/universal-graph-struct.png)
 
 
 ##### 文件系统的安装
