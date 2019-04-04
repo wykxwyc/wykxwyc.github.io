@@ -16,14 +16,14 @@ tags:
 
 ##### 论文翻译
 
-![pic-01](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_01.png)
-![pic-02](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_02.png)
-![pic-03](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_03.png)
-![pic-04](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_04.png)
-![pic-05](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_05.png)
-![pic-06](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_06.png)
-![pic-07](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_07.png)
-![pic-08](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_08.png)
-![pic-09](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_09.png)
-![pic-10](/img/in-post/post-Cartographer-Thesis-Translation/filter_page_10.png)
+![pic-01](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-01.png)
+![pic-02](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-02.png)
+![pic-03](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-03.png)
+![pic-04](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-04.png)
+![pic-05](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-05.png)
+![pic-06](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-06.png)
+![pic-07](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-07.png)
+![pic-08](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-08.png)
+![pic-09](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-09.png)
+![pic-10](/img/in-post/post-Cartographer-Thesis-Translation/cartographer-translation-10.png)
 
