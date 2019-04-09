@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Cartographer 论文《Real-Time Loop Closure in 2D LIDAR SLAM》翻译"
+title:      "Cartographer《Real-Time Loop Closure in 2D LIDAR SLAM》论文翻译"
 subtitle:   "Translation of 《Real-Time Loop Closure in 2D LIDAR SLAM》"
 date:       2019-04-03
 author:     "wykxwyc"

@@ -10,6 +10,17 @@ tags:
     - Filters
 ---
 
+##### 主要内容
+* 贝叶斯准则基本理论
+* 贝叶斯滤波
+* 卡尔曼滤波器
+* 扩展卡尔曼滤波器（EKF）
+* 迭代扩展卡尔曼滤波器（IEKF）
+* sigmapoint卡尔曼滤波器/无迹卡尔曼滤波器（SPKF/UKF）
+* 迭代sigmapoint卡尔曼滤波器（ISPKF）
+* 粒子滤波器
+* 滤波器的分类
+
 ![pic-01](/img/in-post/post-Summary-of-Filters/filter_page_01.png)
 ![pic-02](/img/in-post/post-Summary-of-Filters/filter_page_02.png)
 ![pic-03](/img/in-post/post-Summary-of-Filters/filter_page_03.png)
