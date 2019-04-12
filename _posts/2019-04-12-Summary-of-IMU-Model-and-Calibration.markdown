@@ -10,6 +10,20 @@ tags:
     - IMU
 ---
 
+
+
+$$
+\begin{align}
+&\rm \frac{\partial x}{\partial \Delta x}:\\
+&\rm \frac{\partial q}{\partial \delta \alpha} = \frac{\partial Q_{\bar{q}}\,\delta q}{\partial \delta \alpha} = \frac{1}{2}Q_{\bar{q}}I_{4\times 3}\\
+&\rm \frac{\partial p}{\partial \delta p} = I_{3}\\
+&\rm \frac{\partial q}{\partial \delta p} = \frac{\partial p}{\partial \delta \alpha} = 0
+\end{align}
+$$
+
+
+
+
 __目录__
 * content
 {:toc}
@@ -24,13 +38,4 @@ __目录__
 
 公式如下：
 
-
-$$
-\begin{align}
-&\rm \frac{\partial x}{\partial \Delta x}:\\
-&\rm \frac{\partial q}{\partial \delta \alpha} = \frac{\partial Q_{\bar{q}}\,\delta q}{\partial \delta \alpha} = \frac{1}{2}Q_{\bar{q}}I_{4\times 3}\\
-&\rm \frac{\partial p}{\partial \delta p} = I_{3}\\
-&\rm \frac{\partial q}{\partial \delta p} = \frac{\partial p}{\partial \delta \alpha} = 0
-\end{align}
-$$
 
