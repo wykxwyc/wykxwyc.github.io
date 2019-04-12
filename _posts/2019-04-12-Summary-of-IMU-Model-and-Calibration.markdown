@@ -11,7 +11,6 @@ tags:
 ---
 
 __目录__
-
 * content
 {:toc}
 
@@ -23,6 +22,7 @@ __目录__
 
 ### 2. topic2
 
+公式如下：
 $$
 \begin{align}
 &\rm \frac{\partial x}{\partial \Delta x}:\\
