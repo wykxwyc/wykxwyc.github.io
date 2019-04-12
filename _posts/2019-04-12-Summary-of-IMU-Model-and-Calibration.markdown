@@ -12,6 +12,11 @@ tags:
 
 
 
+### 1. topic1
+
+
+旋转和平移完全解耦的好处是计算雅克比矩阵非常方便。比如，计算 oplusJacobian：
+
 $$
 \begin{align}
 &\rm \frac{\partial x}{\partial \Delta x}:\\
@@ -21,17 +26,6 @@ $$
 \end{align}
 $$
 
-
-
-
-__目录__
-* content
-{:toc}
-
-### 1. topic1
-
-
-旋转和平移完全解耦的好处是计算雅克比矩阵非常方便。比如，计算 oplusJacobian：
 
 
 ### 2. topic2
