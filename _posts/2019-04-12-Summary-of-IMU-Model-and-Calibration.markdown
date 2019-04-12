@@ -4,7 +4,7 @@ title:      "IMU模型以及校准知识总结"
 subtitle:   "Summary of IMU model and calibration"
 date:       2019-04-03
 author:     "wykxwyc"
-header-img: "img/post-bg-filter.jpg"
+header-img: "img/post-IMU-model.jpg"
 tags:
     - SLAM
     - IMU
