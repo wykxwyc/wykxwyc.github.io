@@ -99,3 +99,8 @@ FIFO算法：
 https://www.cnblogs.com/xiaofanke/p/9498820.html
 
 https://www.cnblogs.com/sage-blog/p/3917836.html
+
+##### 对占据栅格地图的理解（Occupancy Grid Map）
+地图是激光 slam 系统的核心，通常激光 slam 都采用 logodds 算法对栅格地图进行概率更新。知乎上有个人对 Coursera 上课笔记进行了总结，写得非常好，对公式的推导很简洁。
+https://zhuanlan.zhihu.com/p/21738718
+
