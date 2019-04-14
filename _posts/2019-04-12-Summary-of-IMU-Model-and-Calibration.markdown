@@ -12,10 +12,11 @@ tags:
 
 
 
-### 1. topic1
+### topic1
 
 
 旋转和平移完全解耦的好处是计算雅克比矩阵非常方便。比如，计算 oplusJacobian：
+
 
 $$
 \begin{align}
@@ -28,7 +29,7 @@ $$
 
 
 
-### 2. topic2
+### topic2
 
 公式如下：
 

@@ -104,3 +104,32 @@ https://www.cnblogs.com/sage-blog/p/3917836.html
 地图是激光 slam 系统的核心，通常激光 slam 都采用 logodds 算法对栅格地图进行概率更新。知乎上有个人对 Coursera 上课笔记进行了总结，写得非常好，对公式的推导很简洁。
 https://zhuanlan.zhihu.com/p/21738718
 
+
+##### 李群和李代数
+SO(3)是特殊正交群，Special Orthogonal group，里面的元素是旋转矩阵R，大写SO(3)的李代数为小写so(3),里面的元素是向量a，两者的关系：R=exp(a^);
+
+SE(3)是特殊欧式群，Special Euclidean group，里面的元素是齐次变换矩阵T，既有旋转又有平移，旋转R是SO(3)中的元素，平移是三维列向量t。
+大写SE(3)的李代数是小写se(3)，里面的元素是六维向量，前三维平移，后三维旋转，旋转的元素是so(3)内的。
+
+
+##### 对相机内外参的简单理解
+内参：三个量，焦距，成像平面上X/Y方向上的平移，X/Y方向上各自的缩放比例（或者说fx，fy，cx，cy两个焦距，两个平移），他们可以组成一个内参矩阵K。
+
+外参:两个量，相机从`世界坐标系`转换到`相机坐标系`的旋转`R`以及平移`t`。
+
+
+##### 径向畸变和切向畸变
+
+![r_distorted](/img/in-post/post-Small-Talk/r_distorted.jpg)
+`径向畸变`:与相机中心点距离r有关，距离越远，畸变(变小/变大)越多。本质与`透镜形状`有关。
+
+![t_distorted](/img/in-post/post-Small-Talk/t_distorted.png)
+`切向畸变`:沿着某个过一基点的向量方向上，与基点的垂直距离越大，畸变越大。本质与透镜的`安装位置`有关。
+
+参考链接：https://blog.csdn.net/dcrmg/article/details/52950141
+
+
+
+
+
+
