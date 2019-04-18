@@ -14,6 +14,12 @@ tags:
 
 
 #### ros常用命令
+##### 初始化ROS工作空间
+```mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws/src
+catkin_init_workspace```
+
+##### rosnode相关命令
 `rosnode list`
 当前运行node信息
 
@@ -26,6 +32,7 @@ node详细信息
 `roslaunch pkg_name file_name.launch`
 开启多个节点
 
+##### rosbag命令
 `rosbag record <topic-name>`
 记录某些topic到bag中
 
@@ -83,8 +90,14 @@ node详细信息
 ```
 cmake ..
 make
-make install
+make install //是否安装
 ```
+
+解决`joyConfig.cmake`找不到的错误
+```
+sudo apt-get install ros-indigo-joy*
+```
+
 
 ###### 权限设置
 `chmod -R a+rwx <filename>`
