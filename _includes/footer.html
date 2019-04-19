@@ -58,6 +58,7 @@
                         </a>
                     </li>
                     {% endif %}
+					
                     {% if site.github_username %}
                     <li>
                         <a target="_blank" href="https://github.com/{{ site.github_username }}">
@@ -68,6 +69,8 @@
                         </a>
                     </li>
                     {% endif %}
+					
+					
                 </ul>
                 <p class="copyright text-muted">
                     Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}
@@ -140,13 +143,14 @@
 </script>
 
 <!--fastClick.js -->
+<!--
 <script>
     async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
         var $nav = document.querySelector("nav");
         if($nav) FastClick.attach($nav);
     })
 </script>
-
+-->
 
 <!-- Google Analytics -->
 {% if site.ga_track_id %}
