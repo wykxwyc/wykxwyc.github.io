@@ -105,31 +105,32 @@ layout: default
                         {% if site.sidebar-avatar %}
                             <img src="{{site.sidebar-avatar}}" />
                         {% endif %}
+
                         {% if site.sidebar-about-description %}
                             <p>{{site.sidebar-about-description}}</p>
+                            <br>
+
+                            <br>
+                            
                         {% endif %}
+
+                        
                         <!-- SNS Link -->
                         <ul class="list-inline">
-                            {% if site.RSS %}
+
                             <li>
-                                <a href="{{ "/feed.xml" | prepend: site.baseurl }}">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
+                                邮箱：<a href="mailto:wykxwyc@163.com">wykxwyc@163.com</a> 
+                            </li>
+
+                            <br>
+
+                            {% if site.github_username %}
+                            <li>
+                                Github:<a href="https://github.com/wykxwyc">wykxwyc</a>
                             </li>
                             {% endif %}
-                            {% if site.twitter_username %}
-                            <li>
-                                <a href="https://twitter.com/{{ site.twitter_username }}">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            {% endif %}
+
+
                             {% if site.zhihu_username %}
                             <li>
                                 <a target="_blank" href="https://www.zhihu.com/people/{{ site.zhihu_username }}">
@@ -140,6 +141,8 @@ layout: default
                                 </a>
                             </li>
                             {% endif %}
+
+                            
                             {% if site.weibo_username %}
                             <li>
                                 <a target="_blank" href="http://weibo.com/{{ site.weibo_username }}">
@@ -160,19 +163,12 @@ layout: default
                                 </a>
                             </li>
                             {% endif %}
-                            {% if site.github_username %}
-                            <li>
-                                <a target="_blank" href="https://github.com/{{ site.github_username }}">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            {% endif %}
+
                         </ul>
                     </div>
                 </section>
+
+
                 <!-- Friends Blog -->
                 {% if site.friends %}
                 <hr>
@@ -183,6 +179,8 @@ layout: default
                     {% endfor %}
                 </ul>
                 {% endif %}
+
+                
     		</div>
         {% endif %}
 	</div>
