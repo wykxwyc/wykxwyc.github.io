@@ -15,9 +15,11 @@ tags:
 
 #### ros常用命令
 ##### 初始化ROS工作空间
-```mkdir -p ~/catkin_ws/src
+```
+mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-catkin_init_workspace```
+catkin_init_workspace
+```
 
 ##### rosnode相关命令
 `rosnode list`
@@ -42,9 +44,16 @@ node详细信息
 `rosbag play <bag-files>`
 播放bag
 
+```shell
+rosbag play *.bag --clock --topic /velodyne_points /imu/data
+```
+播放当前目录下所有bag中的`/velodyne_points`和`/imu/data`topic
+
 创建package
-`cd ~/catkin_ws/src`
-`catkin_create_pkg topic_demo roscpp rospy stdmsg`
+```
+cd ~/catkin_ws/src
+catkin_create_pkg topic_demo roscpp rospy stdmsg
+```
 
 创建msg
 `vi msg_name.msg`
@@ -167,25 +176,37 @@ sudo apt-get install ros-indigo-joy*
 从初始化一个workspace到上传并完全配置完的命令如下：
 
 初始化
-`git init`
+```
+git init
+```
 
 配置本地用户
-`git config --global user.name "my_user_name"`
+```
+git config --global user.name "my_user_name"
+```
 
 配置本地邮箱
-`git config --global user.email "my_email@email.com"`
+```
+git config --global user.email "my_email@email.com"
+```
 
 产生公匙并保存在本地
-`ssh-keygen -t rsa -C "my_email@email.com"`
+```
+ssh-keygen -t rsa -C "my_email@email.com"
+```
 
 显示保存在/c/Users/user_name/.ssh/下的公匙并复制，然后打开github.com，在`Account settings`的`SSH and GPG Keys`中点击`New SSH Key`，并将复制的填入
 `cat /c/Users/my_user_name/.ssh/id_rsa.pub`
 
 添加远程仓库（如果没有则先新建远程仓库）
-`git remote add origin git@github.com:user_name/repertory.git`
+```
+git remote add origin git@github.com:user_name/repertory.git
+```
 
 从远端仓库中获得代码并与本地的合并
-`git pull origin master`
+```
+git pull origin master
+```
 
 
 
