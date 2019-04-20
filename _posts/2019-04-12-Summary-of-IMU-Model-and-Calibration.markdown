@@ -12,8 +12,10 @@ tags:
 
 ### 目录 ###
 
-###### content
+* content
 {:toc}
+
+---
 
 ### topic1
 
