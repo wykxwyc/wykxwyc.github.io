@@ -10,7 +10,18 @@ tags:
     - IMU
 ---
 
+___目录___
+
+* content
+{:toc}
+
+---
+
+### topic1
+
+
 旋转和平移完全解耦的好处是计算雅克比矩阵非常方便。比如，计算 oplusJacobian：
+
 
 $$
 \begin{align}
@@ -20,4 +31,11 @@ $$
 &\rm \frac{\partial q}{\partial \delta p} = \frac{\partial p}{\partial \delta \alpha} = 0
 \end{align}
 $$
+
+
+
+### topic2
+
+公式如下：
+
 

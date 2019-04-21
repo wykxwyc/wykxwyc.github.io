@@ -37,13 +37,12 @@ gems: [jekyll-paginate]
 
 
 # Markdown settings
-# replace redcarpet to kramdown,
+# replace redcarpet to kramdownwy,
 # although redcarpet can auto highlight code, the lack of header-id make the catalog impossible, so I switch to kramdown
 # document: http://jekyllrb.com/docs/configuration/#kramdown
 markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
-
 
 
 # Disqus settings
@@ -52,18 +51,15 @@ kramdown:
 # Duoshuo settings
 # duoshuo_username: huxblog
 # Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: false                     # set to false if you want to use Comment without Sharing
-
-
+# duoshuo_share: false                     # set to false if you want to use Comment without Sharing
 
 
 # Analytics settings
 # Baidu Analytics
-ba_track_id: 4cc1f2d8f3067386cc5cdb626a202900
+ba_track_id: 40e718022ed02c3112ad9aebb449d156
 # Google Analytics
-ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-ga_domain: huangxuan.me
-
+# ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
+# ga_domain: huangxuan.me
 
 
 # Sidebar settings
@@ -78,23 +74,13 @@ featured-tags: true                     # whether or not using Feature-Tags
 featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
 
 
-
 # Friends
 friends: [
     {
         title: "wykxwyc's Blog",
         href: "http://wykxwyc.github.io"
     },{
-        title: "Foo",
-        href: "#"
-    },{
-        title: "Bar",
-        href: "#"
-    },{
-        title: "Example Friends",
-        href: "#"
-    },{
-        title: "It helps SEO",
+        title: "",
         href: "#"
     }
 ]
