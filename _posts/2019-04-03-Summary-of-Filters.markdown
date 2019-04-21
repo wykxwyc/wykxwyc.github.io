@@ -318,3 +318,6 @@ $$
 $$
 
 **更新：**
+$$
+\begin{aligned} \hat{P}_{k} &=\left(1-K_{k} G_{k}\right) \check{P}_{k} \\ \hat{x}_{k} &=\check{x}_{k}+K_{k}\left(y_{k}-g\left(\check{x}_{k}, 0\right)\right) \end{aligned} \tag{1.14}
+$$
