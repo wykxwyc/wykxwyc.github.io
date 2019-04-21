@@ -12,9 +12,10 @@ tags:
 
 ___目录___
 
+```
 * content
 {:toc}
-
+```
 ---
 
 ### topic1
@@ -38,4 +39,10 @@ $$
 
 公式如下：
 
+$$
+\[\begin{align}
+  & p(x|y)=\frac{P(y|x)p(x)}{p(y)}=\frac{p(y|x)p(x)}{\sum\limits_{x'}{p(y|x')p(x')}} \\ 
+ & p(x|y)=\frac{p(y|x)p(x)}{p(y)}=\frac{p(y|x)p(x)}{\int{p(y|x')p(x')dx'}} \\ 
+\end{align}\]
+$$
 
