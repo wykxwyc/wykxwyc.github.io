@@ -99,4 +99,14 @@ $$
 因为我们知道观测数据，最大似然可以理解为：在什么样的状态下，最可能产生现在观测到的数据。
 
 ##### 贝叶斯滤波
-(\overset{\hat{\ }}{\mathop \cdot }\,) 
+(\overset{\hat{\ }}{\mathop \cdot }\,) 上帽子来表示后验估计
+
+(\overset{\vee }{\mathop \cdot }\,)下帽子来表示先验估计 
+
+$$
+p\left(x_{k} | \check{x}_{0}, v_{1:k}, y_{0:k}\right)=\eta p\left(y_{k} | x_{k}\right) p\left(x_{k} | \check{x}_{0}, v_{1:k}, y_{0:k-1}\right) \tag{1.1}
+$$
+
+
+
+
