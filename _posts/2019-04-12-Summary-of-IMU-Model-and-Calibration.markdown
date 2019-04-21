@@ -2,7 +2,7 @@
 layout:     post
 title:      "IMU模型以及校准知识总结"
 subtitle:   "Summary of IMU model and calibration"
-date:       2019-04-03
+date:       2019-04-12
 author:     "wykxwyc"
 header-img: "img/post-IMU-model.jpg"
 tags:
