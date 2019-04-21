@@ -518,3 +518,23 @@ $$
 $$
 \begin{aligned} \mu_{y, k} &=\sum_{i=0}^{2 L} \alpha_{i} \check{y}_{k, i} \\ \Sigma_{y, k} &=\sum_{i=0}^{2 L} \alpha_{i}\left(\check{y}_{k, i}-\mu_{y, k}\right)\left(\check{y}_{k, i}-\mu_{j, k}\right)^{T} \\ \Sigma_{x y, k} &=\sum_{i=0}^{2 L} \alpha_{i}\left(\check{x}_{k, i}-x_{k}\right)\left(\check{y}_{k, i}-\mu_{y, k}\right)^{T} \\ \alpha_{i}&=\left\{\begin{array}{l}{\frac{k}{L+k}, i=0} \\ {\frac{1}{2} \frac{1}{L+k},others}\end{array}\right. \end{aligned} \tag{1.35}
 $$
+
+SPKF的优点：1）不需要任何解析形式的导数 2）仅使用了基本的线性代数运算，不需要非线性运动和观测模型的封闭形式（解析解）。
+
+##### 迭代sigmapoint卡尔曼滤波器（ISPKF）
+
+
+##### 粒子滤波器
+
+粒子滤波器降低了卡尔曼滤波器的状态矩阵，但是对于单个的计算单元增加了计算量。
+
+##### 滤波器的分类
+
+![](img/in-post/post-Summary-of-Filters/category.png)
+
+上面的分类主要是根据将概率分布函数传入非线性函数的方法来分类的。线性化方法和sigmapoint方法是假设概率分布函数为高斯的来进行的。
+
+
+##### 参考文献
+[1] 概率机器人学
+[2] 机器人学中的状态估计
