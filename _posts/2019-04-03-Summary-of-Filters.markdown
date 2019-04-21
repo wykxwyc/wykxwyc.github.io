@@ -17,12 +17,15 @@ ___目录___
 
 ##### 杨亮《从贝叶斯开始学滤波》中一些问题
 A Multi-State Constraint Kalman Filter for Vision-aided Inertial Navigation (Anastasios I. Mourikis and Stergios I. Roumeliotis)
+
 这篇文章的主要思想就是用IMU和一个单目相机，单目相机的更新频率没有IMU的频率高。两个数据，要考虑两种数据的时间戳能否对上，在这种情况下，采用融合的方式。一个数据用来预测，另一个数据用来观测，然后用协方差来转换权重。
 
 为什么要讲随机状态和估计？
+
 因为这是一个概率问题。
 
-预测的误差如何累积？
+预测的 $\rm H=J^TJ=USU^T$ 误差如何累积？
+
 因为我在一个开环的估计里面，不断地走的时候没有人来告诉你走到哪里了，这个误差就会累积。
 融合如何进行？
 例如图形和加速度不同的信息如何融合？
