@@ -122,9 +122,9 @@ $$
 $$
 上帽子来表示后验估计
 
-&&
+$$
 (\overset{\vee }{\mathop \cdot }\,)
-&&
+$$
 下帽子来表示先验估计 
 
 $$
@@ -145,7 +145,176 @@ $$
 p\left(x_{k-1} | \check{x}_{0}, v_{1 : k}, y_{0 : k-1}\right)=p\left(x_{k-1} | \check{x}_{0}, v_{1 : k-1}, y_{0 : k-1}\right) \tag{1.4}
 $$
 
-\begin{equation*}
+&&
 p\left(x_{k} | \check{x}_{0}, v_{1 : k}, y_{0: k}\right)=\eta p\left(y_{k} | x_{k}\right) \int p\left(x_{k} | x_{k-1}, v_{k}\right) p\left(x_{k-1} | \check{x}_{0}, v_{1 : k-1}, y_{0 : k-1}\right) d x_{k-1} \tag{1.5}
-\end{equation*}
+&&
 
+&&
+p\left(y_{k} | x_{k}\right)
+&&
+通过
+$$g(\centerdot )
+$$
+更新，
+$$
+p\left(x_{k} | x_{k-1}, v_{k}\right)
+$$
+利用
+$$
+f(\centerdot )
+$$
+进行预测，
+$$
+p\left(x_{k-1} | \check{x}_{0}, v_{1 : k-1}, y_{0 : k-1}\right)
+$$
+是先验置信度。
+
+##### 卡尔曼滤波器
+预测的高斯分布：
+
+$$
+y\left(x, x_{p}, \delta_{p}\right)=\frac{1}{\sqrt{2 \pi \delta_{p}^{2}}} e^{-\frac{\left(x-x_{p}\right)^{2}}{2 \delta_{p}^{2}}}
+$$
+
+观测的高斯分布：
+
+$$
+y\left(x, x_{m}, \delta_{m}\right)=\frac{1}{\sqrt{2 \pi \delta_{m}^{2}}} e^{-\frac{\left(x-x_{w}\right)^{2}}{2 \delta_{n}^{2}}}
+$$
+
+有观测也有预测：
+
+$$
+y\left(x, x_{p}, \delta_{p}, x_{m}, \delta_{m}\right)=\frac{1}{2 \pi \sqrt{\delta_{m}^{2} \delta_{p}^{2}}} e^{-\frac{\left(x-x_{p}\right)^{2}}{2 \delta_{p}^{2}}-\frac{\left(x-x_{m}\right)^{2}}{2 \delta_{m}^{2}}}
+$$
+
+假设融合之后的为：
+
+$$
+y\left(x, x_{f}, \delta_{f}\right)=\frac{1}{\sqrt{2 \pi \delta_{f}^{2}}} e^{-\frac{\left(x-x_{f}\right)^{2}}{2 \delta_{f}^{2}}}
+$$
+
+求解得到
+
+$$
+\begin{array}{c}{\delta_{f}^{2}=\delta_{p}^{2}-\frac{\delta_{p}^{4}}{\delta_{p}^{2}+\delta_{m}^{2}}} \\ {x_{f}=x_{p}+\frac{\delta_{p}^{2}\left(x_{m}-x_{p}\right)}{\delta_{p}^{2}+\delta_{m}^{2}}}\end{array} \tag{1.6}
+$$
+
+通过上式 (1.6)可以看出，
+当
+$$
+{{\delta }_{p}}
+$$
+越大时，说明我的预测值越不准，所以我更应该去相信测量值
+$$
+{{x}_{m}}
+$$
+，因此
+$$
+{{x}_{m}}
+$$
+的系数越接近于1，
+$$
+{{x}_{f}}
+$$
+越接近于
+$$
+{{x}_{m}}
+$$
+。
+
+
+当
+$$
+{{\delta }_{p}}
+$$
+越小时，说明我的预测值越准，所以我更应该去相信测量值
+$$
+{{x}_{p}}
+$$
+，因此
+$$
+{{x}_{m}}
+$$
+的系数越接近于0，
+$$
+{{x}_{f}}
+$$
+越接近于$$
+{{x}_{p}}
+$$
+。
+
+因为测量值是从观测来的，所以有：
+
+$$
+Z=H X, \delta_{z}=H \delta_{m}
+$$
+
+根据式(1.6)，可以得到卡尔曼增益
+
+$$
+K=H \delta_{p}^{2} /\left(H^{2} \delta_{p}^{2}+\delta_{m}^{2}\right) \tag{1.7}
+$$
+
+式(1.7)在式(1.6)的增益的基础上有修改，主要是分子上的H。
+
+从上面可以看出，卡尔曼滤波器就是根据高斯模型，简化了在计算时候的一些问题。然后再通过两个量之间的不确定量（方差）来融合估计和观测。
+
+扩展卡尔曼滤波器和SLAM：
+* 线性：KF
+* 非线性或者部分非线性：EKF
+
+
+##### 扩展卡尔曼滤波器（EKF）
+将置信度和噪声限制为高斯分布，并且对运动模型和观测模型进行线性化，计算贝叶斯滤波中的积分（以及归一化积），得到EKF。
+对于一般性的状态模型，定义研究对象的运动和观测模型为，
+
+运动方程：
+$$
+x_{k}=f\left(x_{k-1}, v_{k}, w_{k}\right), k=1, \ldots, K \tag{1.8a}
+$$
+
+观测方程：
+$$
+y_{k}=g\left(x_{k}, n_{k}\right), k=0, \ldots, K \tag{1.8b}
+$$
+
+我们通过线性化将其恢复为加性噪声（取近似）的形式：
+
+$$
+\begin{aligned} x_{k} &=f\left(x_{k-1}, v_{k}\right)+w_{k} \\ y_{k} &=g\left(x_{k}\right)+n_{k} \end{aligned} \tag{1.9}
+$$
+
+式(1.9)其实是式(1.8)的特殊情况。
+由于
+$$
+g(\centerdot )
+$$
+和
+$$
+f(\centerdot )
+$$
+的非线性特性，我们无法计算得到贝叶斯滤波器中的积分的解析解，转而使用线性化的方法，在当前均值（后验状态估计）处展开，对运动和观测模型进行线性化。
+
+$$
+f\left(x_{k-1}, v_{k}, w_{k}\right) \approx \check{x}_{k}+F_{k-1}\left(x_{k-1}-\check{x}_{k-1}\right)+w_{k}^{\prime} \tag{1.10}
+$$
+
+$$
+g\left(x_{k}, n_{k}\right) \approx \check{y}_{k}+G_{k-1}\left(x_{k}-\check{x}_{k}\right)+n_{k}^{\prime} \tag{1.11}
+$$
+
+最后推导得到的EKF经典递归方程如下：
+
+**预测：**
+$$
+\begin{aligned} \check{P}_{k} &=F_{k-1} \hat{P}_{k-1} F_{k-1}^{T}+Q_{k}^{\prime} \\ \hat{x}_{k} &=f\left(\check{x}_{k-1}, v_{k}, 0\right) \end{aligned} \tag{1.12}
+$$
+
+**卡尔曼增益：**
+$$
+\boldsymbol{K}_{k}=\boldsymbol{\check{P}}_{k} \boldsymbol{G}_{k}^{T}\left(\boldsymbol{G}_{k} \boldsymbol{\check{P}}_{k} \boldsymbol{G}_{k}^{T}+\boldsymbol{R}_{k}^{\prime}\right)^{-1} \tag{1.13}
+$$
+
+**更新：**
