@@ -137,4 +137,15 @@ $$
 \begin{array}{l}{p\left(x_{k} | \check{x}_{0}, v_{1:k}, y_{0 : k-1}\right)=\int p\left(x_{k}, x_{k-1} | \check{x}_{0}, v_{1 k}, y_{0 k-1}\right) d x_{k-1}} \\ {=\int p\left(x_{k} | x_{k-1}, \check{x}_{0}, v_{1:k}, y_{0:k-1}\right) p\left(x_{k-1} | \check{x}_{0}, v_{1 : k}, y_{0 : k-1}\right) d x_{k-1}}\end{array} \tag{1.2}
 $$
 
+$$
+p\left(x_{k} | x_{k-1}, \check{x}_{0}, v_{1: k}, y_{0: k-1}\right)=p\left(x_{k} | x_{k-1}, v_{k}\right) \tag{1.3}
+$$
+
+$$
+p\left(x_{k-1} | \check{x}_{0}, v_{1 : k}, y_{0 : k-1}\right)=p\left(x_{k-1} | \check{x}_{0}, v_{1 : k-1}, y_{0 : k-1}\right) \tag{1.4}
+$$
+
+\begin{equation*}
+p\left(x_{k} | \check{x}_{0}, v_{1 : k}, y_{0: k}\right)=\eta p\left(y_{k} | x_{k}\right) \int p\left(x_{k} | x_{k-1}, v_{k}\right) p\left(x_{k-1} | \check{x}_{0}, v_{1 : k-1}, y_{0 : k-1}\right) d x_{k-1} \tag{1.5}
+\end{equation*}
 
