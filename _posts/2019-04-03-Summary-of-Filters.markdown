@@ -31,25 +31,31 @@ A Multi-State Constraint Kalman Filter for Vision-aided Inertial Navigation (Ana
 ##### 贝叶斯准则基本理论
 贝叶斯准则的基本概念：
 两个随机变量 $ X $ 和 $ Y $ 的联合分布由下式给出：
+
 $$
 p(x,y)=p(X=x,Y=y)
 $$
 
 如果X和Y相互独立，则有
+
 $$
 p(x,y)=p(x)p(y)
 $$
 
 在已经知道Y=y的基础上，求X的条件概率：
+
 $$
 p(x|y)=\frac{p(x,y)}{p(y)}
 $$
+
 如果X和Y相互独立：
+
 $$
 p(x|y)=\frac{p(x,y)}{p(y)}=p(x)
 $$
 
 全概率定理：
+
 $$
 \begin{align}
 & p(x|y)=\frac{P(y|x)p(x)}{p(y)}=\frac{p(y|x)p(x)}{\sum\limits_{x'}{p(y|x')p(x')}} \\ 
@@ -58,6 +64,7 @@ $$
 $$
 
 贝叶斯准则：
+
 $$
 \begin{align}
  & p(x|y)=\frac{P(y|x)p(x)}{p(y)}=\frac{p(y|x)p(x)}{\sum\limits_{x'}{p(y|x')p(x')}} \\ 
@@ -65,12 +72,14 @@ $$
 \end{align}
 $$
 
-利用贝叶斯法则，有
+利用贝叶斯法则，有:
+
 $$
 p(x|z)=\frac{p(z|x)p(x)}{p(z)}\propto p(z|x)p(x)
 $$
 
-贝叶斯法则左侧通常称为后验概率，右侧$p(z|x)$称为似然，另一部分$p(x)$称为先验。直接求后验分布是困难的，但是求一个状态最优估计，使得在该状态下后验概率最大化(Maxminize a Posterior, MAP)，则是可行的：
+贝叶斯法则左侧通常称为后验概率，右侧$$p(z|x)$$称为似然，另一部分$$p(x)$$称为先验。直接求后验分布是困难的，但是求一个状态最优估计，使得在该状态下后验概率最大化(Maxminize a Posterior, MAP)，则是可行的：
+
 $$
 x_{M A P}^{*}=\arg \max p(x | z)=\arg \max p(z | x) p(x)
 $$
