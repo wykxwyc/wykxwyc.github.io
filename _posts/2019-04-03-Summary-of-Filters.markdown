@@ -71,4 +71,6 @@ p(x|z)=\frac{p(z|x)p(x)}{p(z)}\propto p(z|x)p(x)
 $$
 
 贝叶斯法则左侧通常称为后验概率，右侧$p(z|x)$称为似然，另一部分$p(x)$称为先验。直接求后验分布是困难的，但是求一个状态最优估计，使得在该状态下后验概率最大化(Maxminize a Posterior, MAP)，则是可行的：
-\[{{x}^{*}}_{MAP}=\arg \max p(x|z)=\arg \max p(z|x)p(x)\]
+$$
+{{x}^{*}}_{MAP}=\arg \max p(x|z)=\arg \max p(z|x)p(x)
+$$
