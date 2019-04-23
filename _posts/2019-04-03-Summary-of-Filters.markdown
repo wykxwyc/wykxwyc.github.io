@@ -603,7 +603,7 @@ $$
 
 ##### 滤波器的分类
 
-![](img/in-post/post-Summary-of-Filters/category.png)
+![](/img/in-post/post-Summary-of-Filters/category.png)
 
 上面的分类主要是根据将概率分布函数传入非线性函数的方法来分类的。线性化方法和sigmapoint方法是假设概率分布函数为高斯的来进行的。
 
