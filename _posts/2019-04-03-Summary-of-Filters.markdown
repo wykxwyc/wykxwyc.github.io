@@ -123,7 +123,7 @@ $$
 上帽子来表示后验估计
 
 $$
-(\overset{\vee }{\mathop \cdot }\,)
+(\overset{\check{\ }}{\mathop \cdot }\,)
 $$
 下帽子来表示先验估计 
 
@@ -346,7 +346,7 @@ EKF的主要问题在于，其线性化的工作点是估计状态的均值，�
 对非线性观测模型
 
 $$
-y_{k}=g\left(x_{k}, n_{k}\right)
+y_{k}=g\left(x_{k}, n_{k}\right) \tag{1.19}
 $$
 
 选取一个点
@@ -362,9 +362,8 @@ $$
 将时刻为k处的状态和测量的两盒概率近似为高斯分布：
 
 $$
-\check{xxxxxxxxxxxxxxxxxxxxxx}
-&&
-
+\begin{array}{1}{ p\left(\boldsymbol{x}_{k}, \boldsymbol{y}_{k} | \boldsymbol{\check{x}}_{0}, \boldsymbol{v}_{1 : k}, \boldsymbol{y}_{0 : k-1}\right) \approx \boldsymbol{N}\left( \left[ \begin{array}{c}{\mu_{x,k}} \\ \mu_{y,k}\end{array}\right],\left[ \begin{array}{ll}{\Sigma_{x x, k}} & {\Sigma_{x y, k}} \\ {\Sigma_{y x, k}} & {\Sigma_{y y, k}}\end{array}\right]\right)} \\{= N \left( \left[ \begin{array}{c}{\check{x}_{k}} \\ {y_{o p, k}+G_{k}\left(\check{x}_{k}-x_{op, k}\right)}\end{array}\right] , \left[   \begin{array}{ll}{\check{P}_{k}} & {\check{P}_{k}G_{k}^{T}}\\{G_{k}\check{P}_{k}^{T}} &{G_{k} \check{P}_{k} G_{k}^{T}+R_{k}^{\prime} } \end{array} \right] \right)} \end{array}  \tag{1.21}
+$$
 
 
 
@@ -522,6 +521,80 @@ $$
 SPKF的优点：1）不需要任何解析形式的导数 2）仅使用了基本的线性代数运算，不需要非线性运动和观测模型的封闭形式（解析解）。
 
 ##### 迭代sigmapoint卡尔曼滤波器（ISPKF）
+ISPKF比单次的版本更优秀。在每次迭代中，我们在工作点
+$$
+x_{op,k}
+$$
+附近计算作为输入的sigmapoint。第一次迭代时，令
+$$
+x_{op,k}=\check{x}_{k}
+$$
+，但在之后每次迭代中 都会被优化。
+1.预测置信度和观测噪声都有不确定性，将他们按以下方式堆叠：
+
+$$
+\boldsymbol{\mu}_{z}=\left[ \begin{array}{c}{\boldsymbol{x}_{o p, k}} \\ {0}\end{array}\right], \Sigma_{z z}=\left[ \begin{array}{cc}{\check{P}_{k}} & {0} \\ {0} & {\boldsymbol{R}_{k}}\end{array}\right] \tag{1.36}
+$$
+
+$$
+L=\operatorname{dim}\left(\boldsymbol{\mu}_{z}\right) \tag{1.37}
+$$
+
+2.将
+$$
+\left\{\mu_{z}, \Sigma_{zz}\right\}
+$$
+转化为sigmapoint表示：
+
+$$
+\begin{array}{l}{L L^{T}=\Sigma_{z z}} \\ {z_{0}=\mu_{z}} \\ {z_{i}=\mu_{z}+\sqrt{L+k} \operatorname{col}_{i} L} \\ {z_{i+L}=\mu_{z}-\sqrt{L+k} \operatorname{col}_{i} L, i=1, \ldots, L}\end{array} \tag{1.38}
+$$
+
+3.对每个sigmapoint展开为状态和观测噪声形式并代入非线性观测模型求解
+
+$$
+\boldsymbol{z}_{i}=\left[ \begin{array}{c}{\boldsymbol{x}_{o p, k, i}} \\ {\boldsymbol{n}_{k, i}}\end{array}\right] \tag{1.39}
+$$
+
+$$
+y_{o p_{, k, i}}=g\left(x_{o_{o p, k, i}}, n_{k, i}\right), i=0, \ldots, 2 L \tag{1.40}
+$$
+
+4.将转换后的sigmapoint重新组合得到最终的结果：
+
+
+$$
+\begin{aligned} \mu_{y, k} &=\sum_{i=0}^{2 L} \alpha_{i} {y}_{op,k, i} \\ 
+\Sigma_{y y, k} & =\sum_{i=0}^{2 L} \alpha_{i}\left(y_{o p, k, i}-\mu_{y, k}\right)\left(y_{o p, k, i}-\mu_{y, k}\right)^{T} \\ \Sigma_{x y, k} &=\sum_{i=0}^{2 L} \alpha_{i}\left(x_{op, k, i}-x_{o p, k}\right)\left(y_{op, k, i}-\mu_{y, k}\right)^{T} \\ \Sigma_{x x, k} & =\sum_{i=0}^{2 L} \alpha_{i}\left(x_{o p, k, i}-x_{o p, k}\right)\left(x_{o p, k, i}-x_{o p, k}\right)^{T} \\ \alpha_{i}&=\left\{\begin{array}{l}{\frac{k}{L+k}, i=0} \\ {\frac{1}{2} \frac{1}{L+k},others}\end{array}\right. \end{aligned}  \tag {1.41}
+$$
+
+然后求得
+
+$$
+\begin{aligned} K_{k} &=\Sigma_{x y, k} \Sigma_{y y, k}^{-1} \\ P_{k} &=\Sigma_{x x, k}-K_{k} \Sigma_{y x, k} \\ x_{k} &=x_{k}+K_{k}\left(y_{k}-\mu_{y, k}-\Sigma_{y x, k} \Sigma_{x x, k}^{-1}\left(x_{k}-x_{o p, k}\right)\right) \end{aligned} \tag{1.42}
+$$
+
+最初我们将工作点设置为先验的均值，
+$$
+x_{op,k}=\check{x}_{k}
+$$
+，在随后的迭代中我们将其设置为当前迭代的最优估计：
+$$
+x_{op,k}=\hat{x}_{k}
+$$
+ ，当下一次迭代量足够小时，该过程停止。
+ 
+ IEKF对应于EKF。
+
+ISPKF对应于SPKF，令
+$$
+x_{op,k}=\check{x}_{k}
+$$
+，同样有
+
+$$
+\hat{x}_{k}=\check{x}_{k}+K_{k}\left(  y_{k}-  \mu_{y,k} \right) \tag{1.43}
+$$
 
 
 ##### 粒子滤波器
@@ -537,4 +610,5 @@ SPKF的优点：1）不需要任何解析形式的导数 2）仅使用了基本�
 
 ##### 参考文献
 [1] 概率机器人学
+
 [2] 机器人学中的状态估计

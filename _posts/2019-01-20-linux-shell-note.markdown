@@ -208,6 +208,18 @@ git remote add origin git@github.com:user_name/repertory.git
 git pull origin master
 ```
 
+对所有文件都取消跟踪的话，就是
+```shell
+git rm -r --cached . 　　//不删除本地文件
 
+git rm -r --f . 　　//删除本地文件
+```
+ 
 
+对某个文件取消跟踪
+```shell
+git rm --cached readme1.txt   //删除readme1.txt的跟踪，并保留在本地。
+
+git rm --f readme1.txt    //删除readme1.txt的跟踪，并且删除本地文件。
+```
 
