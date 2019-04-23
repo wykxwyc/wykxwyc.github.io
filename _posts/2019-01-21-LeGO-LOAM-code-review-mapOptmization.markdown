@@ -13,28 +13,10 @@ tags:
 > This document haven't been completed and will be updated anytime.
 
 
-## 目录
+___目录___
 
-1. [mapOptmization.cpp](#mapOptmization.cpp)
-	1. [main](#main)
-	2. [loopthread](#loopthread)
-	3. [visualizeMapThread](#visualizeMapThread)
-	4. [run](#run)
-	5. [mapOptimization](#mapOptimization)
-	6. [transformAssociateToMap](#transformAssociateToMap)
-	7. [extractSurroundingKeyFrames](#extractSurroundingKeyFrames)
-	8. [downsampleCurrentScan](#downsampleCurrentScan)
-	9. [scan2MapOptimization](#scan2MapOptimization)
-	10. [saveKeyFramesAndFactor](#saveKeyFramesAndFactor)
-	11. [correctPoses](#correctPoses)
-	12. [publishTF](#publishTF)
-	13. [publishKeyPosesAndFrames](#publishKeyPosesAndFrames)
-	14. [clearCloud](#clearCloud)
-	15. [cornerOptimization](#cornerOptimization)
-	16. [surfOptimization](#surfOptimization)
-	17. [LMOptimization](#surfOptimization)
-
-
+* content
+{:toc}
 
 ---
 

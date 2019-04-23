@@ -15,6 +15,13 @@ tags:
 > 
 > 参考译文链接：[NewThinker_Jiwey@CSDN](https://blog.csdn.net/newthinker_wei/article/details/22701695)
 
+
+___目录___
+
+* content
+{:toc}
+
+
 #### Signals and Slots
 首先来看一下官方给出的[示例](https://doc.qt.io/archives/qt-4.8/signalsandslots.html "Signals & Slots")是怎样的？
 它的头文件是这样的：
