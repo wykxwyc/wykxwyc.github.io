@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "小知识"
-subtitle:   "Small Talk"
+title:      "一个不起眼的烂笔头"
+subtitle:   "Basic Knowledge & Small Talk & Some Problems"
 date:       2019-03-21
 author:     "wykxwyc"
 header-img: "img/post-bg-small-talk.jpg"
@@ -113,10 +113,25 @@ https://zhuanlan.zhihu.com/p/21738718
 
 
 ##### 李群和李代数
-SO(3)是特殊正交群，Special Orthogonal group，里面的元素是旋转矩阵R，大写SO(3)的李代数为小写so(3),里面的元素是向量a，两者的关系：R=exp(a^);
+SO(3)是特殊正交群，Special Orthogonal group，里面的元素是旋转矩阵R，大写SO(3)的李代数为小写so(3),里面的元素是向量a，两者的关系：`R=exp(a^)`;
 
 SE(3)是特殊欧式群，Special Euclidean group，里面的元素是齐次变换矩阵T，既有旋转又有平移，旋转R是SO(3)中的元素，平移是三维列向量t。
 大写SE(3)的李代数是小写se(3)，里面的元素是六维向量，前三维平移，后三维旋转，旋转的元素是so(3)内的。
+
+##### 李群和李代数中需要记住的基本公式
+运算符
+$$
+^{\wedge}
+$$
+和运算符
+$$
+^{\vee}
+$$
+的定义：
+
+$$
+a^{\wedge}=A=\left[ \begin{array}{ccc}{0} & {-a_{3}} & {a_{2}} \\ {a_{3}} & {0} & {-a_{1}} \\ {-a_{2}} & {a_{1}} & {0}\end{array}\right], \quad A^{\vee}=a
+$$
 
 
 ##### 对相机内外参的简单理解
@@ -173,10 +188,10 @@ PnP（Perspective-n-Point）是求解3D到2D点对运动的方法。它的主要
 ##### 3D-3D:ICP
 ICP的求解方法有两种：
 
-* SVD
+* SVD：
 求解闭式解的方法。主要思想是分离`R`和`t`，先求`R`，再求`t`。
 
-* 非线性优化的方法
+* 非线性优化的方法：
 用迭代的方法去求总体误差最小的解，当误差在我认为允许的范围内了之后就认为可行了。
 
 ##### 直接法是什么？有什么意义？如何计算？  
