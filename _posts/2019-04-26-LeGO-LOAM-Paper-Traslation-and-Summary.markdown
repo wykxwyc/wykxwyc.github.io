@@ -9,17 +9,17 @@ tags:
     - SLAM
     - LeGO-LOAM
 ---
->LeGO-LOAM是一种在LOAM之上进行改进的激光雷达建图方法，建图效果比LOAM要好，但是建图较为稀疏，计算量也更小了。
-
-github地址注释后源码：https://github.com/wykxwyc/LeGO-LOAM
-
-关于代码的详细理解，建议阅读：
-
-1.地图优化代码理解：https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/
-
-2.图像重投影代码理解：https://wykxwyc.github.io/2019/01/23/LeGO-LOAM-code-review-imageProjection/
-
-3.特征关联代码理解：https://wykxwyc.github.io/2019/01/24/LeGO-LOAM-code-review-featureAssociation/
+> LeGO-LOAM是一种在LOAM之上进行改进的激光雷达建图方法，建图效果比LOAM要好，但是建图较为稀疏，计算量也更小了。
+>
+> github注释后LeGO-LOAM源码：[LeGO-LOAM_NOTED](https://github.com/wykxwyc/LeGO-LOAM_NOTED)
+>
+> 关于代码的详细理解，建议阅读：
+> 
+> 1.[地图优化代码理解](https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/)
+> 
+> 2.[图像重投影代码理解](https://wykxwyc.github.io/2019/01/23/LeGO-LOAM-code-review-imageProjection/)
+> 
+> 3.[特征关联代码理解](https://wykxwyc.github.io/2019/01/24/LeGO-LOAM-code-review-featureAssociation/)
 
 
 ___目录___
