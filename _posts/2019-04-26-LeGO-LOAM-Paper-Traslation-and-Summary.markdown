@@ -33,20 +33,15 @@ ___目录___
 
 ### 摘要
 
-##### LeGO-LOAM特点
-1)一种轻量级的，可在嵌入式平台上运行
-
-2)点云分割去除噪声
-
-3)带有地面优化的实时6自由度估计(在分割和优化步骤中利用了地平面的存在)
-
-4)回环检测
+##### LeGO-LOAM特点  
+1)一种轻量级的，可在嵌入式平台上运行   
+2)点云分割去除噪声  
+3)带有地面优化的实时6自由度估计(在分割和优化步骤中利用了地平面的存在)   
+4)回环检测  
 
 ##### LeGO-LOAM过程：
-1）首先应用点云分割滤除噪声
-
-2）然后特征抽取接收特征平面和特征边
-
+1）首先应用点云分割滤除噪声  
+2）然后特征抽取接收特征平面和特征边   
 3）两步Levenberg-Marquardt优化方法：地面提取的平面特征用于在第一步中获得
 $$
 \left[t_{z}, \theta_{roll}, \theta_{pitch}\right]
@@ -97,23 +92,17 @@ Generalized-ICP [4]提出了一种匹配两次扫描的局部平面贴片的方�
 
 [19]和[20]提出了LOAM。LOAM对边缘/平面扫描匹配执行点特征以找到扫描之间的对应关系。通过计算其局部区域中的点的粗糙度来提取特征。选择具有高粗糙度值的点作为边缘特征。类似地，具有低粗糙度值的点被指定为平面特征。通过在两个单独的算法之间高明地划分估计问题来实现实时性能。一种算法以高频率运行并以低精度估计传感器速度。 另一种算法以低频运行但返回高精度运动估计。将两个估计值融合在一起以产生高频率和高精度的单个运动估计。LOAM的最终精确度是KITTI测距基准站点[21]上仅激光雷达估算方法所能达到的最佳效果。
 
-##### LeGO-LOAM的适用场景：
-1）没有强大的计算单元（工控机）。
+##### LeGO-LOAM的适用场景：  
+1）没有强大的计算单元（工控机）。  
+2）由于尺寸有限，许多无人驾驶地面车辆（UGV）没有悬架，小型UGV经常遇到非平滑运动，所获取的数据经常失真，在两次连续扫描之间也很难找到可靠的特征对应关系。  
 
-2）由于尺寸有限，许多无人驾驶地面车辆（UGV）没有悬架，小型UGV经常遇到非平滑运动，所获取的数据经常失真，在两次连续扫描之间也很难找到可靠的特征对应关系。
+在上述条件中，当资源有限时，LOAM的性能会恶化。恶化原因如下：  
+1）由于需要计算密集3D点云中每个点的粗糙度，因此轻量级嵌入式系统上的特征提取更新频率无法始终跟上传感器更新频率。  
+2）数据失真，嘈杂环境中操作UGV也对LOAM提出了挑战。由于激光雷达的安装位置通常在小UGV上接近地面，因此来自地面的传感器噪声可能是恒定的存在。例如，草的距离信息可能导致高粗糙度值。因此，需要从这些点抽取掉不可靠的边缘特征。类似地，也可以从树叶返回的点提取边缘或平面特征。这些特征对于扫描匹配通常是不可靠的，因为在两次连续扫描中可能看不到相同的草叶或叶片。使用这些功能可能会导致注册不准确和大漂移。  
 
-在上述条件中，当资源有限时，LOAM的性能会恶化。恶化原因如下：
-
-1）由于需要计算密集3D点云中每个点的粗糙度，因此轻量级嵌入式系统上的特征提取更新频率无法始终跟上传感器更新频率。
-
-2）数据失真，嘈杂环境中操作UGV也对LOAM提出了挑战。由于激光雷达的安装位置通常在小UGV上接近地面，因此来自地面的传感器噪声可能是恒定的存在。例如，草的距离信息可能导致高粗糙度值。因此，需要从这些点抽取掉不可靠的边缘特征。类似地，也可以从树叶返回的点提取边缘或平面特征。这些特征对于扫描匹配通常是不可靠的，因为在两次连续扫描中可能看不到相同的草叶或叶片。使用这些功能可能会导致注册不准确和大漂移。
-
-基于上面的原因，提出 LeGO-LOAM，用于复杂环境中对UGV进行姿态估计。优点：
-
-1）LeGO-LOAM是轻量级的，因为可以在嵌入式系统上实现实时姿态估计和建图。
-
-2）去除失真数据，在地面分离之后，执行点云分割以丢弃可能表示不可靠特征的点。
-
+基于上面的原因，提出 LeGO-LOAM，用于复杂环境中对UGV进行姿态估计。优点：  
+1）LeGO-LOAM是轻量级的，因为可以在嵌入式系统上实现实时姿态估计和建图。   
+2）去除失真数据，在地面分离之后，执行点云分割以丢弃可能表示不可靠特征的点。  
 3）LeGO-LOAM引入地面优化，因为我们引入了两步优化姿势估计。从地面提取的平面特征用于在第一步中获得
 $$
 \left[t_{z}, \theta_{roll}, \theta_{pitch}\right]
@@ -125,13 +114,10 @@ $$
 
 4）集成了回环检测以校正运动估计漂移的能力。
 
-本文的其余部分安排如下：
-
-第2节介绍了用于实验的硬件。 
-
-第3节详细描述了所提出的方法。 
-
-第4部分介绍了各种户外环境的一系列实验。
+本文的其余部分安排如下：  
+第2节介绍了用于实验的硬件。   
+第3节详细描述了所提出的方法。   
+第4部分介绍了各种户外环境的一系列实验。  
 
 
 ### 2.系统硬件
@@ -141,9 +127,9 @@ HDL-64E（通过KITTI数据集研究这项工作中）也具有360°的水平FOV
 
 本文中使用的UGV是Clearpath Jackal。 由270瓦时的锂电池供电，最大速度为2.0米/秒，最大有效载荷为20千克。Jackal还配备了低成本惯性测量单元（IMU），CH Robotics UM6方向传感器。
 
-提出的框架在Nvidia Jetson TX2和2.5GHz i7-4710MQ的laptop上验证：
-Jetson TX2是一款嵌入式计算设备，配备ARM Cortex-A57 CPU。
-笔记本电脑CPU以匹配[19]和[20]中使用的计算硬件，和Zhang Ji论文中的配置相同。
+提出的框架在Nvidia Jetson TX2和2.5GHz i7-4710MQ的laptop上验证：  
+Jetson TX2是一款嵌入式计算设备，配备ARM Cortex-A57 CPU。  
+笔记本电脑CPU以匹配[19]和[20]中使用的计算硬件，和Zhang Ji论文中的配置相同。  
 
 ### 3.轻量级激光雷达测量和建图
 
@@ -156,16 +142,12 @@ Jetson TX2是一款嵌入式计算设备，配备ARM Cortex-A57 CPU。
 
 输出：6 DOF姿势估计。
 
-整个系统分为五个模块：
-
-1）分割，采用单个扫描的点云，并将其投影到距离图像上进行分割。分割后的点云然后被发送到2）特征提取模块。
-
-3）雷达里程计使用从前一模块中提取的特征来找到与连续扫描相关的变换。
-
-特征在4）雷达建图模块中进一步处理，雷达建图将它们注册到全局点云图。
-
-5）变换融合模块融合了激光雷达里程计和激光雷达建图的姿态估计结果，并输出最终的姿态估计。
-与[19]和[20]的原始LOAM框架相比，所提出的系统寻求提高地面车辆的效率和准确性。
+整个系统分为五个模块：  
+1）分割，采用单个扫描的点云，并将其投影到距离图像上进行分割。分割后的点云然后被发送到2）特征提取模块。  
+3）雷达里程计使用从前一模块中提取的特征来找到与连续扫描相关的变换。  
+特征在4）雷达建图模块中进一步处理，雷达建图将它们注册到全局点云图。  
+5）变换融合模块融合了激光雷达里程计和激光雷达建图的姿态估计结果，并输出最终的姿态估计。  
+与[19]和[20]的原始LOAM框架相比，所提出的系统寻求提高地面车辆的效率和准确性。  
 
 ##### B.分割
 点云
@@ -202,8 +184,7 @@ p_{i}
 $$
 现在由range image中的像素表示。
 
-地平面估计[22]：
-
+地平面估计[22]：  
 在分割之前进行地面图像的逐列评估，其可以被视为，用于地面点提取。在此过程之后，可能代表地面的点被标记为地面点而不用于分割。
 
 ![](/img/in-post/post-LeGO-LOAM-paper/figure2.jpg)
@@ -211,17 +192,13 @@ $$
 
 对点云进行分组聚类，仅保留可表示大对象（例如树干）和地面点的点（图2（b））：
 
-1）来自同一群集的点将分配唯一标签。 地面点是一种特殊类型的群集。将分段应用于点云可以提高处理效率和特征提取精度。 
+1）来自同一群集的点将分配唯一标签。 地面点是一种特殊类型的群集。将分段应用于点云可以提高处理效率和特征提取精度。   
+2）环境噪声多，树叶这些特征不可靠，同时为提高速度，我们省略少于30个点的聚类，  
 
-2）环境噪声多，树叶这些特征不可靠，同时为提高速度，我们省略少于30个点的聚类，
-
-每个点获得三个属性：
-
-1）其标签作为基点或分段点，
-
-2）其在距离图像中的列和行索引
-
-3）其range value。
+每个点获得三个属性：  
+1）其标签作为基点或分段点，  
+2）其在距离图像中的列和行索引  
+3）其range value。  
 
 ##### C.特征提取
 特征提取过程类似于Zhang Ji的论文[20]，但不从原始点云提取，而是从地面点和segmented points提取特征。
@@ -488,8 +465,7 @@ $$
 $$
 \overline{Q}^{t-1}
 $$
-。
-选择距离当前传感器位置100m以内的特征集合。选择的特征集合然后变换和融合到单个周围地图
+。选择距离当前传感器位置100m以内的特征集合。选择的特征集合然后变换和融合到单个周围地图
 $$
 \overline{Q}^{t-1}
 $$
@@ -525,7 +501,7 @@ $$
 $$
 中的已选节点之间加上空间约束（通过L-M优化得到的坐标变换）。
 
-4）用loop closure进一步消除雷达建图的drift。如果用ICP发现当前特征集和先前特征集之间有匹配，则添加新约束。然后通过将姿势图发送到诸如[24]（iSAM2）的优化系统来更新传感器的估计pose。
+4）用loop closure进一步消除雷达建图的drift。如果用ICP发现当前特征集和先前特征集之间有匹配，则添加新约束。然后通过将姿势图发送到诸如[24]（iSAM2）的优化系统来更新传感器的估计pose。  
 注意，只有第四节（D）中的实验使用此技术来创建其周围的地图。
 
 ### 4.实验
@@ -535,50 +511,28 @@ $$
 略
 
 ### 参考文献
-[1] P.J. Besl and N.D. McKay, “A Method for Registration of 3D Shapes,” IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 14(2): 239-256, 1992.
-
-[2] S. Rusinkiewicz and M. Levoy, “Efficient Variants of the ICP Algorithm,” Proceedings of the Third International Conference on 3-D Digital Imaging and Modeling, pp. 145-152, 2001.
-
-[3] Y. Chen and G. Medioni, “Object Modelling by Registration of Multiple Range Images,” Image and Vision Computing, vol. 10(3): 145-155, 1992.
-
-[4] A. Segal, D. Haehnel, and S. Thrun, “Generalized-ICP,” Proceedings of Robotics: Science and Systems, 2009.
-
-[5] R.A. Newcombe, S. Izadi, O. Hilliges, D. Molyneaux, D. Kim, A.J. Davison, P. Kohi, J. Shotton, S. Hodges, and A. Fitzgibbon, “KinectFusion: Real-time Dense Surface Mapping and Tracking,” Proceedings of the IEEE International Symposium on Mixed and Augmented Reality, pp. 127-136, 2011.
-
-[6] A. Nuchter, “Parallelization of Scan Matching for Robotic 3D Mapping,” Proceedings of the 3rd European Conference on Mobile Robots, 2007.
-
-[7] D. Qiu, S. May, and A. Nuchter, “GPU-Accelerated Nearest Neighbor Search for 3D Registration,” Proceedings of the International Conference on Computer Vision Systems, pp. 194-203, 2009.
-
-[8] D. Neumann, F. Lugauer, S. Bauer, J. Wasza, and J. Hornegger, “Realtime RGB-D Mapping and 3D Modeling on the GPU Using the Random Ball Cover Data Structure,” IEEE International Conference on Computer Vision Workshops, pp. 1161-1167, 2011.
-
-[9] R.B. Rusu, Z.C. Marton, N. Blodow, and M. Beetz, “Learning Informative Point Classes for the Acquisition of Object Model Maps,” Proceedings of the IEEE International Conference on Control, Automation, Robotics and Vision, pp. 643-650, 2008.
-
-[10] R.B. Rusu, G. Bradski, R. Thibaux, and J. Hsu, “Fast 3D Recognition and Pose Using the Viewpoint Feature Histogram,” Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 2155-2162, 2010.
-
-[11] Y. Li and E.B. Olson, “Structure Tensors for General Purpose LIDAR Feature Extraction,” Proceedings of the IEEE International Conference on Robotics and Automation, pp. 1869-1874, 2011.
-
-[12] J. Serafin, E. Olson, and G. Grisetti, “Fast and Robust 3D Feature Extraction from Sparse Point Clouds,” Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 4105-4112, 2016.
-
-[13] M. Bosse and R. Zlot, “Keypoint Design and Evaluation for Place Recognition in 2D Lidar Maps,” Robotics and Autonomous Systems, vol. 57(12): 1211-1224, 2009.
-
-[14] R. Zlot and M. Bosse, “Efficient Large-scale 3D Mobile Mapping and Surface Reconstruction of an Underground Mine,” Proceedings of the 8th International Conference on Field and Service Robotics, 2012.
-
-[15] B. Steder, G. Grisetti, and W. Burgard, ”Robust Place Recognition for 3D Range Data Based on Point Features,” Proceedings of the IEEE International Conference on Robotics and Automation, pp. 1400-1405, 2010.
-
-[16] W.S. Grant, R.C. Voorhies, and L. Itti, “Finding Planes in LiDAR Point Clouds for Real-time Registration,” Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 4347-4354, 2013.
-
-[17] M. Velas, M. Spanel, and A. Herout, “Collar Line Segments for Fast Odometry Estimation from Velodyne Point Clouds,” Proceedings of the IEEE International Conference on Robotics and Automation, pp. 4486-4495, 2016.
-
-[18] R. Dube, D. Dugas, E. Stumm, J. Nieto, R. Siegwart, and C. Cadena,”SegMatch: Segment Based Place Recognition in 3D Point Clouds,” Proceedings of the IEEE International Conference on Robotics and Automation, pp. 5266-5272, 2017.
-
-[19] J. Zhang and S. Singh, “LOAM: Lidar Odometry and Mapping in Real-time,” Proceedings of Robotics: Science and Systems, 2014.
-
-[20] J. Zhang and S. Singh, “Low-drift and Real-time Lidar Odometry and Mapping,” Autonomous Robots, vol. 41(2): 401-416, 2017.
-
-[21] A. Geiger, P. Lenz, and R. Urtasun, “Are We Ready for Autonomous Driving? The KITTI Vision Benchmark Suite”, Proceedings of theIEEE International Conference on Computer Vision and PatternRecognition, pp. 3354-3361, 2012.
-
-[22] M. Himmelsbach, F.V. Hundelshausen, and H-J. Wuensche, “Fast Segmentation of 3D Point Clouds for Ground Vehicles,” Proceedings of the IEEE Intelligent Vehicles Symposium, pp. 560-565, 2010.
-
+[1] P.J. Besl and N.D. McKay, “A Method for Registration of 3D Shapes,” IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 14(2): 239-256, 1992.  
+[2] S. Rusinkiewicz and M. Levoy, “Efficient Variants of the ICP Algorithm,” Proceedings of the Third International Conference on 3-D Digital Imaging and Modeling, pp. 145-152, 2001.  
+[3] Y. Chen and G. Medioni, “Object Modelling by Registration of Multiple Range Images,” Image and Vision Computing, vol. 10(3): 145-155, 1992.  
+[4] A. Segal, D. Haehnel, and S. Thrun, “Generalized-ICP,” Proceedings of Robotics: Science and Systems, 2009.  
+[5] R.A. Newcombe, S. Izadi, O. Hilliges, D. Molyneaux, D. Kim, A.J. Davison, P. Kohi, J. Shotton, S. Hodges, and A. Fitzgibbon, “KinectFusion: Real-time Dense Surface Mapping and Tracking,” Proceedings of the IEEE International Symposium on Mixed and Augmented Reality, pp. 127-136, 2011.  
+[6] A. Nuchter, “Parallelization of Scan Matching for Robotic 3D Mapping,” Proceedings of the 3rd European Conference on Mobile Robots, 2007.  
+[7] D. Qiu, S. May, and A. Nuchter, “GPU-Accelerated Nearest Neighbor Search for 3D Registration,” Proceedings of the International Conference on Computer Vision Systems, pp. 194-203, 2009.  
+[8] D. Neumann, F. Lugauer, S. Bauer, J. Wasza, and J. Hornegger, “Realtime RGB-D Mapping and 3D Modeling on the GPU Using the Random Ball Cover Data Structure,” IEEE International Conference on Computer Vision Workshops, pp. 1161-1167, 2011.  
+[9] R.B. Rusu, Z.C. Marton, N. Blodow, and M. Beetz, “Learning Informative Point Classes for the Acquisition of Object Model Maps,” Proceedings of the IEEE International Conference on Control, Automation, Robotics and Vision, pp. 643-650, 2008.  
+[10] R.B. Rusu, G. Bradski, R. Thibaux, and J. Hsu, “Fast 3D Recognition and Pose Using the Viewpoint Feature Histogram,” Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 2155-2162, 2010.  
+[11] Y. Li and E.B. Olson, “Structure Tensors for General Purpose LIDAR Feature Extraction,” Proceedings of the IEEE International Conference on Robotics and Automation, pp. 1869-1874, 2011.  
+[12] J. Serafin, E. Olson, and G. Grisetti, “Fast and Robust 3D Feature Extraction from Sparse Point Clouds,” Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 4105-4112, 2016.  
+[13] M. Bosse and R. Zlot, “Keypoint Design and Evaluation for Place Recognition in 2D Lidar Maps,” Robotics and Autonomous Systems, vol. 57(12): 1211-1224, 2009.  
+[14] R. Zlot and M. Bosse, “Efficient Large-scale 3D Mobile Mapping and Surface Reconstruction of an Underground Mine,” Proceedings of the 8th International Conference on Field and Service Robotics, 2012.   
+[15] B. Steder, G. Grisetti, and W. Burgard, ”Robust Place Recognition for 3D Range Data Based on Point Features,” Proceedings of the IEEE International Conference on Robotics and Automation, pp. 1400-1405, 2010.  
+[16] W.S. Grant, R.C. Voorhies, and L. Itti, “Finding Planes in LiDAR Point Clouds for Real-time Registration,” Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 4347-4354, 2013.  
+[17] M. Velas, M. Spanel, and A. Herout, “Collar Line Segments for Fast Odometry Estimation from Velodyne Point Clouds,” Proceedings of the IEEE International Conference on Robotics and Automation, pp. 4486-4495, 2016.  
+[18] R. Dube, D. Dugas, E. Stumm, J. Nieto, R. Siegwart, and C. Cadena,”SegMatch: Segment Based Place Recognition in 3D Point Clouds,” Proceedings of the IEEE International Conference on Robotics and Automation, pp. 5266-5272, 2017.  
+[19] J. Zhang and S. Singh, “LOAM: Lidar Odometry and Mapping in Real-time,” Proceedings of Robotics: Science and Systems, 2014.  
+[20] J. Zhang and S. Singh, “Low-drift and Real-time Lidar Odometry and Mapping,” Autonomous Robots, vol. 41(2): 401-416, 2017.  
+[21] A. Geiger, P. Lenz, and R. Urtasun, “Are We Ready for Autonomous Driving? The KITTI Vision Benchmark Suite”, Proceedings of theIEEE International Conference on Computer Vision and PatternRecognition, pp. 3354-3361, 2012.  
+[22] M. Himmelsbach, F.V. Hundelshausen, and H-J. Wuensche, “Fast Segmentation of 3D Point Clouds for Ground Vehicles,” Proceedings of the IEEE Intelligent Vehicles Symposium, pp. 560-565, 2010.  
 [23] I. Bogoslavskyi and C. Stachniss, “Fast Range Image-based Segmentation of Sparse 3D Laser Scans for Online Operation,” Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 163-169, 2016.  
 [24] M. Kaess, H. Johannsson, R. Roberts, V. Ila, J.J. Leonard, and F. Dellaert, “iSAM2: Incremental Smoothing and Mapping Using the Bayes Tree,” The International Journal of Robotics Research 31, vol. 31(2): 216-235, 2012.  
 [25] M. Quigley, K. Conley, B. Gerkey, J. Faust, T. Foote, J. Leibs, R. Wheeler, and A.Y. Ng, “ROS: An Open-source Robot Operating System,” IEEE ICRA Workshop on Open Source Software, 2009.
