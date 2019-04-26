@@ -4,7 +4,7 @@ title:      "滤波器总结"
 subtitle:   "Summary of Filters"
 date:       2019-04-03
 author:     "wykxwyc"
-header-img: "img/post-bg-filter.jpg"
+header-img: "img/post-bg-common-majime-punch.jpg"
 tags:
     - SLAM
     - Filters
