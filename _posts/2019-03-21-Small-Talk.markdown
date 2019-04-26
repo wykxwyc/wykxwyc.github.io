@@ -4,7 +4,7 @@ title:      "一个不起眼的烂笔头"
 subtitle:   "Basic Knowledge & Small Talk & Some Problems"
 date:       2019-03-21
 author:     "wykxwyc"
-header-img: "img/post-bg-small-talk.jpg"
+header-img: "img/post-bg-common-majime-punch.jpg"
 tags:
     - SLAM
 ---

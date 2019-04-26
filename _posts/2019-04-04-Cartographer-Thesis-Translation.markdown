@@ -4,7 +4,7 @@ title:      "Cartographer《Real-Time Loop Closure in 2D LIDAR SLAM》论文翻�
 subtitle:   "Translation of 《Real-Time Loop Closure in 2D LIDAR SLAM》"
 date:       2019-04-04
 author:     "wykxwyc"
-header-img: "img/post-bg-cartographer.jpg"
+header-img: "img/post-bg-common-majime-punch.jpg"
 tags:
     - SLAM
     - Cartographer

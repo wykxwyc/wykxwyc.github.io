@@ -1,10 +1,10 @@
 ---
 layout:     post
-title:      "IMU模型以及校准知识总结"
-subtitle:   "Summary of IMU model and calibration"
-date:       2019-04-12
+title:      "LeGO-LOAM论文内容翻译（精简)"
+subtitle:   "Paper Traslation and Summary of LeGO-LOAM "
+date:       2019-04-26
 author:     "wykxwyc"
-header-img: "img/post-bg-common-majime-face.jpg"
+header-img: "img/post-bg-common-majime-punch.jpg"
 tags:
     - SLAM
     - IMU
