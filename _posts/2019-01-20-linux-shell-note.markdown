@@ -49,6 +49,12 @@ rosbag play *.bag --clock --topic /velodyne_points /imu/data
 ```
 播放当前目录下所有bag中的`/velodyne_points`和`/imu/data`topic
 
+```shell
+rosbag filter 2018-12-28-16-04-36.bag velodyne_and_imu_data_raw.bag "topic == '/velodyne_points' or topic == '/imu/data_raw'"
+```
+创建一个新bag`velodyne_and_imu_data_raw.bag`,在新bag中只有`/velodyne_points`和`/imu/data_raw`两个话题
+
+
 创建package
 ```
 cd ~/catkin_ws/src
