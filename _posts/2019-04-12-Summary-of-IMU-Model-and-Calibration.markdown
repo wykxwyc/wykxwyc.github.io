@@ -75,8 +75,8 @@ $$
 ![](/img/in-post/post-Summary-of-IMU/figure1-sample.png)
 
 4.分片之后，可以有两种方式计算Allan方差：     
-1.计算每个分片内采样数据的的平均值，在2.2节中提到；
-2.对应于每种陀螺仪采样速率，输出角度θ，在2.1节中提到；      
+1)计算每个分片内采样数据的的平均值，在2.2节中提到；      
+2)对应于每种陀螺仪采样速率，输出角度θ，在2.1节中提到；      
 
 5.最后对一个特定的𝜏值计算Allan偏差值，然后对不同的𝜏值计算Allan方差，就能得到Alla偏差图，见2.3节。
 
@@ -92,7 +92,7 @@ $$
 \begin{align}
 t_{k} & =\tau_{0},2\tau_{0},3\tau_{0}\left(k=1,2,3\right) \\
 \Omega_{k}\left(t\right) & =10,12,15 \left(k=1,2,3\right) \\
-\theta_{k}\left(t\right) & =10\tau_{0},22\tau_{0},37\tau_{0}\left(k=1,2,3\right) \\
+\theta_{k}\left(t\right) & =10\tau_{0},22\tau_{0},37\tau_{0}\left(k=1,2,3\right) \\ \tag{example}
 \end{align}
 $$
 
@@ -106,7 +106,7 @@ $$
 上面公式（3）是通过公式（2）化简得到的。      
 $$
 N
-$$     
+$$
 是总的采样次数；      
 $$
 \tau=m \tau_{0}
