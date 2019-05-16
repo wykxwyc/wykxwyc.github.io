@@ -214,6 +214,37 @@ $$
 从下图中可以观察出不同的噪声过程：      
 ![](/img/in-post/post-Summary-of-IMU/figure2-variance.png)
 
+##### 计算Allan方差和Allan偏差的代码
+```m
+function [T,sigma] = allan(omega,fs,pts)
+[N,M] = size(omega);			% figure out how big the output data set is
+n = 2.^(0:floor(log2(N/2)))';	% determine largest bin size
+maxN = n(end);
+endLogInc = log10(maxN);
+m = unique(ceil(logspace(0,endLogInc,pts)))'; 	% create log spaced vector average factor
+t0 = 1/fs; 										% t0 = sample interval
+T = m*t0; % T = length of time for each cluster
+theta = cumsum(omega)/fs; 						% integration of samples over time to obtain output angle θ
+sigma2 = zeros(length(T),M); 					% array of dimensions (cluster periods) X (#variables)
+for i=1:length(m) 								% loop over the various cluster sizes
+	for k=1:N-2*m(i) 							% implements the summation in the AV equation
+		sigma2(i,:) = sigma2(i,:) + (theta(k+2*m(i),:) - 2*theta(k+m(i),:) + theta(k,:)).^2;
+	end
+end
+sigma2 = sigma2./repmat((2*T.^2.*(N-2*m)),1,M);
+sigma = sqrt(sigma2)
+```
+
+
+代码解释：      
+1）Omega is the gyro rate output. (Section 2, Step 1)      
+2）m is chosen arbitrarily and the 𝐠value is defined as m*sample period. (Section 2, Step 2)      
+3）In the code above, the methodology described in Section 2.1 is used to compute Allan variance.       
+4）Theta is obtained by the cumulative sum of the output rate data divided by the sampling frequency (exactly as explained in equation (1)). This Theta is the output angle obtained corresponding toeach sample. (Section 2.1, Step 1).      
+5）As m is available and so is the output angle corresponding to each output rate sample, equation(3) is directly implemented in the above code to compute Allan variance (sigma2 in the code)(Section 2.1, Step 2).      
+6）Allan deviation (sigma in the code) is then computed by taking the square root of AVAR, equation (9) (Section 2.3).     
+
+
 
 ### 参考文献
 [1] Freescale Semiconductor, Inc. Allan Variance: Noise Analysis for Gyroscopes, [link](http://cache.freescale.com/files/sensors/doc/app_note/AN5087.pdf).    
