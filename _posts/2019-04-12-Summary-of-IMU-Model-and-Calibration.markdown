@@ -238,7 +238,11 @@ sigma = sqrt(sigma2)
 
 代码解释：      
 1）Omega is the gyro rate output. (Section 2, Step 1)      
-2）m is chosen arbitrarily and the 𝐠value is defined as m*sample period. (Section 2, Step 2)      
+2）m is chosen arbitrarily and the
+$$
+\tau
+$$
+ value is defined as m*sample period. (Section 2, Step 2)      
 3）In the code above, the methodology described in Section 2.1 is used to compute Allan variance.       
 4）Theta is obtained by the cumulative sum of the output rate data divided by the sampling frequency (exactly as explained in equation (1)). This Theta is the output angle obtained corresponding toeach sample. (Section 2.1, Step 1).      
 5）As m is available and so is the output angle corresponding to each output rate sample, equation(3) is directly implemented in the above code to compute Allan variance (sigma2 in the code)(Section 2.1, Step 2).      
