@@ -203,3 +203,43 @@ ICP的求解方法有两种：
 ##### harris角点是什么？以及它如何实施？
 
 ##### 手推本质矩阵和单应矩阵的公式
+
+##### 状态估计中批量式和渐进式的区别
+* 批量式（Batch）
+在后端优化中，通常考虑一段更长时间内（或所有时间内）的状态估计问题，不但使用过去的信息更新自己的状态，也使用未来的信息更新自己。
+
+* 渐进式（Incremental）
+当前的状态只由过去的时刻决定，设置只由一个时刻决定，称之为渐进式。
+
+
+##### 经典SLAM模型的定义以及含义
+经典 SLAM 模型，它由一个状态方程和一个运动方程构成：      
+$$
+\left\{\begin{array}{l}{\boldsymbol{x}_{k}=f\left(\boldsymbol{x}_{k-1}, \boldsymbol{u}_{k}\right)+\boldsymbol{w}_{k}} \\ {\boldsymbol{z}_{k, j}=h\left(\boldsymbol{y}_{j}, \boldsymbol{x}_{k}\right)+\boldsymbol{v}_{k, j}}\end{array}\right.
+$$
+
+上式中：   
+$$
+\boldsymbol{x}_{k}
+$$
+是相机的真实位姿；      
+$$
+u_{k}
+$$
+是输入的运动数据；      
+$$
+\boldsymbol{w}_{k}
+$$
+是运动方程的噪声；      
+$$
+\boldsymbol{z}_{k, j}
+$$
+是通过观测得到的当前的位姿；   
+$$
+y_{j}
+$$
+是路标点；      
+$$
+\boldsymbol{v}_{k, j}
+$$
+是观测方程的噪声。 
