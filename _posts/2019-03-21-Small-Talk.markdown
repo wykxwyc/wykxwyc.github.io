@@ -67,9 +67,11 @@ LeGO-LOAM是一种可以运行在嵌入式板卡上的轻量级雷达里程计�
 
 
 ##### 真阳性(TP),假阳性(FP),真阴性(TN),假阴性(FN),准确率,召回率的含义
-
-准确率：真正检测出来的真阳性占总体检测出来阳性的比例，从检测方的角度来看。召回率：真正检测出来的真阳性占实际总阳性的比例，从被检测方的角度来看。
-
+准确率:      
+真正检测出来的真阳性占总体检测出来阳性的比例，从检测方的角度来看。       
+     
+召回率:      
+真正检测出来的真阳性占实际总阳性的比例，从被检测方的角度来看。      
 
 ##### 什么是分支定界法（branch and bound algorithm）？
 
@@ -198,7 +200,7 @@ ICP的求解方法有两种：
 ##### 直接法是什么？有什么意义？如何计算？  
 不使用特征点，而直接使用图像的灰度信息来计算相机的运动。
 
-##### 逆滤波器是什么？作用是什么？
+##### 逆深度是什么？作用是什么？
 
 ##### harris角点是什么？以及它如何实施？
 
@@ -215,9 +217,8 @@ ICP的求解方法有两种：
 ##### 经典SLAM模型的定义以及含义
 经典 SLAM 模型，它由一个状态方程和一个运动方程构成：      
 $$
-\left\{\begin{array}{l}{\boldsymbol{x}_{k}=f\left(\boldsymbol{x}_{k-1}, \boldsymbol{u}_{k}\right)+\boldsymbol{w}_{k}} \\ {\boldsymbol{z}_{k, j}=h\left(\boldsymbol{y}_{j}, \boldsymbol{x}_{k}\right)+\boldsymbol{v}_{k, j}}\end{array}\right.
-$$
-
+\left\{\begin{array}{l}{\boldsymbol{x}_{k}=f\left(\boldsymbol{x}_{k-1}, \boldsymbol{u}_{k}\right)+\boldsymbol{w}_{k}} \\ {\boldsymbol{z}_{k, j}=h\left(\boldsymbol{y}_{j}, \boldsymbol{x}_{k}\right)+\boldsymbol{v}_{k, j}}\end{array}\right. \tag{6.1}
+$$      
 上式中：   
 $$
 \boldsymbol{x}_{k}
