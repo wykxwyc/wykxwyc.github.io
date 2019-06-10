@@ -136,5 +136,5 @@ AMCL cannot handle a laser that moves with respect to the base.
 2.[Amit’s A* Pages](http://theory.stanford.edu/~amitp/GameProgramming/)      
 3.[Amit’s Game Programming Information](http://www-cs-students.stanford.edu/%7Eamitp/gameprog.html#Paths)      
 4.[文献1的翻译](https://blog.csdn.net/zong596568821xp/article/details/77934688)      
-5.[文献2和文献3关于A*算法的翻译-1](https://blog.csdn.net/denghecsdn/article/details/78778769)      
-6.[文献2和文献3关于A*算法的翻译-2](https://blog.csdn.net/b2b160/article/details/4057781)      
+5.[文献2和文献3关于A※算法的翻译-1](https://blog.csdn.net/denghecsdn/article/details/78778769)      
+6.[文献2和文献3关于A※算法的翻译-2](https://blog.csdn.net/b2b160/article/details/4057781)      
