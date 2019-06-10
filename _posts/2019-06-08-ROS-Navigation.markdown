@@ -123,9 +123,9 @@ AMCL cannot handle a laser that moves with respect to the base.
 ![](/img/in-post/post-ROS-Navigation/amcl-frame.jpg)      
 
 原理：粒子滤波器
-1.每个样本存储表示机器人姿态的位置和方向数据。
-2.粒子是随机抽样的，
-3.当机器人移动时，粒子根据他们的状态记忆机器人的动作，进行重采样。
+1.每个样本存储表示机器人姿态的位置和方向数据。      
+2.粒子是随机抽样的。      
+3.当机器人移动时，粒子根据他们的状态记忆机器人的动作，进行重采样。      
 
 ##### 粒子滤波器如何运用到AMCL
 [未完善]
