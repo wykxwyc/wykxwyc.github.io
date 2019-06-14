@@ -244,3 +244,77 @@ $$
 \boldsymbol{v}_{k, j}
 $$
 是观测方程的噪声。 
+
+
+##### C++中堆(优先队列)的使用
+1.priority_queue默认使用最大堆，例如：      
+```
+std::priority_queue<int> q;
+```      
+上面这条语句声明了一个最大堆。      
+
+2.最大堆与最小堆的声明：
+```
+// 最小堆
+std::priority_queue<int, std::vector<int>, std::greater<int> > q2; 
+
+// 最大堆
+std::priority_queue<int, std::vector<int>, std::less<int> > q2;
+```
+
+3.自定义比较函数，生成不同的最大堆和最小堆      
+```
+// Using lambda to compare elements.
+auto cmp = [](int left, int right) { return (left) < (right);}; // 大的数排前面
+std::priority_queue<int, std::vector<int>, decltype(cmp)> q3(cmp);
+```
+
+4.[cppreference](https://en.cppreference.com/w/cpp/container/priority_queue)上的例子(经过修改)      
+```
+#include <functional>
+#include <queue>
+#include <vector>
+#include <iostream>
+ 
+template<typename T> void print_queue(T& q) {
+    while(!q.empty()) {
+        std::cout << q.top() << " ";
+        q.pop();
+    }
+    std::cout << '\n';
+}
+ 
+int main() {
+    std::priority_queue<int> q;
+ 
+    for(int n : {1,8,5,6,3,4,0,9,7,2})
+        q.push(n);
+ 
+    print_queue(q);
+ 
+    std::priority_queue<int, std::vector<int>, std::greater<int> > q2;
+ 
+    for(int n : {1,8,5,6,3,4,0,9,7,2})
+        q2.push(n);
+ 
+    print_queue(q2);
+ 
+    // Using lambda to compare elements.
+    auto cmp = [](int left, int right) { return (left ) < (right );};
+    std::priority_queue<int, std::vector<int>, decltype(cmp)> q3(cmp);
+ 
+    for(int n : {1,8,5,6,3,4,0,9,7,2})
+        q3.push(n);
+ 
+    print_queue(q3);
+}
+```      
+最后的输出结果：      
+```
+9 8 7 6 5 4 3 2 1 0 
+0 1 2 3 4 5 6 7 8 9 
+9 8 7 6 5 4 3 2 1 0
+```
+
+##### LiDAR与相机数据的融合
+[Fusion of Velodyne and Camera Data for Scene Parsing](http://fusion.isif.org/proceedings/fusion12CD/html/pdf/159_331.pdf)
