@@ -16,6 +16,54 @@ ___目录___
 {:toc}
 
 
+##### 对相机内外参的简单理解
+内参：三个量，焦距，成像平面上X/Y方向上的平移，X/Y方向上各自的缩放比例（或者说fx，fy，cx，cy两个焦距，两个平移），他们可以组成一个内参矩阵K。
+
+外参:两个量，相机从`世界坐标系`转换到`相机坐标系`的旋转`R`以及平移`t`。
+
+
+##### 径向畸变和切向畸变
+![r_distorted](/img/in-post/post-Small-Talk/r_distorted.jpg)
+`径向畸变`:与相机中心点距离r有关，距离越远，畸变(变小/变大)越多。本质与`透镜形状`有关。
+
+![t_distorted](/img/in-post/post-Small-Talk/t_distorted.png)
+`切向畸变`:沿着某个过一基点的向量方向上，与基点的垂直距离越大，畸变越大。本质与透镜的`安装位置`有关。
+
+参考链接：[https://blog.csdn.net/dcrmg/article/details/52950141](https://blog.csdn.net/dcrmg/article/details/52950141)
+
+##### 相机模型的推导
+问题描述：已知世界坐标系下的一点
+$$
+P
+$$
+,相机的焦距为
+$$
+f
+$$
+,求相机成像平面上的点与世界坐标系中点的对应关系？
+
+答案：  
+$$
+\left(\begin{array}{l}{u} \\ {v} \\ {1}\end{array}\right)=\frac{1}{Z}\left(\begin{array}{ccc}{f_{x}} & {0} & {c_{x}} \\ {0} & {f_{y}} & {c_{y}} \\ {0} & {0} & {1}\end{array}\right)\left(\begin{array}{l}{X} \\ {Y} \\ {Z}\end{array}\right) \triangleq \frac{1}{Z} \boldsymbol{K} \boldsymbol{P}   \tag{5.6}
+$$
+
+如果考虑世界坐标系下点的平移和旋转，并用齐次坐标系表示：      
+$$
+Z \boldsymbol{P}_{u v}=Z\left[\begin{array}{l}{u} \\ {v} \\ {1}\end{array}\right]=\boldsymbol{K}\left(\boldsymbol{R P}_{w}+\boldsymbol{t}\right)=\boldsymbol{K} \boldsymbol{T} \boldsymbol{P}_{w}  \tag{5.8}
+$$
+
+##### 双目相机模型的推导
+问题描述：根据给定的一个双目相机（基线长度
+$$
+b
+$$
+已知），求通过这个双目相机得到两幅图像后，如何知道物体的深度信息？   
+
+答案：      
+$$
+\begin{array}{c}{\frac{z-f}{z}=\frac{b-u_{L}+u_{R}}{b}} \\ {z=\frac{f b}{d}, \quad d=u_{L}-u_{R}}\end{array} \tag{5.15-5.16}
+$$
+
 ##### RGBD相机的实现原理
 
 ###### 1)TOF技术
@@ -86,8 +134,6 @@ LeGO-LOAM是一种可以运行在嵌入式板卡上的轻量级雷达里程计�
 
 在每次分枝后，若某个已知可行解集的目标值不能达到当前的界限，则将这个子集舍去。这样，许多子集不予考虑，这称为剪枝。这就是分枝界限法的思路。
 
-
-
 * 分支定界算法的一个例子：用分支定界法求背包问题。
 
 问题：一个容量为10的集装箱，有重量分别为4,8,5的货物，如何才能装最多？
@@ -135,23 +181,6 @@ $$
 $$
 a^{\wedge}=A=\left[ \begin{array}{ccc}{0} & {-a_{3}} & {a_{2}} \\ {a_{3}} & {0} & {-a_{1}} \\ {-a_{2}} & {a_{1}} & {0}\end{array}\right], \quad A^{\vee}=a
 $$
-
-
-##### 对相机内外参的简单理解
-内参：三个量，焦距，成像平面上X/Y方向上的平移，X/Y方向上各自的缩放比例（或者说fx，fy，cx，cy两个焦距，两个平移），他们可以组成一个内参矩阵K。
-
-外参:两个量，相机从`世界坐标系`转换到`相机坐标系`的旋转`R`以及平移`t`。
-
-
-##### 径向畸变和切向畸变
-
-![r_distorted](/img/in-post/post-Small-Talk/r_distorted.jpg)
-`径向畸变`:与相机中心点距离r有关，距离越远，畸变(变小/变大)越多。本质与`透镜形状`有关。
-
-![t_distorted](/img/in-post/post-Small-Talk/t_distorted.png)
-`切向畸变`:沿着某个过一基点的向量方向上，与基点的垂直距离越大，畸变越大。本质与透镜的`安装位置`有关。
-
-参考链接：https://blog.csdn.net/dcrmg/article/details/52950141
 
 ##### 2D-2D(对极几何)：本质矩阵,基础矩阵，单应性矩阵是什么？表示了什么含义？如何求解？
 这三个矩阵都是2D-2D中，通过相机的图像估计相机运动的矩阵。
@@ -317,4 +346,26 @@ int main() {
 ```
 
 ##### LiDAR与相机数据的融合
+记录一个参考链接：      
 [Fusion of Velodyne and Camera Data for Scene Parsing](http://fusion.isif.org/proceedings/fusion12CD/html/pdf/159_331.pdf)
+
+##### C++程序变量在内存中保存的区域
+* 静态内存
+静态内存用来保存局部static对象、类static数据成员以及定义在任何函数之外的变量。      
+* 栈内存
+栈内存用来保存定义在函数内的非static对象。      
+* 自由空间(free store)/堆(heap)
+程序用堆来存储动态分配的对象，动态对象不再使用时，我们的代码必须显式地销毁它们。      
+
+##### 罗德里格斯公式的推导过程
+罗德里格斯公式(Rodrigues's Formula)的推导过程：      
+简单来说就是一个待旋转向量绕着一个旋转轴旋转一个theta的角度。如何用旋转矩阵的形式将这个旋转表示出来？      
+分为如下几步：      
+1.将带旋转的向量分为与旋转轴平行的以及与旋转轴垂直的两个向量。      
+2.与旋转轴垂直的向量旋转theta的角度，平行的那部分保持不动。
+3.将两部分加起来，就能得到最后旋转的结果了。
+4.最后将这个结果中的原向量提取出来放在等式右边，原向量左乘了一个系数，这个系数就是罗德里格斯公式的旋转矩阵`R`。      
+
+参考链接：      
+[罗德里格斯旋转公式推导](https://baike.baidu.com/item/%E7%BD%97%E5%BE%B7%E9%87%8C%E6%A0%BC%E6%97%8B%E8%BD%AC%E5%85%AC%E5%BC%8F/18878562?fr=aladdin)
+
