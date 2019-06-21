@@ -224,8 +224,9 @@ $$
 k=rank(A) \tag{SVD-2}
 $$
 
-讨论SVD之前先讨论矩阵的特征值分解（EVD）      
-
+关于使用SVD的例子:      
+![SVD](/img/in-post/post-Small-Talk/SVD_1.png)
+![SVD](/img/in-post/post-Small-Talk/SVD_2.png)
 
 ###### P3P
 利用3对匹配点求解PnP的问题。3对点构成了一个三棱锥,一共有3个侧面，3个余弦定理构成3个方程。化简方程后得到两个比值`x`和`y`,然后求解得到旋转`R`和平移`t`。问题是如何从`x`和`y`求解`R`和`t`?
