@@ -94,11 +94,14 @@ catkin_create_pkg topic_demo roscpp rospy stdmsg
 单独编译某几个package
 `catkin_make --pkg <pkg name A> <pkg name B>`
 
-发布tf信息 0.12x位移 0y位移 0.28z位移 0 0 0角度 10发布数据时间间隔
+发布tf信息 0.12x位移 0y位移 0.28z位移 0 0 0角度 10发布数据时间间隔      
 `rosrun tf static_transform_publisher 0.12 0 0.28 0 0 0 base_link imu_link 10`
 
-启动map_server，发布地图
+启动map_server，发布地图      
 `rosrun map_server map_server my_map.yaml`
+
+打印某几个坐标系之间的`tf`数据,(打印带有/base_footprint的tf数据,grep -C 10,匹配前后的10行 grep -A 前面,grep -B 后面)       
+rostopic echo /tf |grep /base_footprint -C 10
 
 
 ###### cmake编译
