@@ -199,36 +199,34 @@ git config --global user.name "my_user_name"
 git config --global user.email "my_email@email.com"
 ```
 
-产生公匙并保存在本地
+产生公匙并保存在本地      
 ```
 ssh-keygen -t rsa -C "my_email@email.com"
 ```
 
-显示保存在/c/Users/user_name/.ssh/下的公匙并复制，然后打开github.com，在`Account settings`的`SSH and GPG Keys`中点击`New SSH Key`，并将复制的填入
+显示保存在`/c/Users/user_name/.ssh/`下的公匙并复制，然后打开github.com，在`Account settings`的`SSH and GPG Keys`中点击`New SSH Key`，并将复制的填入
 `cat /c/Users/my_user_name/.ssh/id_rsa.pub`
 
-添加远程仓库（如果没有则先新建远程仓库）
+添加远程仓库（如果没有则先新建远程仓库）      
 ```
 git remote add origin git@github.com:user_name/repertory.git
 ```
 
-从远端仓库中获得代码并与本地的合并
+从远端仓库中获得代码并与本地的合并      
 ```
 git pull origin master
 ```
 
-对所有文件都取消跟踪的话，就是
+对所有文件都取消跟踪的话，就是      
 ```shell
 git rm -r --cached . 　　//不删除本地文件
-
 git rm -r --f . 　　//删除本地文件
 ```
  
 
-对某个文件取消跟踪
+对某个文件取消跟踪      
 ```shell
 git rm --cached readme1.txt   //删除readme1.txt的跟踪，并保留在本地。
-
 git rm --f readme1.txt    //删除readme1.txt的跟踪，并且删除本地文件。
 ```
 

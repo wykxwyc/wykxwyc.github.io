@@ -380,6 +380,14 @@ int main() {
 参考链接：      
 [罗德里格斯旋转公式推导](https://baike.baidu.com/item/%E7%BD%97%E5%BE%B7%E9%87%8C%E6%A0%BC%E6%97%8B%E8%BD%AC%E5%85%AC%E5%BC%8F/18878562?fr=aladdin)      
 
+##### 3张图说完KF的公式及推导
+截取自bilibili视频[机器学习-白板推导系列（十六）-粒子滤波（Particle Filter）](https://www.bilibili.com/video/av32636259?from=search&seid=10746734810000479420)      
+1.问题的说明：      
+![problem](/img/in-post/post-Small-Talk/deduction_problem.png)      
 
+2.预测过程：      
+![prediction](/img/in-post/post-Small-Talk/deduction_of_prediction.png)      
 
+3.更新过程：      
+![update](/img/in-post/post-Small-Talk/deduction_of_update.png)      
 
