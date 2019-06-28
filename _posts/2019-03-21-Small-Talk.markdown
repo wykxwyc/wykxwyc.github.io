@@ -383,11 +383,11 @@ int main() {
 ##### 3张图说完KF的公式及推导
 截取自bilibili视频[机器学习-白板推导系列（十六）-粒子滤波（Particle Filter）](https://www.bilibili.com/video/av32636259?from=search&seid=10746734810000479420)      
 1.问题的说明：      
-![problem](/img/in-post/post-Small-Talk/deduction_problem.png)      
+![problem](/img/in-post/post-Small-Talk/deduction_problem.jpg)      
 
 2.预测过程：      
-![prediction](/img/in-post/post-Small-Talk/deduction_of_prediction.png)      
+![prediction](/img/in-post/post-Small-Talk/deduction_of_prediction.jpg)      
 
 3.更新过程：      
-![update](/img/in-post/post-Small-Talk/deduction_of_update.png)      
+![update](/img/in-post/post-Small-Talk/deduction_of_update.jpg)      
 
