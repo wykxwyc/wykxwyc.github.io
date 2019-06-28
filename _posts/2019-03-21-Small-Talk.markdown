@@ -382,12 +382,93 @@ int main() {
 
 ##### 3张图说完KF的公式及推导
 截取自bilibili视频[机器学习-白板推导系列（十六）-粒子滤波（Particle Filter）](https://www.bilibili.com/video/av32636259?from=search&seid=10746734810000479420)      
-1.问题的说明：      
+* 1.问题的说明      
+需要说明的是，图中的`z`代表的是真实值，`x`代表的是观测值，与我们往常所用的标记符号不同。      
 ![problem](/img/in-post/post-Small-Talk/deduction_problem.jpg)      
 
-2.预测过程：      
+* 2.预测过程      
 ![prediction](/img/in-post/post-Small-Talk/deduction_of_prediction.jpg)      
 
-3.更新过程：      
+* 3.更新过程      
 ![update](/img/in-post/post-Small-Talk/deduction_of_update.jpg)      
 
+
+##### 梯度，雅克比，Hessian矩阵辨析
+首先定义一个几个不同的函数：      
+      
+1.一个多元函数与标量的映射(自变量多维，因变量`一`维)：      
+$$
+x=f\left(\theta_{1}, \theta_{2}, \theta_{3}\right)=f(\mathbf{q}) \tag{H-1}
+$$      
+
+2.一个多元函数与向量的映射(自变量是多维，因变量`多`维)
+$$
+\mathbf{X}=\left[\begin{array}{l}{x} \\ {y}\end{array}\right]=\left[\begin{array}{l}{f_{1}(\mathbf{q})} \\ {f_{2}(\mathbf{q})}\end{array}\right]  \tag{H-2}
+$$
+
+* 梯度      
+对于公式H-1中的函数而言，一阶导数就是这个函数的梯度      
+$$
+\begin{array}{l}{\dot{x}=\nabla f \dot{\mathbf{q}}, \text { where } \nabla f \in \mathfrak{R}^{1 \times 3}} \\ {\nabla f=\left[\begin{array}{lll}{\frac{\partial f}{\partial \theta_{1}}} & {\frac{\partial f}{\partial \theta_{2}}} & {\frac{\partial f}{\partial \theta_{3}}}\end{array}\right]}\end{array} \tag{H-3}
+$$
+
+* 雅克比      
+对于公式H-2中的函数，一阶导数为雅克比矩阵      
+$$
+\dot{\mathbf{X}}=\mathbf{J} \dot{\mathbf{q}}=\left[\begin{array}{c}{\nabla f_{1}} \\ {\nabla f_{2}}\end{array}\right] \dot{\mathbf{q}}=\left[\begin{array}{ccc}{\frac{\partial f_{1}}{\partial \theta_{1}}} & {\frac{\partial f_{1}}{\partial \theta_{2}}} & {\frac{\partial f_{1}}{\partial \theta_{3}}} \\ {\frac{\partial f_{2}}{\partial \theta_{1}}} & {\frac{\partial f_{2}}{\partial \theta_{2}}} & {\frac{\partial f_{2}}{\partial \theta_{3}}}\end{array}\right] \dot{\mathbf{q}}  \tag{H-4}
+$$
+
+对公式H-2中的函数，二阶导数为机器人的雅克比矩阵      
+$$
+\ddot{\mathbf{X}}=\mathbf{J} \ddot{\mathbf{q}}+\mathbf{j}_{\mathbf{q}}=\mathbf{J} \ddot{\mathbf{q}}+\dot{\mathbf{q}}^{\top} *[\mathbf{H}] \dot{\mathbf{q}}=\mathbf{J} \ddot{\mathbf{q}}+\left[\begin{array}{c}{\dot{\mathbf{q}}^{\top} \mathbf{J}\left(\nabla f_{1}\right)} \\ {\dot{\mathbf{q}}^{\top} \mathbf{J}\left(\nabla f_{2}\right)}\end{array}\right] \dot{\mathbf{q}}=\mathbf{J} \ddot{\mathbf{q}}+\left[\begin{array}{c}{\dot{\mathbf{q}}^{\top} \mathbf{H}_{1}} \\ {\dot{\mathbf{q}}^{\top} \mathbf{H}_{2}}\end{array}\right]_{2 \times 3} \dot{\mathbf{q}}  \tag{H-5}
+$$     
+
+其中：      
+$$
+\mathbf{H}_{1}=\left[\begin{array}{ccc}{\frac{\partial^{2} f_{1}}{\partial \theta_{1}^{2}}} & {\frac{\partial^{2} f_{1}}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f_{1}}{\partial \theta_{1} \partial \theta_{3}}} \\ {\frac{\partial^{2} f_{1}}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f_{1}}{\partial \theta_{2}^{2}}} & {\frac{\partial^{2} f_{1}}{\partial \theta_{2} \partial \theta_{3}}} \\ {\frac{\partial^{2} f_{1}}{\partial \theta_{1} \partial \theta_{3}}} & {\frac{\partial^{2} f_{1}}{\partial \theta_{2} \partial \theta_{3}}} & {\frac{\partial^{2} f_{1}}{\partial \theta_{3}^{2}}}\end{array}\right]_{3 \times 3} \tag{H-6}
+$$
+
+$$
+\mathbf{H}_{2}=\left[\begin{array}{ccc}{\frac{\partial^{2} f_{2}}{\partial \theta_{1}^{2}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{1} \partial \theta_{3}}} \\ {\frac{\partial^{2} f_{2}}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{2}^{2}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{2} \partial \theta_{3}}} \\ {\frac{\partial^{2} f_{2}}{\partial \theta_{1} \partial \theta_{3}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{2} \partial \theta_{3}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{3}^{2}}}\end{array}\right]_{3 \times 3} \tag{H-7}
+$$
+
+* Hessian矩阵      
+对公式H-1中的函数，二阶导数为广义的Hessian 矩阵(这里的Hessian矩阵其实就是上面梯度的转置乘以梯度)       
+$$
+\begin{array}{ll}{\ddot{x}=\nabla f \ddot{\mathbf{q}}+\dot{\mathbf{q}}^{\top} \mathbf{J}(\nabla f)^{\top} \dot{\mathbf{q}}=\nabla f \ddot{\mathbf{q}}+\dot{\mathbf{q}}^{\top} \mathbf{H} \dot{\mathbf{q}}, \text { where } \mathbf{H} \in \mathfrak{R}^{3 \times 3}} \\ {\mathbf{H}=\left[\begin{array}{ccc}{\frac{\partial^{2} f}{\partial \theta_{1}^{2}}} & {\frac{\partial^{2} f}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f}{\partial \theta_{1} \partial \theta_{3}}} \\ {\frac{\partial^{2} f}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f}{\partial \theta_{2}^{2}}} & {\frac{\partial^{2} f}{\partial \theta_{2} \partial \theta_{3}}} \\ {\frac{\partial^{2} f}{\partial \theta_{1} \partial \theta_{3}}} & {\frac{\partial^{2} f}{\partial \theta_{2} \partial \theta_{3}}} & {\frac{\partial^{2} f}{\partial \theta_{3}^{2}}}\end{array}\right]}\end{array}   \tag{H-8}
+$$
+
+对于公式H-2中的函数，二阶导数在公式H-5中表示出来了，其中
+$$
+[\mathbf{H}]
+$$
+是真正我们所说的Hessian矩阵，它里面的分项$$
+\mathbf{H}_{1}
+$$
+以及
+$$
+\mathbf{H}_{2}
+$$
+是上面说的广义的Hessian矩阵。      
+整个机器人的海森矩阵
+$$
+[\mathbf{H}] \in \mathfrak{R}^{2 \times 3 \times 3} \in \mathfrak{R}^{6 \times 3}
+$$
+是这两个广义Hessian矩阵构成的，因此不能直接进行代数运算，也就是不能写成
+$$
+\dot{\mathbf{q}}^{\top}[\mathbf{H}]
+$$
+    
+参考链接：      
+[Hessian matrix-知乎](https://zhuanlan.zhihu.com/p/68740876?utm_source=wechat_session&utm_medium=social&utm_oi=541224594212843520)      
+
+
+##### 记录一个C++设计模式的网站
+[https://blog.csdn.net/u011012932/column/info/15392](https://blog.csdn.net/u011012932/column/info/15392)
+
+##### 记录一个关于算法的博客网站
+[https://blog.csdn.net/weixin_43795395/article/list/2?t=1&](https://blog.csdn.net/weixin_43795395/article/list/2?t=1&)
+
+##### 卡特兰数是什么，有什么用
+[https://blog.csdn.net/wookaikaiko/article/details/81105031](https://blog.csdn.net/wookaikaiko/article/details/81105031)      
+ 
