@@ -396,29 +396,29 @@ int main() {
 ##### 梯度，雅克比，Hessian矩阵辨析
 首先定义一个几个不同的函数：      
       
-1.一个多元函数与标量的映射(自变量多维，因变量`一`维)：      
+* 一个多元函数与标量的映射(自变量多维，因变量`一`维)：      
 $$
 x=f\left(\theta_{1}, \theta_{2}, \theta_{3}\right)=f(\mathbf{q}) \tag{H-1}
 $$      
 
-2.一个多元函数与向量的映射(自变量是多维，因变量`多`维)
+* 一个多元函数与向量的映射(自变量是多维，因变量`多`维)
 $$
 \mathbf{X}=\left[\begin{array}{l}{x} \\ {y}\end{array}\right]=\left[\begin{array}{l}{f_{1}(\mathbf{q})} \\ {f_{2}(\mathbf{q})}\end{array}\right]  \tag{H-2}
 $$
 
-* 梯度      
+1.梯度      
 对于公式H-1中的函数而言，一阶导数就是这个函数的梯度      
 $$
 \begin{array}{l}{\dot{x}=\nabla f \dot{\mathbf{q}}, \text { where } \nabla f \in \mathfrak{R}^{1 \times 3}} \\ {\nabla f=\left[\begin{array}{lll}{\frac{\partial f}{\partial \theta_{1}}} & {\frac{\partial f}{\partial \theta_{2}}} & {\frac{\partial f}{\partial \theta_{3}}}\end{array}\right]}\end{array} \tag{H-3}
 $$
 
-* 雅克比      
+2.雅克比      
 对于公式H-2中的函数，一阶导数为雅克比矩阵      
 $$
 \dot{\mathbf{X}}=\mathbf{J} \dot{\mathbf{q}}=\left[\begin{array}{c}{\nabla f_{1}} \\ {\nabla f_{2}}\end{array}\right] \dot{\mathbf{q}}=\left[\begin{array}{ccc}{\frac{\partial f_{1}}{\partial \theta_{1}}} & {\frac{\partial f_{1}}{\partial \theta_{2}}} & {\frac{\partial f_{1}}{\partial \theta_{3}}} \\ {\frac{\partial f_{2}}{\partial \theta_{1}}} & {\frac{\partial f_{2}}{\partial \theta_{2}}} & {\frac{\partial f_{2}}{\partial \theta_{3}}}\end{array}\right] \dot{\mathbf{q}}  \tag{H-4}
 $$
 
-对公式H-2中的函数，二阶导数为机器人的雅克比矩阵      
+对公式H-2中的函数，二阶导数为机器人的Hessian矩阵      
 $$
 \ddot{\mathbf{X}}=\mathbf{J} \ddot{\mathbf{q}}+\mathbf{j}_{\mathbf{q}}=\mathbf{J} \ddot{\mathbf{q}}+\dot{\mathbf{q}}^{\top} *[\mathbf{H}] \dot{\mathbf{q}}=\mathbf{J} \ddot{\mathbf{q}}+\left[\begin{array}{c}{\dot{\mathbf{q}}^{\top} \mathbf{J}\left(\nabla f_{1}\right)} \\ {\dot{\mathbf{q}}^{\top} \mathbf{J}\left(\nabla f_{2}\right)}\end{array}\right] \dot{\mathbf{q}}=\mathbf{J} \ddot{\mathbf{q}}+\left[\begin{array}{c}{\dot{\mathbf{q}}^{\top} \mathbf{H}_{1}} \\ {\dot{\mathbf{q}}^{\top} \mathbf{H}_{2}}\end{array}\right]_{2 \times 3} \dot{\mathbf{q}}  \tag{H-5}
 $$     
@@ -432,13 +432,17 @@ $$
 \mathbf{H}_{2}=\left[\begin{array}{ccc}{\frac{\partial^{2} f_{2}}{\partial \theta_{1}^{2}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{1} \partial \theta_{3}}} \\ {\frac{\partial^{2} f_{2}}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{2}^{2}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{2} \partial \theta_{3}}} \\ {\frac{\partial^{2} f_{2}}{\partial \theta_{1} \partial \theta_{3}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{2} \partial \theta_{3}}} & {\frac{\partial^{2} f_{2}}{\partial \theta_{3}^{2}}}\end{array}\right]_{3 \times 3} \tag{H-7}
 $$
 
-* Hessian矩阵      
-对公式H-1中的函数，二阶导数为广义的Hessian 矩阵(这里的Hessian矩阵其实就是上面梯度的转置乘以梯度)       
+3.Hessian矩阵      
+对公式H-1中的函数，二阶导数为广义的Hessian 矩阵(这里的Hessian矩阵是对梯度求雅克比矩阵)       
 $$
 \begin{array}{ll}{\ddot{x}=\nabla f \ddot{\mathbf{q}}+\dot{\mathbf{q}}^{\top} \mathbf{J}(\nabla f)^{\top} \dot{\mathbf{q}}=\nabla f \ddot{\mathbf{q}}+\dot{\mathbf{q}}^{\top} \mathbf{H} \dot{\mathbf{q}}, \text { where } \mathbf{H} \in \mathfrak{R}^{3 \times 3}} \\ {\mathbf{H}=\left[\begin{array}{ccc}{\frac{\partial^{2} f}{\partial \theta_{1}^{2}}} & {\frac{\partial^{2} f}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f}{\partial \theta_{1} \partial \theta_{3}}} \\ {\frac{\partial^{2} f}{\partial \theta_{1} \partial \theta_{2}}} & {\frac{\partial^{2} f}{\partial \theta_{2}^{2}}} & {\frac{\partial^{2} f}{\partial \theta_{2} \partial \theta_{3}}} \\ {\frac{\partial^{2} f}{\partial \theta_{1} \partial \theta_{3}}} & {\frac{\partial^{2} f}{\partial \theta_{2} \partial \theta_{3}}} & {\frac{\partial^{2} f}{\partial \theta_{3}^{2}}}\end{array}\right]}\end{array}   \tag{H-8}
 $$
 
-对于公式H-2中的函数，二阶导数在公式H-5中表示出来了，其中
+对于公式H-2中的函数，二阶导数在公式H-5中表示出来了，这里再重复写一遍：      
+$$
+\ddot{\mathbf{X}}=\mathbf{J} \ddot{\mathbf{q}}+\mathbf{j}_{\mathbf{q}}=\mathbf{J} \ddot{\mathbf{q}}+\dot{\mathbf{q}}^{\top} *[\mathbf{H}] \dot{\mathbf{q}}=\mathbf{J} \ddot{\mathbf{q}}+\left[\begin{array}{c}{\dot{\mathbf{q}}^{\top} \mathbf{J}\left(\nabla f_{1}\right)} \\ {\dot{\mathbf{q}}^{\top} \mathbf{J}\left(\nabla f_{2}\right)}\end{array}\right] \dot{\mathbf{q}}=\mathbf{J} \ddot{\mathbf{q}}+\left[\begin{array}{c}{\dot{\mathbf{q}}^{\top} \mathbf{H}_{1}} \\ {\dot{\mathbf{q}}^{\top} \mathbf{H}_{2}}\end{array}\right]_{2 \times 3} \dot{\mathbf{q}}  \tag{H-5}
+$$        
+其中：       
 $$
 [\mathbf{H}]
 $$
