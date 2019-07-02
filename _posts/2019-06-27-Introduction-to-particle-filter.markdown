@@ -67,7 +67,7 @@ $$
 
 ### 重要性采样(Importance Sampling)
 $$
-E[f(z)]=\int f(z) p z d z=\int f(z) \frac{p(z)}{q(z) d z}=\frac{1}{N} \sum_{i=1}^{N} f\left(z^{i}\right) \frac{p\left(z^{i}\right)}{q\left(z^{i}\right)}  \tag{1.2}
+E[f(z)]=\int f(z) p z d z=\int f(z) \frac{p(z)}{q(z)}q(z)dz=\frac{1}{N} \sum_{i=1}^{N} f\left(z^{i}\right) \frac{p\left(z^{i}\right)}{q\left(z^{i}\right)}  \tag{1.2}
 $$
 
 其中：      
@@ -108,7 +108,7 @@ $$
 $$
 w_{t}^{i}=\frac{p\left(z_{t}^{i} | x_{1 : t}\right)}{q\left(z_{t}^{i} | x_{1 : t}\right)}
 $$
-，有：      
+，有:
 $$
 \begin{array}{l}{t=1 : w_{1}^{i}, i=1,2, \ldots, N} \\ {t=2, w_{2}^{i}, i=1,2, \ldots, N}\end{array}
 $$
@@ -122,7 +122,11 @@ $$
 $$
 p\left(z_{t}^{i} | x_{1 : t}\right)
 $$
-但这个p很难求，因此我们能否找到一个递推公式，减少计算量呢？这就涉及到SIS的问题了。
+但这个
+$$
+p
+$$
+很难求，因此我们能否找到一个递推公式，减少计算量呢？这就涉及到SIS的问题了。
 
 
 ### Sequential Importance Sampling（SIS）
@@ -143,7 +147,7 @@ $$
 
 们需要求的是整个后验，而不是边缘后验，因为我们在t时刻已经知道了前面时刻的状态后验值，所以
 $$
-w_{t}^{i} \propto \frac{p\left(z_{1 t} | x_{1 t}\right)}{q\left(z_{1 t} | x_{1 t}\right)}
+w_{t}^{i} \propto \frac{p\left(z_{1: t} | x_{1 :t}\right)}{q\left(z_{1: t} | x_{1 :t}\right)}
 $$
 ，其中：      
 $$
@@ -191,7 +195,7 @@ w_{t}^{j} \propto \frac{p\left(x_{t} | z_{t}\right) p\left(z_{t} | z_{t-1}\right
 $$
 
 对于这个算法的流程，可以用下面的流程表示：      
-![](/img/in-post/post-particle-filter/chart.png)
+![chart](/img/in-post/post-particle-filter/chart.jpg)
 
 但是上面这样的算法流程其实会有一个叫做权值退化的问题：      
 算法运行一定的时间之后，
@@ -210,19 +214,22 @@ $$
 重采样之后每个粒子的权重就相同了。我们用粒子的个数去表达原先的权重，这是最简单的重采样方法。     
 
 ![](/img/in-post/post-particle-filter/resampling-3.png)
-对于上图这样的分布，如果我们从一个 的均匀分布，不断取随机数，例如：
-
+对于上图这样的分布，如果我们从一个
+$$
+u \sim(0,1)
+$$
+的均匀分布，不断取随机数，例如：      
 随机数为0.01时，取
 $$
 x^{1}
 $$
 ；      
-随机数为0.01时，取
+随机数为0.30时，取
 $$
 x^{2}
 $$
 ；      
-随机数为0.01时，取
+随机数为0.60时，取
 $$
 x^{3}
 $$
@@ -231,7 +238,10 @@ $$
 
 ### Basic Particle Filter
 Basic Particle Filter的主要思想就是SIS+Resampling。      
-造成权值退化的原因是什么？维度过高，维度过高要求你的样本空间非常巨大，这时如果用采样的话，我们需要的粒子数目会非常巨大，呈指数级往上增加。      
+
+造成权值退化的原因是什么？      
+维度过高，维度过高要求你的样本空间非常巨大，这时如果用采样的话，我们需要的粒子数目会非常巨大，呈指数级往上增加。      
+
 为了解决这个问题，通常有2种办法。第一种办法是重采样（Resampling），第二种办法是选择更合适的提议分布
 $$
 q(z)
@@ -249,26 +259,26 @@ $$
 q\left(z_{t} | z_{1 ：t-1}, x_{1 : t}\right)=p\left(z_{t} | z_{t-1}\right)
 $$
 这时权重为：      
-
 $$
 w_{i}^{j}=\frac{p\left(x_{i} | z_{t}^{i}\right) p\left(z_{t}^{i} | z_{t-1}^{i}\right)}{q\left(z_{t}^{i} | z_{t-1}^{i}, x_{1 :t}\right)} w_{t-1}^{i}=\frac{p\left(x_{t} | z_{t}^{i}\right) p\left(z_{t}^{i} | z_{t-1}^{i}\right)}{p\left(z_{t}^{i} | z_{t-1}^{i}\right)} w_{t-1}^{i}=p\left(x_{t} | z_{t}^{i}\right) w_{t-1}^{i}  \tag{1.7}
 $$
 
+
 粒子从哪里来？      
 $$
-Z_{t}^{i} \sim p\left(z_{t}^{i} | z_{t-1}^{i}\right) \tag{1.8}
+z_{t}^{i} \sim p\left(z_{t}^{i} | z_{t-1}^{i}\right) \tag{1.8}
 $$
 
 权重如何确定？      
 $$
-w_{t}^{i}=p\left(x_{t} | Z_{t}^{i}\right) w_{t-1}^{i}  \tag{1.9}
+w_{t}^{i}=p\left(x_{t} | z_{t}^{i}\right) w_{t-1}^{i}  \tag{1.9}
 $$
 
-上面整个系统就是SIR Filter（Sampling Importance Resampling），其实本质上，它是SIS+Resampling+
+上面整个系统就是SIR Filter（Sampling Importance Resampling），其实本质上，它是SIS + Resampling + 
 $$
 q(z)
 $$
-这里的
+，这里的
 $$
 q(z)
 $$
@@ -285,14 +295,14 @@ q(z)
 $$
 为
 $$
-p\left(z_{t} | Z_{t-1}\right)
+p\left(z_{t} | z_{t-1}\right)
 $$
 有什么物理意义？它的直观感受是什么？
 
-这是一个generate and test的过程：
+这是一个generate and test的过程：      
 1)  首先，从
 $$
-Z_{t-1}
+z_{t-1}
 $$
 按照
 $$
@@ -302,7 +312,7 @@ $$
 $$
 z_{t}
 $$
-;      
+；      
 2）然后通过观测的数据，按照公式
 $$
 w_{t}^{i}=p\left(x_{t} | z_{t}^{i}\right) w_{t-1}^{i}
