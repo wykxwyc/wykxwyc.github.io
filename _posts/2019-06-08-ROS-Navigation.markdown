@@ -127,9 +127,8 @@ AMCL cannot handle a laser that moves with respect to the base.
 2.粒子是随机抽样的。      
 3.当机器人移动时，粒子根据他们的状态记忆机器人的动作，进行重采样。      
 
-##### 粒子滤波器如何运用到AMCL
-[未完善]
-
+##### 粒子滤波器的原理以及如何运用到AMCL
+参看[粒子滤波器介绍](https://wykxwyc.github.io/2019/06/27/Introduction-to-particle-filter/)一文。
 
 ### 参考文献
 1.[ROS Navigation Tuning Guide.pdf](https://github.com/wykxwyc/wykxwyc.github.io/blob/master/files/ROS%20Navigation%20Tuning%20Guide.pdf)      
