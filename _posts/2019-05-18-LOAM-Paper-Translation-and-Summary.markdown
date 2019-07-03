@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "LOAM(Lidar Odometry and Mapping)论文阅读(内容精简)"
-subtitle:   "Paper Reading and Traslation of LOAM(Lidar Odometry and Mapping) "
+title:      "LOAM(Lidar Odometry and Mapping)论文(内容精简)"
+subtitle:   "Introduction of LOAM(Lidar Odometry and Mapping) "
 date:       2019-05-18
 author:     "wykxwyc"
 header-img: "img/post-bg-common-seiigi-punch.jpg"
@@ -31,7 +31,7 @@ Loam采用的方法是使用一个2维雷达以6自由度移动进行建图。
 不同时间收到的距离数据，以及运动估计造成的误差会造成点云数据误读。      
 
 ##### 主要思想
-SLAM问题，用两个算法进行:      
+SLAM问题，用两个算法进行：      
 一个算法用高频但以低保真度估计雷达运动速度。      
 另一个算法以低频进行匹配和注册点云数据。      
 
@@ -59,7 +59,11 @@ $$
 $$
 P_{k}
 $$
-:第k次sweep时接收到的点云数据；      
+:第
+$$
+k
+$$
+次sweep时接收到的点云数据；      
 $$
 X_{(k, i)}^{L}
 $$
@@ -67,7 +71,11 @@ $$
 $$
 P_{k}
 $$
-中的点𝑖`i`，在本地坐标系
+中的点𝑖
+$$
+i
+$$
+，在本地坐标系
 $$
 \left\{L_{k}\right\}
 $$
@@ -79,7 +87,11 @@ $$
 $$
 P_{k}
 $$
-中的点𝑖`i`，在全局坐标系
+中的点
+$$
+i
+$$
+，在全局坐标系
 $$
 \left\{W_{k}\right\}
 $$
@@ -90,7 +102,11 @@ $$
 $$
 P_{k},k \in Z^{+}
 $$
-计算每次雷达sweep中的雷达自运动，同时用点云数据P_k为刚遍历过的环境建立一张地图。
+计算每次雷达sweep中的雷达自运动，同时用点云数据
+$$
+P_{k}
+$$
+为刚遍历过的环境建立一张地图。
 
 
 ### 4.系统概述
@@ -113,7 +129,6 @@ $$
 P_{k}
 $$
 ；      
-
 Lidar odometry 接收点云数据，计算两连续sweep之间的雷达的运动，估计的运动被用于校正
 $$
 P_{k}
@@ -592,7 +607,7 @@ $$
 
 ![figure-4](/img/in-post/post-LOAM/figure-4.png)   
 
-** 算法进行过程：**      
+**算法进行过程：**      
 如果开始新一次的扫描，
 $$
 T_{k+1}^{L}
@@ -629,7 +644,8 @@ $$
 $$
 \overline{P}_{k}
 $$
-中的特征距离大的，分配的权重小；距离超过一定的门限值，认为是界外点，权值为0。      
+中的特征距离大的，分配的权重小；      
+距离超过一定的门限值，认为是界外点，权值为0。      
 位姿通过一次迭代进行更新（16行）。      
 非线性优化在收敛或达到最大迭代次数时停止。      
 如果算法到了一次sweep的末尾，那么
