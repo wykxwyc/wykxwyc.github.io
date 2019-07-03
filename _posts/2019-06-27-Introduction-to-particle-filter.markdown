@@ -71,7 +71,7 @@ E[f(z)]=\int f(z) p z d z=\int f(z) \frac{p(z)}{q(z)}q(z)dz=\frac{1}{N} \sum_{i=
 $$
 
 其中：      
-1）我们在第二个等号处引入一个分布比较简单的
+1)我们在第二个等号处引入一个分布比较简单的
 $$
 q(z)
 $$
@@ -99,7 +99,7 @@ $$
 作为权重;      
 3)filter的问题最关键的在于求后验概率
 $$
-f\left(z_{t} | x_{1 :}\right)
+f\left(z_{t} | x_{1 :t}\right)
 $$
 。             
 
@@ -137,7 +137,7 @@ $$
 的递推关系（但其实还有一步归一化需要做）。      
 我们没有直接求
 $$
-p\left(z_{t} | x_{1 t}\right)
+p\left(z_{t} | x_{1: t}\right)
 $$
 的滤波问题（这其实是一个边缘概率），为了避免积分运算，我们先求
 $$
@@ -145,7 +145,7 @@ p\left(z_{1 : t} | x_{1 : t}\right)
 $$
 。      
 
-们需要求的是整个后验，而不是边缘后验，因为我们在t时刻已经知道了前面时刻的状态后验值，所以
+我们需要求的是整个后验，而不是边缘后验，因为我们在t时刻已经知道了前面时刻的状态后验值，所以
 $$
 w_{t}^{i} \propto \frac{p\left(z_{1: t} | x_{1 :t}\right)}{q\left(z_{1: t} | x_{1 :t}\right)}
 $$
@@ -191,7 +191,7 @@ $$
 上式(1.5)中，我们还能够进一步简化：
 
 $$
-w_{t}^{j} \propto \frac{p\left(x_{t} | z_{t}\right) p\left(z_{t} | z_{t-1}\right)}{\underbrace{q\left(z_{t} | z_{1 :t-1}, x_{1 :t}\right)}_{q\left(z_{t} | z_{t-1}, x_{1 :t}\right)}} w_{t-1}^{i}=\frac{p\left(x_{t} | z_{t}\right) p\left(z_{t} | z_{t-1}\right)}{q\left(z_{t} | z_{t-1}, x_{1: t}\right)} w_{t-1}^{i}   \tag{1.6}
+w_{t}^{i} \propto \frac{p\left(x_{t} | z_{t}\right) p\left(z_{t} | z_{t-1}\right)}{\underbrace{q\left(z_{t} | z_{1 :t-1}, x_{1 :t}\right)}_{q\left(z_{t} | z_{t-1}, x_{1 :t}\right)}} w_{t-1}^{i}=\frac{p\left(x_{t} | z_{t}\right) p\left(z_{t} | z_{t-1}\right)}{q\left(z_{t} | z_{t-1}, x_{1: t}\right)} w_{t-1}^{i}   \tag{1.6}
 $$
 
 对于这个算法的流程，可以用下面的流程表示：      
@@ -297,10 +297,10 @@ $$
 $$
 p\left(z_{t} | z_{t-1}\right)
 $$
-有什么物理意义？它的直观感受是什么？
+有什么物理意义？它的直观感受是什么？      
 
 这是一个generate and test的过程：      
-1)  首先，从
+1)首先，从
 $$
 z_{t-1}
 $$
@@ -313,7 +313,7 @@ $$
 z_{t}
 $$
 ；      
-2）然后通过观测的数据，按照公式
+2)然后通过观测的数据，按照公式
 $$
 w_{t}^{i}=p\left(x_{t} | z_{t}^{i}\right) w_{t-1}^{i}
 $$
