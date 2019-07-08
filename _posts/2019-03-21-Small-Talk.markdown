@@ -199,3 +199,8 @@ ICP的求解方法有两种：
 
 ##### 逆滤波器是什么？作用是什么？
 
+##### 谭平《从相机标定到SLAM》中的问题
+* 确定空间二次曲线需要多少个点？一个圆和一条无穷远直线相交的条件如何求？
+* （谭平 The Circular Points on a 2D Plane)
+* Zhang Zhengyou相机标定每次求出两个Circular Point，通过6个Circular Point求得Absolute Conic标定
+
