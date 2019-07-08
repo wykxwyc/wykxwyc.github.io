@@ -49,6 +49,12 @@ rosbag play *.bag --clock --topic /velodyne_points /imu/data
 ```
 播放当前目录下所有bag中的`/velodyne_points`和`/imu/data`topic
 
+```shell
+rosbag filter 2018-12-28-16-04-36.bag velodyne_and_imu_data_raw.bag "topic == '/velodyne_points' or topic == '/imu/data_raw'"
+```
+创建一个新bag`velodyne_and_imu_data_raw.bag`,在新bag中只有`/velodyne_points`和`/imu/data_raw`两个话题
+
+
 创建package
 ```
 cd ~/catkin_ws/src
@@ -88,11 +94,14 @@ catkin_create_pkg topic_demo roscpp rospy stdmsg
 单独编译某几个package
 `catkin_make --pkg <pkg name A> <pkg name B>`
 
-发布tf信息 0.12x位移 0y位移 0.28z位移 0 0 0角度 10发布数据时间间隔
+发布tf信息 0.12x位移 0y位移 0.28z位移 0 0 0角度 10发布数据时间间隔      
 `rosrun tf static_transform_publisher 0.12 0 0.28 0 0 0 base_link imu_link 10`
 
-启动map_server，发布地图
+启动map_server，发布地图      
 `rosrun map_server map_server my_map.yaml`
+
+打印某几个坐标系之间的`tf`数据,(打印带有/base_footprint的tf数据,grep -C 10,匹配前后的10行 grep -A 前面,grep -B 后面)       
+rostopic echo /tf |grep /base_footprint -C 10
 
 
 ###### cmake编译
@@ -190,36 +199,34 @@ git config --global user.name "my_user_name"
 git config --global user.email "my_email@email.com"
 ```
 
-产生公匙并保存在本地
+产生公匙并保存在本地      
 ```
 ssh-keygen -t rsa -C "my_email@email.com"
 ```
 
-显示保存在/c/Users/user_name/.ssh/下的公匙并复制，然后打开github.com，在`Account settings`的`SSH and GPG Keys`中点击`New SSH Key`，并将复制的填入
+显示保存在`/c/Users/user_name/.ssh/`下的公匙并复制，然后打开github.com，在`Account settings`的`SSH and GPG Keys`中点击`New SSH Key`，并将复制的填入
 `cat /c/Users/my_user_name/.ssh/id_rsa.pub`
 
-添加远程仓库（如果没有则先新建远程仓库）
+添加远程仓库（如果没有则先新建远程仓库）      
 ```
 git remote add origin git@github.com:user_name/repertory.git
 ```
 
-从远端仓库中获得代码并与本地的合并
+从远端仓库中获得代码并与本地的合并      
 ```
 git pull origin master
 ```
 
-对所有文件都取消跟踪的话，就是
+对所有文件都取消跟踪的话，就是      
 ```shell
 git rm -r --cached . 　　//不删除本地文件
-
 git rm -r --f . 　　//删除本地文件
 ```
  
 
-对某个文件取消跟踪
+对某个文件取消跟踪      
 ```shell
 git rm --cached readme1.txt   //删除readme1.txt的跟踪，并保留在本地。
-
 git rm --f readme1.txt    //删除readme1.txt的跟踪，并且删除本地文件。
 ```
 
