@@ -511,20 +511,20 @@ upper_bound at position 6
 * signal driven IO - 信号驱动IO
 * asynchronous IO - 异步IO
 
-摘录地址：[https://www.jianshu.com/p/b8203d46895c](https://www.jianshu.com/p/b8203d46895c) :https://www.jianshu.com/p/b8203d46895c      
+摘录地址：[https://www.jianshu.com/p/b8203d46895c](https://www.jianshu.com/p/b8203d46895c)      
 
 
 ##### IO多路复用的三种机制select，poll，epoll
-1.select      
+**1.select**      
 1)使用select函数进行IO请求和同步阻塞模型没有太大的区别,甚至还多了添加监视socket，以及调用select函数的额外操作，效率更差.但在一个线程内同时处理多个socket的IO请求。      
 2）每次调用select，都需要把fd_set集合从用户态拷贝到内核态，如果fd_set集合很大时，那这个开销也很大      
 3）每次调用select都需要在内核遍历传递进来的所有fd_set，如果fd_set集合很大时，那这个开销也很大      
 4）为了减少数据拷贝带来的性能损坏，内核对被监控的fd_set集合大小做了限制，并且这个是通过宏控制的，大小不可改变(限制为1024)      
 
-2.poll      
+**2.poll**      
 poll只解决了上面的问题4，并没有解决问题2，3的性能开销问题。      
 
-3.epoll      
+**3.epoll**      
 1）基于事件驱动的I/O方式      
 2）epoll没有描述符个数限制，使用一个文件描述符管理多个描述符      
 3）将用户关心的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次      
