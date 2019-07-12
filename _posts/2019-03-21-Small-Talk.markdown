@@ -7,6 +7,7 @@ author:     "wykxwyc"
 header-img: "img/post-bg-common-majime-punch.jpg"
 tags:
     - SLAM
+	- C++
 ---
 
 
@@ -220,7 +221,7 @@ $$
 ![SVD](/img/in-post/post-Small-Talk/SVD_1.jpg)
 ![SVD](/img/in-post/post-Small-Talk/SVD_2.jpg)
 
-###### P3P
+##### P3P
 利用3对匹配点求解PnP的问题。3对点构成了一个三棱锥,一共有3个侧面，3个余弦定理构成3个方程。化简方程后得到两个比值`x`和`y`,然后求解得到旋转`R`和平移`t`。问题是如何从`x`和`y`求解`R`和`t`?
 
 ##### 3D-3D:ICP
@@ -539,3 +540,64 @@ poll只解决了上面的问题4，并没有解决问题2，3的性能开销问�
 * （谭平 The Circular Points on a 2D Plane)
 * Zhang Zhengyou相机标定每次求出两个Circular Point，通过6个Circular Point求得Absolute Conic标定
 
+##### C++动态分配内存类名后有无括号的区别
+1.没有定义默认构造函数(包括复合默认构造函数)      
+使用`ClassName c=new ClassName()`后，类的成员变量初始化；      
+使用`ClassName c=new ClassName`后，类的成员变量`没有`初始化；      
+```
+#include "solution.h"
+#include <bits/stdc++.h>
+using namespace std;
+
+class ClassName {
+public:
+    int a;
+};
+
+class ClassName_2 {
+public:
+    int b;
+};
+
+int main(){
+    ClassName *s=new ClassName();
+    cout<<s->a<<endl;
+
+    ClassName_2 *c=new ClassName_2;
+    cout<<c->b<<endl;
+    return 0;
+}
+```
+输出结果：      
+```
+0
+5374148
+```
+
+2.定义了默认构造函数(含复合默认构造函数)     
+加不加括号，都调用类的默认构造函数，成员变量是否初始化和默认构造函数内部有关，由用户决定；      
+```
+#include "solution.h"
+#include <bits/stdc++.h>
+using namespace std;
+
+class SubMatrix {
+public:
+    int a;
+    SubMatrix(){
+        cout<<"a="<<a<<endl;
+    }
+};
+
+int main(){
+    SubMatrix *s=new SubMatrix;
+    cout<<s->a<<endl;
+    return 0;
+}
+
+```
+输出结果：      
+```
+a=5928760
+5928760
+```
