@@ -7,7 +7,6 @@ author:     "wykxwyc"
 header-img: "img/post-bg-common-majime-punch.jpg"
 tags:
     - SLAM
-	- C++
 ---
 
 
