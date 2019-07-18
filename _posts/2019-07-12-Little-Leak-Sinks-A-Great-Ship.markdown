@@ -104,7 +104,7 @@ template <class T, class Container = vector<T>,
 explicit priority_queue (const Compare& comp = Compare(),
                          Container&& ctnr = Container());
 ```
-摘自：
+摘自：      
 [sort](http://www.cplusplus.com/reference/algorithm/sort/)     
 [priority_queue](http://www.cplusplus.com/reference/queue/priority_queue/)      
 
@@ -120,7 +120,10 @@ explicit priority_queue (const Compare& comp = Compare(),
 
 ##### Heyijia写的粒子滤波器(经过其他人合并)
 [https://blog.csdn.net/piaoxuezhong/article/details/78619150](https://blog.csdn.net/piaoxuezhong/article/details/78619150)      
- 
+
+##### 记录一个基础知识的github账号地址 
+[https://github.com/CyC2018/CS-Notes/tree/master/docs/notes](https://github.com/CyC2018/CS-Notes/tree/master/docs/notes)      
+
 ##### C++二分查找的函数
 lower_bound( begin,end,num)：      
 从数组的begin位置到end-1位置二分查找第一个大于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。      
@@ -236,10 +239,6 @@ a=5928760
 5928760
 ```
 
-##### 记录一个基础知识的github账号地址   
-[https://github.com/CyC2018/CS-Notes/tree/master/docs/notes](https://github.com/CyC2018/CS-Notes/tree/master/docs/notes)
-
-
 ##### C++成员变量的初始化调用顺序
 1.成员变量声明时初始化       
 2.构造函数列表初始化(有个知识点，列表初始化的顺序是和声明的顺序一样的)      
@@ -283,6 +282,10 @@ delete x;
 
 **析构函数可以且常常是虚函数**      
 * C++类有继承时，析构函数必须为虚函数。如果不是虚函数，则使用时可能存在内存泄漏的问题。      
+
+
+##### 虚函数可以声明为内联函数吗？
+不可以，因为内联函数在编译时就要绑定，但虚函数在运行时才能绑定。
 
 
 
