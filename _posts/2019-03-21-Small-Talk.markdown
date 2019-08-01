@@ -401,3 +401,4 @@ $$
 * （谭平 The Circular Points on a 2D Plane)
 * Zhang Zhengyou相机标定每次求出两个Circular Point，通过6个Circular Point求得Absolute Conic标定
 
+##### 对一个点/向量/平面进行坐标系变换的公式表示？

@@ -20,19 +20,20 @@ ___目录___
 
 ---
 
-## mapOptmization.cpp
-
+#### mapOptmization.cpp总体功能论述
 > mapOptmization.cpp进行的内容主要是地图优化，将得到的局部地图信息融合到全局地图中去。
 
-### main
-`main()`函数的关键代码就三条，最重要的是`run()`函数：
+#### mapOptimization.cpp整体框图架构
+
+#### main
+`main()`函数的关键代码就三条，也就是三个不同的线程，最重要的是`run()`函数：      
 ```cpp
 std::thread loopthread(&mapOptimization::loopClosureThread, &MO);
 std::thread visualizeMapThread(&mapOptimization::visualizeGlobalMapThread, &MO);
 MO.run();
 ```
-详细的`main()`函数的内容如下：
 
+详细的`main()`函数的内容如下：      
 ```
 int main(int argc, char** argv)
 {
@@ -65,11 +66,10 @@ int main(int argc, char** argv)
 }
 ```
 
-
----
-
-### loopthread
-分析一下`std::thread loopthread(...)`部分的代码，它的主要功能是进行闭环检测和闭环修正。关于`std::thread`的构造函数可以查看[这里](http://www.cplusplus.com/reference/thread/thread/thread/ "std::thread")。其中关于std::thread 的构造函数之一：
+#### loopthread
+分析一下`std::thread loopthread(...)`部分的代码，它的主要功能是进行闭环检测和闭环修正。      
+关于`std::thread`的构造函数可以参考[这里](http://www.cplusplus.com/reference/thread/thread/thread/ "std::thread")。      
+其中关于std::thread 的构造函数之一：
 
 ```cpp
 template <class Fn, class... Args>
@@ -187,7 +187,7 @@ void performLoopClosure(){
 
 ---
 
-### visualizeMapThread
+#### visualizeMapThread
 
 `visualizeGlobalMapThread()`代码：
 ```cpp
@@ -424,7 +424,10 @@ void scan2MapOptimization(){
 
 上面`laserCloudCornerFromMapDSNum`和`laserCloudSurfFromMapDSNum`是我们在函数`extractSurroundingKeyFrames()`中刚刚更新的。
 
-关于上面的三个优化函数，参考这里：[cornerOptimization](#cornerOptimization)，[surfOptimization](#surfOptimization)，[LMOptimization](#LMOptimization)。
+关于上面的三个优化函数，在下文中有对优化函数的详细分析：      
+1.关于特征边缘的优化：[cornerOptimization](https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/#corneroptimization);      
+2.关于特征平面的优化：[surfOptimization](https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/#surfOptimization);      
+3.关于特征边缘和特征平面的联合L-M优化方法：[LMOptimization](https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/#LMOptimization)。      
 
 
 ---
@@ -439,8 +442,8 @@ saveKeyFramesAndFactor(){
 	2. 如果是刚刚初始化，cloudKeyPoses3D为空，
 		那么NonlinearFactorGraph增加一个PriorFactor因子，
 		initialEstimate的数据类型是Values（其实就是一个map），这里在0对应的值下面保存一个Pose3，
-    	本次的transformTobeMapped参数保存到transformLast中去。
-    3. 如果本次不是刚刚初始化，从transformLast得到上一次位姿，
+		本次的transformTobeMapped参数保存到transformLast中去。
+	3. 如果本次不是刚刚初始化，从transformLast得到上一次位姿，
     	从transformAftMapped得到本次位姿，
 		gtSAMgraph.add(BetweenFactor),到它的约束中去，
     	initialEstimate.insert(序号，位姿)。
@@ -601,16 +604,21 @@ void clearCloud(){
 函数` void cornerOptimization(int)`基本都是数学公式转化成代码。
 该函数分成了几个部分：
 
-1. 进行坐标变换,转换到全局坐标中去；
-2. 进行5邻域搜索，得到结果后对搜索得到的5点求平均值；
-3. 求矩阵matA1=[ax,ay,az]t*[ax,ay,az]，例如ax代表的是x-cx,表示均值与每个实际值的差值，求取5个之后再次取平均，得到matA1；
-4. 求正交阵的特征值和特征向量，特征值：matD1，特征向量：保存在矩阵`matV1`中。关于求特征值的函数cv::eigen，[官方文档](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga9fa0d58657f60eaa6c71f6fbb40456e3 "doc.opencv.org")中有提到:
+1. 进行坐标变换,转换到全局坐标中去；      
+2. 进行5邻域搜索，得到结果后对搜索得到的5点求平均值；      
+3. 求矩阵matA1=[ax,ay,az]t*[ax,ay,az]，例如ax代表的是x-cx,表示均值与每个实际值的差值，求取5个之后再次取平均，得到matA1；      
+4. 求正交阵的特征值和特征向量，特征值：matD1，特征向量：保存在矩阵`matV1`中。      
+
+关于求特征值的函数cv::eigen，可以参考[opencv官方文档](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga9fa0d58657f60eaa6c71f6fbb40456e3 "doc.opencv.org"):      
 >**src**	input matrix that must have CV_32FC1 or CV_64FC1 type, square size and be symmetrical (src ^T^ == src).
 >**eigenvalues**	output vector of eigenvalues of the same type as src; the eigenvalues are ***stored in the descending order***.
 >**eigenvectors**	output matrix of eigenvectors; it has the same size and type as src; the eigenvectors are stored as subsequent matrix rows, in the same order as the corresponding eigenvalues.
 
-因为求取的特征值是按照降序排列的，所以根据论文里面提到的，***1.如果这是一个边缘特征，则它的一个特征值远大于其余两个；2.如果这是一个平面特征，那么其中一个特征值远小于其余两个特征值***；根据该原则判断要不要进行优化。
-如果没有满足条件1，就不进行优化过程，因为这不是一个边缘特征。
+因为求取的特征值是按照降序排列的，所以根据论文里面提到的：      
+**1.如果这是一个边缘特征，则它的一个特征值远大于其余两个；**      
+**2.如果这是一个平面特征，那么其中一个特征值远小于其余两个特征值；**      
+根据上面两个原则进行判断要不要进行优化。      
+如果没有满足**条件1**，就不进行优化过程，因为这不是一个边缘特征。
 
 5. 如果进行优化，进行优化的过程是这样的：
 先定义3组变量，
