@@ -79,12 +79,10 @@ explicit thread (Fn&& fn, Args&&... args);
 `fn`是一个函数指针，指向成员函数（此处是`loopClosureThread()`）或一个可移动构造函数，关于`fn`的解释：
 
 >***fn***
->A pointer to function, pointer to member, or any kind of move-constructible function object (i.e., an object whose class defines ***operator()***, including closures and function objects).
-The return value (if any) is ignored.
+>A pointer to function, pointer to member, or any kind of move-constructible function object (i.e., an object whose class defines ***operator()***, including closures and function objects).      
+The return value (if any) is ignored.      
 
-
-`loopClosureThread()`函数：
-
+`loopClosureThread()`函数：      
 ```cpp
 void loopClosureThread(){
 
@@ -99,17 +97,16 @@ void loopClosureThread(){
 }
 ```
 
-上面主要的`performLoopClosure()`函数流程：
-1. 先进行闭环检测`detectLoopClosure()`，如果返回`true`,则可能可以进行闭环，否则直接返回，程序结束。
-2. 接着使用icp迭代进行对齐。
-3. 对齐之后判断迭代是否收敛以及噪声是否太大，是则返回并直接结束函数。否则进行迭代后的数据发布处理。
-4. 接下来得到`latestSurfKeyFrameCloud`和`nearHistorySurfKeyFrameCloudDS`之间的位置平移和旋转。
-5. 然后进行图优化过程。
+上面主要的`performLoopClosure()`函数流程：      
+1.先进行闭环检测`detectLoopClosure()`，如果返回`true`,则可能可以进行闭环，否则直接返回，程序结束。      
+2.接着使用icp迭代进行对齐。      
+3.对齐之后判断迭代是否收敛以及噪声是否太大，是则返回并直接结束函数。否则进行迭代后的数据发布处理。      
+4.接下来得到`latestSurfKeyFrameCloud`和`nearHistorySurfKeyFrameCloudDS`之间的位置平移和旋转。      
+5.然后进行图优化过程。      
 
 [RANSAC](https://baike.baidu.com/item/ransac/10993469?fr=aladdin "百度百科")（Random Sample Consensus）是根据一组包含异常数据的样本数据集，计算出数据的数学模型参数，得到有效样本数据的算法。
 
-
-`performLoopClosure()`函数代码：
+`performLoopClosure()`函数代码：      
 ```
 void performLoopClosure(){
 
@@ -200,10 +197,10 @@ void visualizeGlobalMapThread(){
 }
 ```
 
-`publishGlobalMap()`主要进行了3个步骤：
-1. 通过KDTree进行最近邻搜索;
-2. 通过搜索得到的索引放进队列;
-3. 通过两次下采样，减小数据量;
+`publishGlobalMap()`主要进行了3个步骤：      
+1.通过KDTree进行最近邻搜索;      
+2.通过搜索得到的索引放进队列;      
+3.通过两次下采样，减小数据量;      
 
 `publishGlobalMap()`代码：
 ```
@@ -260,18 +257,18 @@ void publishGlobalMap(){
 
 ### run
 
-`run()`是`mapOptimization`类的一个成员变量
-`run()`的运行流程：
-1. 判断是否有新的数据到来并且时间差值小于0.005；
-2. 如果`timeLaserOdometry - timeLastProcessing >= mappingProcessInterval`，则进行以下操作：
-2.1. 将坐标转移到世界坐标系下，得到可用于建图的Lidar坐标，即修改transformTobeMapped的值；
-2.2. 抽取周围的关键帧；
-2.3. 下采样当前scan；
-2.4. 当前scan进行图优化过程；
-2.5. 保存关键帧和因子；
-2.6. 校正位姿；
-2.7. 发布Tf；
-2.8. 发布关键位姿和帧数据；
+`run()`是`mapOptimization`类的一个成员变量      
+`run()`的运行流程：      
+1.判断是否有新的数据到来并且时间差值小于0.005；      
+2.如果`timeLaserOdometry - timeLastProcessing >= mappingProcessInterval`，则进行以下操作：      
+2.1.将坐标转移到世界坐标系下，得到可用于建图的Lidar坐标，即修改transformTobeMapped的值；      
+2.2.抽取周围的关键帧；      
+2.3.下采样当前scan；      
+2.4.当前scan进行图优化过程；      
+2.5.保存关键帧和因子；      
+2.6.校正位姿；      
+2.7.发布Tf；      
+2.8.发布关键位姿和帧数据；      
 
 `run()`函数的代码如下：
 ```cpp
@@ -318,21 +315,21 @@ void run(){
 ### mapOptimization
 mapOptimization类主要是其构造函数`mapOptimization()`的操作上有一些内容：
 
-在构造函数中，mapOptimization订阅了5个话题，发布了6个话题。
-订阅的话题：
-1. `/laser_cloud_corner_last`
-2. `/laser_cloud_surf_last`
-3. `/outlier_cloud_last`
-4. `/laser_odom_to_init`
-5. `/imu/data`
+在构造函数中，mapOptimization订阅了5个话题，发布了6个话题。      
+订阅的话题：      
+1.`/laser_cloud_corner_last`      
+2.`/laser_cloud_surf_last`      
+3.`/outlier_cloud_last`      
+4.`/laser_odom_to_init`      
+5.`/imu/data`      
 
-发布的话题：
-1. `/key_pose_origin`
-2. `/laser_cloud_surround`
-3. `/aft_mapped_to_init`
-4. `/history_cloud`
-5. `/corrected_cloud`
-6. `/recent_cloud`
+发布的话题：      
+1.`/key_pose_origin`      
+2.`/laser_cloud_surround`      
+3.`/aft_mapped_to_init`      
+4.`/history_cloud`      
+5.`/corrected_cloud`      
+6.`/recent_cloud`      
 
 另外，初始化了`ISAM2`对象，以及下采样参数，和分配了内存。
 
@@ -341,7 +338,7 @@ mapOptimization类主要是其构造函数`mapOptimization()`的操作上有一�
 
 ### transformAssociateToMap
 
-`transformAssociateToMap()`函数将坐标转移到世界坐标系下，得到可用于建图的Lidar坐标，即修改了transformTobeMapped的值，其具体公式并没有弄清楚。
+`transformAssociateToMap()`函数将坐标转移到世界坐标系下，得到可用于建图的Lidar坐标，即修改了transformTobeMapped的值。
 
 
 ---
@@ -429,39 +426,38 @@ void scan2MapOptimization(){
 2.关于特征平面的优化：[surfOptimization](https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/#surfOptimization);      
 3.关于特征边缘和特征平面的联合L-M优化方法：[LMOptimization](https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/#LMOptimization)。      
 
-
 ---
 
 ### saveKeyFramesAndFactor
 `void saveKeyFramesAndFactor()`保存关键帧和进行优化的功能。
 整个函数的运行流程如下:
-```
-saveKeyFramesAndFactor(){
-	1. 把上次优化得到的transformAftMapped(3:5)坐标点作为当前的位置，
-		计算和再之前的位置的欧拉距离，距离太小并且cloudKeyPoses3D不为空(初始化时为空)，则结束；
-	2. 如果是刚刚初始化，cloudKeyPoses3D为空，
-		那么NonlinearFactorGraph增加一个PriorFactor因子，
-		initialEstimate的数据类型是Values（其实就是一个map），这里在0对应的值下面保存一个Pose3，
-		本次的transformTobeMapped参数保存到transformLast中去。
-	3. 如果本次不是刚刚初始化，从transformLast得到上一次位姿，
-    	从transformAftMapped得到本次位姿，
-		gtSAMgraph.add(BetweenFactor),到它的约束中去，
-    	initialEstimate.insert(序号，位姿)。
-	4. 不管是否是初始化，都进行优化，isam->update(gtSAMgraph, initialEstimate);
-		得到优化的结果：latestEstimate = isamCurrentEstimate.at<Pose3>(isamCurrentEstimate.size()-1),
-		将结果保存，cloudKeyPoses3D->push_back(thisPose3D);
-		cloudKeyPoses6D->push_back(thisPose6D);
-	5. 对transformAftMapped进行更新;
-	6. 最后保存最终的结果：
-		cornerCloudKeyFrames.push_back(thisCornerKeyFrame);
-    	surfCloudKeyFrames.push_back(thisSurfKeyFrame);
-    	outlierCloudKeyFrames.push_back(thisOutlierKeyFrame);
-}
-```
+
+程序开始：      
+saveKeyFramesAndFactor(){      
+1.把上次优化得到的transformAftMapped(3:5)坐标点作为当前的位置，      
+计算和再之前的位置的欧拉距离，距离太小并且cloudKeyPoses3D不为空(初始化时为空)，则结束；      
+2.如果是刚刚初始化，cloudKeyPoses3D为空，      
+那么NonlinearFactorGraph增加一个PriorFactor因子，      
+initialEstimate的数据类型是Values（其实就是一个map），这里在0对应的值下面保存一个Pose3，      
+本次的transformTobeMapped参数保存到transformLast中去。      
+3.如果本次不是刚刚初始化，从transformLast得到上一次位姿，      
+从transformAftMapped得到本次位姿，      
+gtSAMgraph.add(BetweenFactor),到它的约束中去，      
+initialEstimate.insert(序号，位姿)。      
+4.不管是否是初始化，都进行优化，isam->update(gtSAMgraph, initialEstimate);      
+得到优化的结果：latestEstimate = isamCurrentEstimate.at<Pose3>(isamCurrentEstimate.size()-1),      
+将结果保存，cloudKeyPoses3D->push_back(thisPose3D);      
+cloudKeyPoses6D->push_back(thisPose6D);      
+5.对transformAftMapped进行更新;      
+6.最后保存最终的结果：      
+cornerCloudKeyFrames.push_back(thisCornerKeyFrame);      
+surfCloudKeyFrames.push_back(thisSurfKeyFrame);      
+outlierCloudKeyFrames.push_back(thisOutlierKeyFrame);      
+}      
+程序结束      
 
 ---
-关于`Rot3`和`Point3`和`Pose3`:
-
+关于`Rot3`,`Point3`和`Pose3`的定义：      
 >static Rot3 	RzRyRx (double x, double y, double z),Rotations around Z, Y, then X axes;
 >
 >源码里面RzRyRx依次按照z(transformTobeMapped[2])，y(transformTobeMapped[0])，x(transformTobeMapped[1])坐标轴旋转
@@ -474,7 +470,6 @@ Pose3 (const Rot3 &R, const Point3 &t) Construct from R,t. 从旋转和平移构
 ---
 
 关于`gtsam::ISAM2::update`函数原型:
-
 
 >ISAM2Result gtsam::ISAM2::update (const NonlinearFactorGraph & 	newFactors = NonlinearFactorGraph(),
 >const Values & 	newTheta = Values(),
@@ -699,7 +694,7 @@ if (fabs(pa * laserCloudSurfFromMapDS->points[pointSearchInd[j]].x +
 
 
 ### LMOptimization
-`bool LMOptimization(int)`函数是代码中最重要的一个函数，实现的功能是列文伯格-马夸尔特优化。
+`bool LMOptimization(int)`函数是代码中最重要的一个函数，实现的功能是列文伯格-马夸尔特优化。      
 首先是对`laserCloudOri`中数据的处理，将它放到`matA`中，这部分没有搞懂其数学原理（可能是在求雅克比矩阵？）
 ```cpp
 float arx = (crx*sry*srz*pointOri.x + crx*crz*sry*pointOri.y - srx*sry*pointOri.z) * coeff.x
@@ -715,6 +710,7 @@ float arz = ((crz*srx*sry - cry*srz)*pointOri.x + (-cry*crz-srx*sry*srz)*pointOr
           + (crx*crz*pointOri.x - crx*srz*pointOri.y) * coeff.y
           + ((sry*srz + cry*crz*srx)*pointOri.x + (crz*sry-cry*srx*srz)*pointOri.y)*coeff.z;
 ```
+
 求完matA之后，再计算`matAtA`，`matAtB`，`matX`
 ```
 cv::transpose(matA, matAt);
@@ -722,22 +718,16 @@ matAtA = matAt * matA;
 matAtB = matAt * matB;// matB每个对应点的coeff.intensity = s * pd2(在surfOptimization中和cornerOptimization中有)
 cv::solve(matAtA, matAtB, matX, cv::DECOMP_QR);// 求解matAtA*matX=matAtB得到matX
 ```
-根据[官方文档](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga46630ed6c0ea6254a35f447289bd7404 "cv::transpose")，`cv::transpose(matA,matAt)`将矩阵由`matA`转置生成`matAt`。
+根据[opencv文档](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga46630ed6c0ea6254a35f447289bd7404 "cv::transpose")，`cv::transpose(matA,matAt)`将矩阵由`matA`转置生成`matAt`。
 
-初次优化时，特征值门限设置为100，小于这个值认为是退化了，修改matX，`matX=matP*matX2`
+初次优化时，特征值门限设置为100，小于这个值认为是退化了，修改`matX`，`matX=matP*matX2`
 
 最后将`matX`作为6个量复制到`transformTobeMapped`中去。
-在判断是否是有效的优化时，要求旋转部分的模长大于0.05，平移部分的模长也大于0.05。
-
-*上面的代码并没有完全搞清楚，只是知道了一个大概过程，其中的原理并没有深刻理解*
-
-
-
+在判断是否是有效的优化时，要求旋转部分的模长小于0.05m，平移部分的模长也小于0.05度。
 
 ---
 
-
-mapOptmization.cpp中还有一些函数在本篇笔记中没有进行说明，但是在[源码](https://github.com/wykxwyc/LeGO-LOAM/blob/master/LeGO-LOAM/src/mapOptmization.cpp "wykxwyc的github")中写了注释。
+mapOptmization.cpp中还有一些函数在本篇笔记中没有进行说明，但是在[我的github仓库](https://github.com/wykxwyc/LeGO-LOAM/blob/master/LeGO-LOAM/src/mapOptmization.cpp "wykxwyc的github")中写了注释，如果对你有帮助，请点击注释代码的github仓库右上角star按钮，你的鼓励将给我更多动力。
 
 **(mapOptmization.cpp 完)**
 
