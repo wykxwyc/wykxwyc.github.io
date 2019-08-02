@@ -272,10 +272,10 @@ $$
 
 结合公式LM-b，LM-c      
 $$
-\begin{align}{c}
-\text{loss}=d=D\left(X_{(k+1, i)}^{w}, map\right)
-& =D\left(G\left(X_{(k+1, i)}^{L}, T_{(k+1)}^{w}\right), map\right)
-& =D\left(R \cdot X_{(k+1, i)}^{L}+t, map\right)
+\begin{align}
+& loss=d=D\left(X_{(k+1, i)}^{w}, map\right) \\
+& =D\left(G\left(X_{(k+1, i)}^{L}, T_{(k+1)}^{w}\right), map\right) \\
+& =D\left(R \cdot X_{(k+1, i)}^{L}+t, map\right) \\
 \end{align}      \tag{LM-d}
 $$
 
@@ -317,7 +317,12 @@ $$
 \frac{\partial D( .)}{\partial G( .)}=\frac{\partial d}{\left(\partial X_{((k+1, i))}^{w}\right)}  \tag{LM-g}
 $$
 
-公式LM-g中对全局坐标系中的点求导，可以理解成求一个全局点的移动方向，点在这个方向上移动，d减小得最快。      
+公式LM-g中对全局坐标系中的点求导，可以理解成求一个全局点的移动方向，点在这个方向上移动，
+$$
+d
+$$
+减小得最快。      
+
 所以这个方向就是沿着垂线的方向。      
 所以点到直线的方向就是底边的垂线方向。       
 点到平面的方向就是平面的法线方向。
@@ -340,16 +345,38 @@ $$
 
 同样的做法可以求得
 $$ 
-\frac{\partial\left(R * X_{(k+1, i)}^{L}\right)}{\partial e y}
+\frac{\partial\left(R \times X_{(k+1, i)}^{L}\right)}{\partial e y}
 $$
 以及
 $$ 
-\frac{\partial\left(R * X_{(k+1, i)}^{L}\right)}{\partial e z}
+\frac{\partial\left(R \times X_{(k+1, i)}^{L}\right)}{\partial e z}
 $$
-,分别对应于代码中的ary和arz
- 
+,分别对应于代码中的ary和arz。
 
- 
+**迭代计算的过程**        
+代码中用的是高斯-牛顿法进行迭代计算求解的。
+高斯-牛顿法的基本形式为：
+$$
+J^{T}J \Delta{x}=-J \cdot f(x)
+$$
+
+代码中，雅克比矩阵
+$$
+J
+$$
+为`matA`,
+$$
+matA=\left[\begin{array}{ccc}
+{\frac{\partial{d}}{\partial{roll}}} \\
+{\frac{\partial{d}}{\partial{pitch}}} \\
+{\frac{\partial{d}}{\partial{yaw}}} \\
+{\frac{\partial{d}}{\partial{t_x}}} \\
+{\frac{\partial{d}}{\partial{t_y}}} \\
+{\frac{\partial{d}}{\partial{t_z}}} \\
+\end{array} \right]   \tag{matA}
+$$
+
+
 ### transformFusion中的数学公式
 
 
