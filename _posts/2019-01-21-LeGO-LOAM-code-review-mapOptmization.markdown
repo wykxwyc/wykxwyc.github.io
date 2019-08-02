@@ -23,8 +23,6 @@ ___目录___
 #### mapOptmization.cpp总体功能论述
 > mapOptmization.cpp进行的内容主要是地图优化，将得到的局部地图信息融合到全局地图中去。
 
-#### mapOptimization.cpp整体框图架构
-
 #### main
 `main()`函数的关键代码就三条，也就是三个不同的线程，最重要的是`run()`函数：      
 ```cpp
@@ -274,13 +272,18 @@ void publishGlobalMap(){
 ```cpp
 void run(){
 
-    if (newLaserCloudCornerLast  && std::abs(timeLaserCloudCornerLast  - timeLaserOdometry) < 0.005 &&
-        newLaserCloudSurfLast    && std::abs(timeLaserCloudSurfLast    - timeLaserOdometry) < 0.005 &&
-        newLaserCloudOutlierLast && std::abs(timeLaserCloudOutlierLast - timeLaserOdometry) < 0.005 &&
+    if (newLaserCloudCornerLast  && 
+	std::abs(timeLaserCloudCornerLast  - timeLaserOdometry) < 0.005 &&
+        newLaserCloudSurfLast    && 
+		std::abs(timeLaserCloudSurfLast    - timeLaserOdometry) < 0.005 &&
+        newLaserCloudOutlierLast && 
+		std::abs(timeLaserCloudOutlierLast - timeLaserOdometry) < 0.005 &&
         newLaserOdometry)
     {
-
-        newLaserCloudCornerLast = false; newLaserCloudSurfLast = false; newLaserCloudOutlierLast = false; newLaserOdometry = false;
+        newLaserCloudCornerLast = false; 
+		newLaserCloudSurfLast = false; 
+		newLaserCloudOutlierLast = false; 
+		newLaserOdometry = false;
 
         std::lock_guard<std::mutex> lock(mtx);
 
@@ -348,30 +351,27 @@ mapOptimization类主要是其构造函数`mapOptimization()`的操作上有一�
 该部分的自然语言表述如下：
 ```
 extractSurroundingKeyFrames(){
-	if(cloudKeyPoses3D为空)
-		return；
-	if(进行闭环过程){
-		若recentCornerCloudKeyFrames中的点云数量不够，
-			清空后重新塞入新的点云直至数量够。
-		否则pop队列recentCornerCloudKeyFrames最前端的一个，再往队列尾部push一个；
+if(cloudKeyPoses3D为空) return；
+if(进行闭环过程){
+1.若recentCornerCloudKeyFrames中的点云数量不够， 清空后重新塞入新的点云直至数量够。
+2.否则pop队列recentCornerCloudKeyFrames最前端的一个，再往队列尾部push一个；
 		*laserCloudCornerFromMap += *recentCornerCloudKeyFrames[i];
         *laserCloudSurfFromMap   += *recentSurfCloudKeyFrames[i];
         *laserCloudSurfFromMap   += *recentOutlierCloudKeyFrames[i];
-	}else{
-		/*这里不进行闭环过程*/
-		1.进行半径surroundingKeyframeSearchRadius内的邻域搜索
-		2.双重循环，不断对比surroundingExistingKeyPosesID和surroundingKeyPosesDS中点的index,
-			如果能够找到一样，说明存在关键帧。然后在队列中去掉找不到的元素，留下可以找到的。
-		3.再来一次双重循环，这部分比较有技巧，
-			这里把surroundingExistingKeyPosesID内没有对应的点放进一个队列里，
-			这个队列专门存放周围存在的关键帧，
-			但是和surroundingExistingKeyPosesID的点不在同一行。
-			关于行，需要参考intensity数据的存放格式，
-			整数部分和小数部分代表不同意义。
-	}
-	不管是否进行闭环过程，最后的输出都要进行一次下采样减小数据量的过程。
-	最后的输出结果是laserCloudCornerFromMapDS和laserCloudSurfFromMapDS。
-	
+}else{
+/*这里不进行闭环过程*/
+1.进行半径surroundingKeyframeSearchRadius内的邻域搜索
+2.双重循环，不断对比surroundingExistingKeyPosesID和surroundingKeyPosesDS中点的index,
+如果能够找到一样，说明存在关键帧。然后在队列中去掉找不到的元素，留下可以找到的。
+3.再来一次双重循环，这部分比较有技巧，
+这里把surroundingExistingKeyPosesID内没有对应的点放进一个队列里，
+这个队列专门存放周围存在的关键帧，
+但是和surroundingExistingKeyPosesID的点不在同一行。
+关于行，需要参考intensity数据的存放格式，
+整数部分和小数部分代表不同意义。
+}
+不管是否进行闭环过程，最后的输出都要进行一次下采样减小数据量的过程。
+最后的输出结果是laserCloudCornerFromMapDS和laserCloudSurfFromMapDS。
 }
 ```
 
@@ -380,13 +380,13 @@ extractSurroundingKeyFrames(){
 ### downsampleCurrentScan
 `downsampleCurrentScan()`这部分可以说的不多，代码也很短。
 总体过程如下:
-
-	1. 下采样laserCloudCornerLast得到laserCloudCornerLastDS；
-	2. 下采样laserCloudSurfLast得到laserCloudSurfLastDS;
-	3. 下采样laserCloudOutlierLast得到laserCloudOutlierLastDS;
-	4. laserCloudSurfLastDS和laserCloudOutlierLastDS相加，得到laserCloudSurfTotalLast；
-	5. 下采样得到laserCloudSurfTotalLast，得到得到laserCloudSurfTotalLastDS;
-
+```
+1.下采样laserCloudCornerLast得到laserCloudCornerLastDS；
+2.下采样laserCloudSurfLast得到laserCloudSurfLastDS;
+3.下采样laserCloudOutlierLast得到laserCloudOutlierLastDS;
+4.laserCloudSurfLastDS和laserCloudOutlierLastDS相加，得到laserCloudSurfTotalLast；
+5.下采样得到laserCloudSurfTotalLast，得到得到laserCloudSurfTotalLastDS;
+```
 
 ---
 
@@ -432,6 +432,7 @@ void scan2MapOptimization(){
 `void saveKeyFramesAndFactor()`保存关键帧和进行优化的功能。
 整个函数的运行流程如下:
 
+```
 程序开始：      
 saveKeyFramesAndFactor(){      
 1.把上次优化得到的transformAftMapped(3:5)坐标点作为当前的位置，      
@@ -455,30 +456,36 @@ surfCloudKeyFrames.push_back(thisSurfKeyFrame);
 outlierCloudKeyFrames.push_back(thisOutlierKeyFrame);      
 }      
 程序结束      
+```
 
 ---
 关于`Rot3`,`Point3`和`Pose3`的定义：      
->static Rot3 	RzRyRx (double x, double y, double z),Rotations around Z, Y, then X axes;
->
->源码里面RzRyRx依次按照z(transformTobeMapped[2])，y(transformTobeMapped[0])，x(transformTobeMapped[1])坐标轴旋转
->
->Point3 (double x, double y, double z)  Construct from x(transformTobeMapped[5]), y(transformTobeMapped[3]), and z(transformTobeMapped[4]) coordinates.
-> 
-Pose3 (const Rot3 &R, const Point3 &t) Construct from R,t. 从旋转和平移构造姿态
 
+```
+// Rotations around Z, Y, then X axes;
+static Rot3 RzRyRx (double x, double y, double z)
+
+// 源码里面RzRyRx依次按照z(transformTobeMapped[2])，y(transformTobeMapped[0])，x(transformTobeMapped[1])坐标轴旋转
+// Construct from x(transformTobeMapped[5]), y(transformTobeMapped[3]), and z(transformTobeMapped[4]) coordinates.
+Point3 (double x, double y, double z)  
+
+// Construct from R,t 从旋转和平移构造姿态
+Pose3 (const Rot3 &R, const Point3 &t) 
+```
 
 ---
 
 关于`gtsam::ISAM2::update`函数原型:
 
->ISAM2Result gtsam::ISAM2::update (const NonlinearFactorGraph & 	newFactors = NonlinearFactorGraph(),
->const Values & 	newTheta = Values(),
->const std::vector< size_t > & 	removeFactorIndices = std::vector<size_t>(),
->const boost::optional< FastMap< Key, int > > & 	constrainedKeys = boost::none,
->const boost::optional< FastList< Key > > & 	noRelinKeys = boost::none,
->const boost::optional< FastList< Key > > & 	extraReelimKeys = boost::none,
->bool 	force_relinearize = false )	
-
+```
+ISAM2Result gtsam::ISAM2::update (const NonlinearFactorGraph & 	newFactors = NonlinearFactorGraph(),
+const Values & 	newTheta = Values(),
+const std::vector< size_t > & 	removeFactorIndices = std::vector<size_t>(),
+const boost::optional< FastMap< Key, int > > & 	constrainedKeys = boost::none,
+const boost::optional< FastList< Key > > & 	noRelinKeys = boost::none,
+const boost::optional< FastList< Key > > & 	extraReelimKeys = boost::none,
+bool 	force_relinearize = false )	
+```
 
 在源码中，有对update的调用：
 >```
@@ -597,12 +604,12 @@ void clearCloud(){
 
 ### cornerOptimization
 函数` void cornerOptimization(int)`基本都是数学公式转化成代码。
-该函数分成了几个部分：
 
-1. 进行坐标变换,转换到全局坐标中去；      
-2. 进行5邻域搜索，得到结果后对搜索得到的5点求平均值；      
-3. 求矩阵matA1=[ax,ay,az]t*[ax,ay,az]，例如ax代表的是x-cx,表示均值与每个实际值的差值，求取5个之后再次取平均，得到matA1；      
-4. 求正交阵的特征值和特征向量，特征值：matD1，特征向量：保存在矩阵`matV1`中。      
+该函数分成了几个部分：      
+1.进行坐标变换,转换到全局坐标中去；      
+2.进行5邻域搜索，得到结果后对搜索得到的5点求平均值；      
+3.求矩阵matA1=[ax,ay,az]t*[ax,ay,az]，例如ax代表的是x-cx,表示均值与每个实际值的差值，求取5个之后再次取平均，得到matA1；      
+4.求正交阵的特征值和特征向量，特征值：matD1，特征向量：保存在矩阵`matV1`中。      
 
 关于求特征值的函数cv::eigen，可以参考[opencv官方文档](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga9fa0d58657f60eaa6c71f6fbb40456e3 "doc.opencv.org"):      
 >**src**	input matrix that must have CV_32FC1 or CV_64FC1 type, square size and be symmetrical (src ^T^ == src).
@@ -634,22 +641,24 @@ float z2 = cz - 0.1 * matV1.at<float>(0, 2);
 // l12表示的是0.2*(||V1[0]||)
 float l12 = sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2) + (z1 - z2)*(z1 - z2));
 ```
+
 最后再求一次叉乘：
 ```
 // 求叉乘结果[la',lb',lc']=[(x1-x2),(y1-y2),(z1-z2)]x[XXX,YYY,ZZZ]
 // [la,lb,lc]=[la',lb',lc']/a012/l12
+// 得到底边上的高的方向向量[la,lb,lc]
 float la =...
 float lb =...
 float lc =...
 float ld2 = a012 / l12;
 ```
+
+这里涉及到一个鲁棒核函数，作者简单地设计了这个核函数。
 ```
 float s = 1 - 0.9 * fabs(ld2);
 ```
 程序末尾根据`s`的值来判断是否将点云点放入点云集合`laserCloudOri`以及`coeffSel`中。
-
-
-***但是关于上述方法的基本原理并没有搞明白。***
+对上述原理更进一步的数学解释可以参看[LeGO-LOAM中的数学公式推导](https://wykxwyc.github.io/2019/08/01/The-Math-Formula-in-LeGO-LOAM/)
 
 
 ---
@@ -657,10 +666,17 @@ float s = 1 - 0.9 * fabs(ld2);
 ### surfOptimization
  `void surfOptimization(int)`函数进行面优化，内容和函数`cornerOptimization(int)`的内容基本相同。
 步骤如下：
-1. 进行坐标变换,转换到全局坐标中去；
-2. 进行5邻域搜索，得到结果后判断搜索结果是否满足条件(`pointSearchSqDis[4] < 1.0`)，不满足条件就不需要进行优化；
-3. 将搜索结果全部保存到`matA0`中，形成一个5x3的矩阵；
-4. 解这个矩阵`cv::solve(matA0, matB0, matX0, cv::DECOMP_QR);`,关于`cv::solve`函数，参考[官网](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga12b43690dbd31fed96f213eefead2373 "opencv官网")。`matB0`是一个5x1的矩阵，需要求解的`matX0`是3x1的矩阵；
+
+1. 进行坐标变换,转换到全局坐标中去；      
+
+2. 进行5邻域搜索，得到结果后判断搜索结果是否满足条件(`pointSearchSqDis[4] < 1.0`)，不满足条件就不需要进行优化；     
+
+3. 将搜索结果全部保存到`matA0`中，形成一个5x3的矩阵；      
+
+4. 解这个矩阵`cv::solve(matA0, matB0, matX0, cv::DECOMP_QR);`。      
+关于`cv::solve`函数，参考[官网](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga12b43690dbd31fed96f213eefead2373 "opencv官网")。      
+`matB0`是一个5x1的矩阵，需要求解的`matX0`是3x1的矩阵；   
+   
 ```cpp
 bool cv::solve	(	
 InputArray 	src1,
@@ -669,13 +685,17 @@ OutputArray 	dst,
 int 	flags = DECOMP_LU 
 )
 ```
-关于参数的解释：
->**src1**	input matrix on the left-hand side of the system.
->**src2**	input matrix on the right-hand side of the system.
->**dst**	output solution.
->**flags**	solution (matrix inversion) method (DecompTypes)
 
-所以函数其实是在求解方程`matA0*matX0=matB0`，最后求得`matX0`。这个公式其实是在求由`matA0`中的点构成的平面的法向量`matX0`。
+关于参数的解释：
+> **src1**	input matrix on the left-hand side of the system.      
+> **src2**	input matrix on the right-hand side of the system.      
+> **dst**	output solution.      
+> **flags**	solution (matrix inversion) method (DecompTypes)      
+
+所以函数其实是在求解方程`matA0*matX0=matB0`，最后求得`matX0`。      
+这个公式其实是在求由`matA0`中的点构成的平面的法向量`matX0`。
+
+
 5. 求解得到的`matX0=[pa,pb,pc,pd]`，对`[pa,pb,pc,pd]`进行单位化，
 `matB0=[-1,-1,-1,-1,-1]^t`，关于`matB0`为什么全是-1而不是0的问题：
 ```cpp
@@ -686,16 +706,19 @@ if (fabs(pa * laserCloudSurfFromMapDS->points[pointSearchInd[j]].x +
     break;
 }
 ```
-因为`pd=1`，所以在求解的时候设置了`matB0`全为-1，这里再次判断求解的方向向量和每个点相乘，最后结果是不是在误差范围内。如果误差太大就不把当前点`pointSel`放到点云中去了。
-6. 误差在允许的范围内的话把这个点放到点云`laserCloudOri`中去，把关于误差的系数`coeff`放到`coeffSel`中。
+因为`pd=1`，所以在求解的时候设置了`matB0`全为-1。      
+这里再次判断求解的方向向量和每个点相乘，最后结果是不是在误差范围内。      
+如果误差太大就不把当前点`pointSel`放到点云中去了。 
+
+6. 误差在允许的范围内的话把这个点放到点云`laserCloudOri`中去，把对应的向量`coeff`放到`coeffSel`中。
 
 
 ---
 
 
 ### LMOptimization
-`bool LMOptimization(int)`函数是代码中最重要的一个函数，实现的功能是列文伯格-马夸尔特优化。      
-首先是对`laserCloudOri`中数据的处理，将它放到`matA`中，这部分没有搞懂其数学原理（可能是在求雅克比矩阵？）
+`bool LMOptimization(int)`函数是代码中最重要的一个函数，实现的功能是高斯牛顿优化(虽然写了是LMOptimization，但其实是用的高斯牛顿的方法)。      
+首先是对`laserCloudOri`中数据的处理，将它放到`matA`中，`matA`就是误差对旋转和平移变量的雅克比矩阵      
 ```cpp
 float arx = (crx*sry*srz*pointOri.x + crx*crz*sry*pointOri.y - srx*sry*pointOri.z) * coeff.x
              + (-srx*srz*pointOri.x - crz*srx*pointOri.y - crx*pointOri.z) * coeff.y
@@ -711,12 +734,12 @@ float arz = ((crz*srx*sry - cry*srz)*pointOri.x + (-cry*crz-srx*sry*srz)*pointOr
           + ((sry*srz + cry*crz*srx)*pointOri.x + (crz*sry-cry*srx*srz)*pointOri.y)*coeff.z;
 ```
 
-求完matA之后，再计算`matAtA`，`matAtB`，`matX`
+求完matA之后，再计算`matAtA`，`matAtB`，`matX`，方便后面的计算      
 ```
 cv::transpose(matA, matAt);
 matAtA = matAt * matA;
 matAtB = matAt * matB;// matB每个对应点的coeff.intensity = s * pd2(在surfOptimization中和cornerOptimization中有)
-cv::solve(matAtA, matAtB, matX, cv::DECOMP_QR);// 求解matAtA*matX=matAtB得到matX
+cv::solve(matAtA, matAtB, matX, cv::DECOMP_QR);// 求解matAtA*matX=matAtB得到matX，高斯牛顿方程的解
 ```
 根据[opencv文档](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga46630ed6c0ea6254a35f447289bd7404 "cv::transpose")，`cv::transpose(matA,matAt)`将矩阵由`matA`转置生成`matAt`。
 

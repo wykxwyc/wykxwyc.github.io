@@ -359,3 +359,4 @@ $$
 1.苦力笨笨的博客:[https://www.cnblogs.com/terencezhou/p/6235974.html](https://www.cnblogs.com/terencezhou/p/6235974.html)      
 2.知乎SLAM专栏-「能儿」的回答：[https://zhuanlan.zhihu.com/p/57351961](https://zhuanlan.zhihu.com/p/57351961)        
 3.mathworld.wolfram.com:[http://mathworld.wolfram.com/RotationMatrix.html](http://mathworld.wolfram.com/RotationMatrix.html)      
+4.维基百科旋转矩阵解释:[https://en.wikipedia.org/wiki/Euler_angles#Definition_by_intrinsic_rotations](https://en.wikipedia.org/wiki/Euler_angles#Definition_by_intrinsic_rotations)      
