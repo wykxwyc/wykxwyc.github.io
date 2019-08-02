@@ -199,9 +199,9 @@ $$
 
 **LeGO中的坐标旋转问题**      
 LeGO中的局部坐标系下的点转换到全局坐标系中去的过程在**pointAssociateToMap中对坐标变换的数学表达**中以及说明,根据公式PA-2，我们可以得到pointAssociateToMap对点进行的坐标变换：      
-旋转：
+旋转(记为公式RO-5)：      
 $$
-R=\left[\begin{array}{ccc}{cos_{ex} cos_{ez}+sin_{ex} sin_{ey} sin_{ez}} & {cos_{ez} sin_{ex} sin_{ey}-cos_{ex} sin_{ez}} & {cos_{ey} sin_{ex}} \\ {cos_{ey} sin_{ez}} & {cos_{ey} cos_{ez}} & {-sin_{ey}} \\ {cos_{ex} sin_{ey} sin_{ez}-cos_{ez} sin_{ex}} & {cos_{ex} cos_{ez} sin_{ey}+sin_{ex} sin_{ez}} & {cos_{ex} cos_{ey}}\end{array}\right]   \tag{RO-5}
+R=\left[\begin{array}{ccc}{cos_{ex} cos_{ez}+sin_{ex} sin_{ey} sin_{ez}} & {cos_{ez} sin_{ex} sin_{ey}-cos_{ex} sin_{ez}} & {cos_{ey} sin_{ex}} \\ {cos_{ey} sin_{ez}} & {cos_{ey} cos_{ez}} & {-sin_{ey}} \\ {cos_{ex} sin_{ey} sin_{ez}-cos_{ez} sin_{ex}} & {cos_{ex} cos_{ez} sin_{ey}+sin_{ex} sin_{ez}} & {cos_{ex} cos_{ey}}\end{array}\right]
 $$
 
 平移：
@@ -272,7 +272,11 @@ $$
 
 结合公式LM-b，LM-c      
 $$
-\text {loss}=d=D\left(X_{(k+1, i)}^{w}, map\right)=D\left(G\left(X_{(k+1, i)}^{L}, T_{(k+1)}^{w}\right), map\right)=D\left(R \cdot X_{(k+1, i)}^{L}+t, map\right)  \tag{LM-d}
+\begin{align}{c}
+\text{loss}=d=D\left(X_{(k+1, i)}^{w}, map\right)
+& =D\left(G\left(X_{(k+1, i)}^{L}, T_{(k+1)}^{w}\right), map\right)
+& =D\left(R \cdot X_{(k+1, i)}^{L}+t, map\right)
+\end{align}      \tag{LM-d}
 $$
 
 5.误差对旋转求偏导的过程      
@@ -331,18 +335,18 @@ $$
 {-sx \cdot sz} & {-sx \cdot cz} & {-cx} \\ 
 {cy \cdot cx \cdot sz} & {cy \cdot cz \cdot cx} & {-cy \cdot sx}\end{array}\right] 
 \cdot \left(  p_x,p_y,p_z\right)^T
-\end{align}
- $$  \tag{LM-h}
+\end{align}   \tag{LM-h}
+$$  
 
- 同样的做法可以求得
- $$ 
+同样的做法可以求得
+$$ 
 \frac{\partial\left(R * X_{(k+1, i)}^{L}\right)}{\partial e y}
- $$
- 以及
- $$ 
+$$
+以及
+$$ 
 \frac{\partial\left(R * X_{(k+1, i)}^{L}\right)}{\partial e z}
- $$
-,分别对应于公式中的ary和arz
+$$
+,分别对应于代码中的ary和arz
  
 
  
