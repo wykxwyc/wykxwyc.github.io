@@ -9,7 +9,25 @@ tags:
     - SLAM
     - LeGO-LOAM
 ---
-> 记录重新读LeGO-LOAM的代码时看到的数学运算，记录这些数学运算背后的原理，会随时更新。
+> LeGO-LOAM是一种在LOAM之上进行改进的激光雷达建图方法，建图效果比LOAM要好，但是建图较为稀疏，计算量也更小了。
+>
+>本文原地址：[wykxwyc的博客](https://wykxwyc.github.io/2019/08/01/The-Math-Formula-in-LeGO-LOAM/)
+>
+> github注释后LeGO-LOAM源码：[LeGO-LOAM_NOTED](https://github.com/wykxwyc/LeGO-LOAM_NOTED)
+> 关于代码的详细理解，建议阅读：
+> 
+> 1.[地图优化代码理解](https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/)
+> 
+> 2.[图像重投影代码理解](https://wykxwyc.github.io/2019/01/23/LeGO-LOAM-code-review-imageProjection/)
+> 
+> 3.[特征关联代码理解](https://wykxwyc.github.io/2019/01/24/LeGO-LOAM-code-review-featureAssociation/)
+>
+> 4.[LeGO-LOAM中的数学公式推导](https://wykxwyc.github.io/2019/08/01/The-Math-Formula-in-LeGO-LOAM/)
+> 
+> 以上博客会随时更新，如果对你有帮助，请点击[注释代码](https://github.com/wykxwyc/LeGO-LOAM_NOTED)的github仓库右上角star按钮，你的鼓励将给我更多动力。
+> 
+
+本文 记录重新读LeGO-LOAM的代码时看到的数学运算，记录这些数学运算背后的原理，会随时更新。
 
 ___目录___
 
@@ -291,9 +309,6 @@ $$
 \end{array} \tag{LM-e}
 $$
 
-$$
-
-$$
 
 6.误差对平移求偏导的过程      
   
@@ -308,7 +323,7 @@ $$
 \end{array}    \tag{LM-f}
 $$
 
-6.
+7.
 $$
 \frac{\partial D(\cdot)}{\partial G(\cdot)}
 $$

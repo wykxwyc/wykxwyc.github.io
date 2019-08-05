@@ -10,7 +10,22 @@ tags:
     - LeGO-LOAM
 ---
 
-> This document haven't been completed and will be updated anytime.
+> LeGO-LOAM是一种在LOAM之上进行改进的激光雷达建图方法，建图效果比LOAM要好，但是建图较为稀疏，计算量也更小了。
+>
+>本文原地址：[wykxwyc的博客](https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/)
+>
+> github注释后LeGO-LOAM源码：[LeGO-LOAM_NOTED](https://github.com/wykxwyc/LeGO-LOAM_NOTED)
+> 关于代码的详细理解，建议阅读：
+> 
+> 1.[地图优化代码理解](https://wykxwyc.github.io/2019/01/21/LeGO-LOAM-code-review-mapOptmization/)
+> 
+> 2.[图像重投影代码理解](https://wykxwyc.github.io/2019/01/23/LeGO-LOAM-code-review-imageProjection/)
+> 
+> 3.[特征关联代码理解](https://wykxwyc.github.io/2019/01/24/LeGO-LOAM-code-review-featureAssociation/)
+>
+> 4.[LeGO-LOAM中的数学公式推导](https://wykxwyc.github.io/2019/08/01/The-Math-Formula-in-LeGO-LOAM/)
+> 
+> 以上博客会随时更新，如果对你有帮助，请点击[注释代码](https://github.com/wykxwyc/LeGO-LOAM_NOTED)的github仓库右上角star按钮，你的鼓励将给我更多动力。
 
 
 ___目录___
@@ -228,9 +243,9 @@ void publishGlobalMap(){
 
     for (int i = 0; i < globalMapKeyPosesDS->points.size(); ++i){
 		int thisKeyInd = (int)globalMapKeyPosesDS->points[i].intensity;
-		*globalMapKeyFrames += *transformPointCloud(cornerCloudKeyFrames[thisKeyInd],   &cloudKeyPoses6D->points[thisKeyInd]);
-		*globalMapKeyFrames += *transformPointCloud(surfCloudKeyFrames[thisKeyInd],    &cloudKeyPoses6D->points[thisKeyInd]);
-		*globalMapKeyFrames += *transformPointCloud(outlierCloudKeyFrames[thisKeyInd], &cloudKeyPoses6D->points[thisKeyInd]);
+		*globalMapKeyFrames += *transformPointCloud(cornerCloudKeyFrames[thisKeyInd],&cloudKeyPoses6D->points[thisKeyInd]);
+		*globalMapKeyFrames += *transformPointCloud(surfCloudKeyFrames[thisKeyInd],&cloudKeyPoses6D->points[thisKeyInd]);
+		*globalMapKeyFrames += *transformPointCloud(outlierCloudKeyFrames[thisKeyInd],&cloudKeyPoses6D->points[thisKeyInd]);
     }
 
     // 对globalMapKeyFrames进行下采样
@@ -253,7 +268,7 @@ void publishGlobalMap(){
 
 ---
 
-### run
+#### run
 
 `run()`是`mapOptimization`类的一个成员变量      
 `run()`的运行流程：      
@@ -315,7 +330,7 @@ void run(){
 
 ---
 
-### mapOptimization
+#### mapOptimization
 mapOptimization类主要是其构造函数`mapOptimization()`的操作上有一些内容：
 
 在构造函数中，mapOptimization订阅了5个话题，发布了6个话题。      
@@ -339,14 +354,14 @@ mapOptimization类主要是其构造函数`mapOptimization()`的操作上有一�
 
 ---
 
-### transformAssociateToMap
+#### transformAssociateToMap
 
 `transformAssociateToMap()`函数将坐标转移到世界坐标系下，得到可用于建图的Lidar坐标，即修改了transformTobeMapped的值。
 
 
 ---
 
-### extractSurroundingKeyFrames
+#### extractSurroundingKeyFrames
 `extractSurroundingKeyFrames()`抽取周围关键帧。
 该部分的自然语言表述如下：
 ```
@@ -377,7 +392,7 @@ if(进行闭环过程){
 
 ---
 
-### downsampleCurrentScan
+#### downsampleCurrentScan
 `downsampleCurrentScan()`这部分可以说的不多，代码也很短。
 总体过程如下:
 ```
@@ -391,7 +406,7 @@ if(进行闭环过程){
 ---
 
 
-### scan2MapOptimization
+#### scan2MapOptimization
 `scan2MapOptimization()`是一个对代码进行优化控制的函数，主要在里面调用**面优化**，**边缘优化**以及**L-M优化**。
 该函数控制了进行优化的最大次数为10次，直接贴出代码如下：
 ```cpp
@@ -428,7 +443,7 @@ void scan2MapOptimization(){
 
 ---
 
-### saveKeyFramesAndFactor
+#### saveKeyFramesAndFactor
 `void saveKeyFramesAndFactor()`保存关键帧和进行优化的功能。
 整个函数的运行流程如下:
 
@@ -496,7 +511,7 @@ bool 	force_relinearize = false )
 
 ---
 
-### correctPoses
+#### correctPoses
 `void correctPoses()`的调用只在回环结束时进行(`aLoopIsClosed == true`)
 校正位姿的过程主要是将`isamCurrentEstimate`的x，y，z平移坐标更新到`cloudKeyPoses3D`中，另外还需要更新`cloudKeyPoses6D`的姿态角。
 
@@ -511,7 +526,7 @@ bool 	force_relinearize = false )
 >```
 
 ---
-### publishTF
+#### publishTF
 `void publishTF()`是进行发布坐标变换信息的函数。
 发布的消息类型是`nav_msgs::Odometry`,关于`nav_msgs::Odometry`，可以参考它的[定义]("http://docs.ros.org/jade/api/nav_msgs/html/msg/Odometry.html" "ROS官方文档")。
 
@@ -580,7 +595,7 @@ aftMappedTrans.child_frame_id_ = "/aft_mapped";
 
 ---
 
-### publishKeyPosesAndFrames
+#### publishKeyPosesAndFrames
 `publishKeyPosesAndFrames()`代码很短也很简单。
 如果有节点订阅`"/key_pose_origin"`这个话题，则用`pubKeyPoses`发布`cloudKeyPoses3D`；
 如果有节点订阅`"/recent_cloud"`这个话题，则用`pubRecentKeyFrames`发布`laserCloudSurfFromMapDS`；
@@ -588,7 +603,7 @@ aftMappedTrans.child_frame_id_ = "/aft_mapped";
 
 ---
 
-### clearCloud
+#### clearCloud
 `clearCloud()`很简单，一共四条语句，代码如下：
 ```cpp
 void clearCloud(){
@@ -602,7 +617,7 @@ void clearCloud(){
 ---
 
 
-### cornerOptimization
+#### cornerOptimization
 函数` void cornerOptimization(int)`基本都是数学公式转化成代码。
 
 该函数分成了几个部分：      
@@ -612,6 +627,15 @@ void clearCloud(){
 4.求正交阵的特征值和特征向量，特征值：matD1，特征向量：保存在矩阵`matV1`中。      
 
 关于求特征值的函数cv::eigen，可以参考[opencv官方文档](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga9fa0d58657f60eaa6c71f6fbb40456e3 "doc.opencv.org"):      
+函数的原型是：      
+```
+bool cv::eigen(	InputArray 	src,
+OutputArray 	eigenvalues,
+OutputArray 	eigenvectors = noArray() 
+)	
+```     
+
+其中：      	
 >**src**	input matrix that must have CV_32FC1 or CV_64FC1 type, square size and be symmetrical (src ^T^ == src).
 >**eigenvalues**	output vector of eigenvalues of the same type as src; the eigenvalues are ***stored in the descending order***.
 >**eigenvectors**	output matrix of eigenvectors; it has the same size and type as src; the eigenvectors are stored as subsequent matrix rows, in the same order as the corresponding eigenvalues.
@@ -622,7 +646,7 @@ void clearCloud(){
 根据上面两个原则进行判断要不要进行优化。      
 如果没有满足**条件1**，就不进行优化过程，因为这不是一个边缘特征。
 
-5. 如果进行优化，进行优化的过程是这样的：
+5.如果进行优化，进行优化的过程是这样的：
 先定义3组变量，
 ```cpp
 float x0 = pointSel.x;
@@ -635,14 +659,30 @@ float x2 = cx - 0.1 * matV1.at<float>(0, 0);
 float y2 = cy - 0.1 * matV1.at<float>(0, 1);
 float z2 = cz - 0.1 * matV1.at<float>(0, 2);
 ```
-然后求`[(x0-x1),(y0-y1),(z0-z1)]`与`[(x0-x2),(y0-y2),(z0-z2)]`叉乘得到的向量的模长,即[XXX,YYY,ZZZ]=[(y0-y1)(z0-z2)-(y0-y2)(z0-z1),-(x0-x1)(z0-z2)+(x0-x2)(z0-z1),(x0-x1)(y0-y2)-(x0-x2)(y0-y1)]的模长。
-接着：
+然后求
+$$
+(x_0-x_1,y_0-y_1,z_0-z_1)
+$$
+与
+$$
+(x_0-x_2,y_0-y_2,z_0-z_2)
+$$
+叉乘得到的平行四边形的面积,即      
+$$
+[XXX,YYY,ZZZ]=\\
+[(y_0-y_1)(z_0-z_2)-(y_0-y_2)(z_0-z_1),\\
+-(x_0-x_1)(z_0-z_2)+(x_0-x_2)(z_0-z_1),\\
+(x_0-x_1)(y_0-y_2)-(x_0-x_2)(y_0-_y1)]
+$$
+的模长。      
+
+接着求面积的绝对值：      
 ```
 // l12表示的是0.2*(||V1[0]||)
 float l12 = sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2) + (z1 - z2)*(z1 - z2));
 ```
 
-最后再求一次叉乘：
+最后再求一次叉乘，得到底边高上的单位向量：
 ```
 // 求叉乘结果[la',lb',lc']=[(x1-x2),(y1-y2),(z1-z2)]x[XXX,YYY,ZZZ]
 // [la,lb,lc]=[la',lb',lc']/a012/l12
@@ -653,27 +693,28 @@ float lc =...
 float ld2 = a012 / l12;
 ```
 
-这里涉及到一个鲁棒核函数，作者简单地设计了这个核函数。
+下面涉及到一个鲁棒核函数，作者简单地设计了这个核函数。
 ```
 float s = 1 - 0.9 * fabs(ld2);
 ```
+
 程序末尾根据`s`的值来判断是否将点云点放入点云集合`laserCloudOri`以及`coeffSel`中。
 对上述原理更进一步的数学解释可以参看[LeGO-LOAM中的数学公式推导](https://wykxwyc.github.io/2019/08/01/The-Math-Formula-in-LeGO-LOAM/)
 
 
 ---
 
-### surfOptimization
+#### surfOptimization
  `void surfOptimization(int)`函数进行面优化，内容和函数`cornerOptimization(int)`的内容基本相同。
 步骤如下：
 
-1. 进行坐标变换,转换到全局坐标中去；      
+1.进行坐标变换,转换到全局坐标中去；      
 
-2. 进行5邻域搜索，得到结果后判断搜索结果是否满足条件(`pointSearchSqDis[4] < 1.0`)，不满足条件就不需要进行优化；     
+2.进行5邻域搜索，得到结果后判断搜索结果是否满足条件(`pointSearchSqDis[4] < 1.0`)，不满足条件就不需要进行优化；     
 
-3. 将搜索结果全部保存到`matA0`中，形成一个5x3的矩阵；      
+3.将搜索结果全部保存到`matA0`中，形成一个5x3的矩阵；      
 
-4. 解这个矩阵`cv::solve(matA0, matB0, matX0, cv::DECOMP_QR);`。      
+4.解这个矩阵`cv::solve(matA0, matB0, matX0, cv::DECOMP_QR);`。      
 关于`cv::solve`函数，参考[官网](https://docs.opencv.org/ref/master/d2/de8/group__core__array.html#ga12b43690dbd31fed96f213eefead2373 "opencv官网")。      
 `matB0`是一个5x1的矩阵，需要求解的`matX0`是3x1的矩阵；   
    
@@ -692,11 +733,19 @@ int 	flags = DECOMP_LU
 > **dst**	output solution.      
 > **flags**	solution (matrix inversion) method (DecompTypes)      
 
-所以函数其实是在求解方程`matA0*matX0=matB0`，最后求得`matX0`。      
+所以函数其实是在求解方程
+$$
+matA_0*matX_0=matB_0`
+$$
+，最后求得
+$$
+matX_0
+$$
+。      
 这个公式其实是在求由`matA0`中的点构成的平面的法向量`matX0`。
 
 
-5. 求解得到的`matX0=[pa,pb,pc,pd]`，对`[pa,pb,pc,pd]`进行单位化，
+5.求解得到的`matX0=[pa,pb,pc,pd]`，对`[pa,pb,pc,pd]`进行单位化，
 `matB0=[-1,-1,-1,-1,-1]^t`，关于`matB0`为什么全是-1而不是0的问题：
 ```cpp
 if (fabs(pa * laserCloudSurfFromMapDS->points[pointSearchInd[j]].x +
@@ -710,13 +759,13 @@ if (fabs(pa * laserCloudSurfFromMapDS->points[pointSearchInd[j]].x +
 这里再次判断求解的方向向量和每个点相乘，最后结果是不是在误差范围内。      
 如果误差太大就不把当前点`pointSel`放到点云中去了。 
 
-6. 误差在允许的范围内的话把这个点放到点云`laserCloudOri`中去，把对应的向量`coeff`放到`coeffSel`中。
+6.误差在允许的范围内的话把这个点放到点云`laserCloudOri`中去，把对应的向量`coeff`放到`coeffSel`中。
 
 
 ---
 
 
-### LMOptimization
+#### LMOptimization
 `bool LMOptimization(int)`函数是代码中最重要的一个函数，实现的功能是高斯牛顿优化(虽然写了是LMOptimization，但其实是用的高斯牛顿的方法)。      
 首先是对`laserCloudOri`中数据的处理，将它放到`matA`中，`matA`就是误差对旋转和平移变量的雅克比矩阵      
 ```cpp
@@ -750,7 +799,7 @@ cv::solve(matAtA, matAtB, matX, cv::DECOMP_QR);// 求解matAtA*matX=matAtB得到
 
 ---
 
-mapOptmization.cpp中还有一些函数在本篇笔记中没有进行说明，但是在[我的github仓库](https://github.com/wykxwyc/LeGO-LOAM/blob/master/LeGO-LOAM/src/mapOptmization.cpp "wykxwyc的github")中写了注释，如果对你有帮助，请点击注释代码的github仓库右上角star按钮，你的鼓励将给我更多动力。
+mapOptmization.cpp中还有一些函数在本篇笔记中没有进行说明，但是在[我的github仓库](https://github.com/wykxwyc/LeGO-LOAM_NOTED)"wykxwyc的github")中写了注释，如果对你有帮助，请点击注释代码的github仓库右上角star按钮，你的鼓励将给我更多动力。
 
 **(mapOptmization.cpp 完)**
 
