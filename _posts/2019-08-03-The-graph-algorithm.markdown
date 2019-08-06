@@ -24,7 +24,7 @@ ___目录___
 | Dijstra      | $O(V^2+E)/O(VlgV+ElgV)$   (最小堆) | $O(V)$       |  单源最短路径  |
 | Floyd        | $$ O(V^3) $$                       | $O(V^2)$     |  多源最短路径  |
 | Bellman-Ford |  $O(VE)$                           | $ O(V) $     |  单源最短路径  |
-| SPFA         | $O(VE)$                            |  $O(V)$      |  单源最短路径  |
+| SPFA         |  $O(VE)$                           |  $O(V)$      |  单源最短路径  |
 
 ##### DijkstraFloyd算法特点      
 1.通常用于求单源最短路径；      
@@ -151,11 +151,11 @@ void dijkstra(int vs, vector<vector<int>>& mMatrix,
 // 2->4,3;
 // 3->4,1
 int main(){
-    vector<vector<int>> graph={{},
+    vector<vector<int>> graph={ {},
                                {0,0,1,3,21},
                                {0,INT_MAX,0,1,3},
                                {0,INT_MAX,INT_MAX,0,1},
-                               {0,INT_MAX,INT_MAX,INT_MAX,INT_MAX}};
+                               {0,INT_MAX,INT_MAX,INT_MAX,INT_MAX} };
     // 注意邻接矩阵没有用到graph[0]这一行
     // graph只用到了4x4的矩阵
     vector<int> dist(5,0);
@@ -308,11 +308,11 @@ bool bellman( vector<vector<int>>& graph,vector<int>& dist,int vernum )
 // 3->4,1
 int main()
 {
-    vector<vector<int>> graph={{},
+    vector<vector<int>> graph={ {},
                                {0,0,1,3,21},
                                {0,INT_MAX,0,1,3},
                                {0,INT_MAX,INT_MAX,0,1},
-                               {0,INT_MAX,INT_MAX,INT_MAX,INT_MAX}};
+                               {0,INT_MAX,INT_MAX,INT_MAX,INT_MAX} };
 
     // 注意邻接矩阵没有用到graph[0]这一行
     // graph只用到了4x4的矩阵
