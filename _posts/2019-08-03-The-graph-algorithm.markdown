@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "图的搜索中的各种算法比较"
+title:      "图的遍历以及图的最短路径问题"
 subtitle:   "The comparison of graph-based algorithm"
 date:       2019-08-03
 author:     "wykxwyc"
@@ -22,9 +22,9 @@ ___目录___
 | 算法名称     | 时间复杂度                    | 空间复杂度 |  使用条件      |
 | :---         |     :---:                     | :---:      |  :---:         |
 | Dijstra      | O(V^2+E)/O(VlgV+ElgV)(最小堆) | O(V)       |  单源最短路径  |
-| Floyd        | O(V^3)                        | O(V^2)     |  多源最短路径  |
-| Bellman-Ford | O(VE)                         | O(V)       |  单源最短路径  |
-| SPFA         |                               |            |                |
+| Floyd        | $$ O(V^3) $$                  | O(V^2)     |  多源最短路径  |
+| Bellman-Ford |  $O(VE)$                      |  $ O(V) $  |  单源最短路径  |
+| SPFA         |                               |            |  单源最短路径  |
 
 ##### DijkstraFloyd算法特点      
 1.通常用于求单源最短路径；      
@@ -41,11 +41,11 @@ ___目录___
 ##### Bellman-Ford算法特点          
 1.通常用于求单源最短路径；      
 2.允许图中带有负权值的边(但是不允许有负权重的回路)；     
-3.时间复杂度O(VE)：最多会有V-1层，每次遍历所有边进行更新O(E),相乘；
+3.时间复杂度O(VE)：最多会有V-1层，每次遍历所有边进行更新O(E),相乘；   
 4.空间复杂度O(V)：只存储源点到所有点其他点的距离；      
 
 ##### SPFA算法特点
-
+1.通常用于求单源最短路径；  
 
 ### Dijkstra算法
 ##### Dijkstra算法的输入输出  
@@ -289,38 +289,23 @@ BeLLMAN_FORD(G,w,s)
 ```
 
 ### SPFA算法   
+Shortest Path Faster Algorithm,简称SPFA算法。      
+算法是 Bellman-Ford算法 的队列优化算法的别称，通常用于求含负权边的单源最短路径，以及判负权环。      
+SPFA 最坏情况下复杂度和朴素 Bellman-Ford 相同，为 O(VE)。
+
+##### SPFA算法的输入输出
 
 
+##### SPFA算法的原理
 
-### 公式的相关写法
-##### 公式带标号：
-$$
-p\left(x_{k} | \check{x}_{0}, v_{1:k}, y_{0:k}\right)=\eta p\left(y_{k} | x_{k}\right) p\left(x_{k} | \check{x}_{0}, v_{1:k}, y_{0:k-1}\right) \tag{1.1}
-$$
 
-##### 公式对齐方式
-&写在哪里就从哪里开始对齐，例如：    
- 
-从开头对齐：     
-$$
-\begin{align}
-& p(x|y)=\frac{P(y|x)p(x)}{p(y)}=\frac{p(y|x)p(x)}{\sum\limits_{x'}{p(y|x')p(x')}} \\ 
-& p(x|y)=\frac{p(y|x)p(x)}{p(y)}=\frac{p(y|x)p(x)}{\int{p(y|x')p(x')dx'}} \\ 
-\end{align}
-$$
+##### SPFA算法的C++实现
 
-从中间等号对齐：
-$$
-\begin{aligned} 
-\check{x}_{k} &=\sum_{i=0}^{2 L} \alpha_{1} \check{x}_{k, i} \\ 
-\check{P}_{k} &=\sum_{i=0}^{2 I} \alpha_{i}\left(\check{x}_{k, i}-\check{x}_{k}\right)\left(\check{x}_{k, i}-\check{x}_{k}\right)^{T} \\ 
-\alpha_{i} &=\left\{\begin{array}{l}{\frac{k}{L+k}, i=0} \\ {\frac{1}{2} \frac{1}{L+k}}, others\end{array}\right. 
-\end{aligned} \tag{1.29}
-$$
+
 
 ### 参考文献
 1.百度文库：[https://wenku.baidu.com/view/060d9127bcd126fff7050b82.html](https://wenku.baidu.com/view/060d9127bcd126fff7050b82.html)      
 2.浙江大学算法与数据结构课(陈越老师等)      
 3.博客网站：[link](https://dsqiu.iteye.com/blog/1689163)      
-4.算法导论
-
+4.算法导论      
+5.百度百科：[link](https://baike.baidu.com/item/SPFA%E7%AE%97%E6%B3%95/8297411?fromtitle=SPFA&fromid=11018124&fr=aladdin)   
