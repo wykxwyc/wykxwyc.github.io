@@ -57,8 +57,9 @@ ___目录___
 输出：**源结点**到网络中**其他各结点**的最短路径。      
 
 ##### 为什么Dijkstra不能有负权重的边？
+在下面这个图中，从源点S到终点T用Dijkstra算法求出来的是边长为2，而不是边长为1.      
 ![](/img/in-post/post-Graph-Algorithm/dijkstra_negtive.jpg)          
-在上面这个图中，从源点S到终点T用Dijkstra算法求出来的是边长为2，而不是边长为1.      
+
 过程：从S开始，到N为3，到T为2，这步选择T；      
 然后找到V，但是T已经被加入到找到的点中去了，所以不再更新S到T的距离，因此不能找到边长为1（S->N->T）。
 
@@ -186,7 +187,7 @@ D_{i,j,t}=D_{i,j,t-1}
 $$
 。所以
 $$
-D_{i,j,k}=min(D_{i,k,t-1}+D{k,j,t-1})
+D_{i,j,k}=min(D_{i,k,t-1}+D_{k,j,t-1})
 $$
 ,在实际算法中，可以在原空间上进行迭代，这样可以将空间降到二维。
 
@@ -268,35 +269,34 @@ BeLLMAN_FORD(G,w,s)
 
 using namespace std;
 
-int G[500][500], Dist[500], Path[500], nPath[500];
-
-bool check(vector<vector<int>>& graph,vector<int>& dist,int vernum )
+bool check(vector<vector<int>>& graph,vector<int>& dist,vector<int>& path,int vernum )
 {
-    bool flag = false;
-    for( int i = 1; i <= vernum; ++i )
-        for( int j = 1; j <= vernum; ++j )
-            if( graph[i][j] != INT_MAX && dist[i] != INT_MAX && dist[j] >= dist[i] + graph[i][j] )
-            {
-                if( dist[j] > dist[i] + graph[i][j] )
-                {
-                    flag = true;
+    bool flag = true;
+    for( int i = 1; i <= vernum; ++i ){
+        for( int j = 1; j <= vernum; ++j ){
+            if( graph[i][j] != INT_MAX && dist[i] != INT_MAX &&
+                    dist[j] >= dist[i] + graph[i][j] ){
+                if( dist[j] > dist[i] + graph[i][j] ){
+                    flag = false;
                     dist[j] = dist[i] + graph[i][j];
-                    Path[j] = i;
-                    nPath[j] = nPath[i];
+                    path[j] = i;
                 }
-                else if( i != Path[j] )
-                    nPath[j] += nPath[i];
             }
+        }
+    }
+    // 最后一次如果返回flag=false，还能继续优化，说明存在负权环
     return flag;
 }
 
-bool bellman( vector<vector<int>>& graph,vector<int>& dist,int vernum )
-{
+bool bellman( vector<vector<int>>& graph,vector<int>& dist,vector<int>& path,int vernum ){
     // 在函数体内最多调用V-1次操作
-    for( int i = 0; i < vernum - 1; ++i )
-        if( check(graph,dist,vernum)==false )
-            return false;
-    return true;
+    for( int i = 0; i < vernum - 1; ++i ){
+        // 不能继续优化，提早结束，返回true
+        if( check(graph,dist,path,vernum)==true )
+            return true;
+    }
+    bool flag=check(graph,dist,path,vernum);
+    return flag;
 }
 
 // 测试用例，一共有4个点，6条边，所有的边为
@@ -306,30 +306,30 @@ bool bellman( vector<vector<int>>& graph,vector<int>& dist,int vernum )
 // 2->3,1
 // 2->4,3
 // 3->4,1
-int main()
-{
-    vector<vector<int>> graph={ {},
-                               {0,0,1,3,21},
-                               {0,INT_MAX,0,1,3},
-                               {0,INT_MAX,INT_MAX,0,1},
-                               {0,INT_MAX,INT_MAX,INT_MAX,INT_MAX} };
-
+int main(){
     // 注意邻接矩阵没有用到graph[0]这一行
     // graph只用到了4x4的矩阵
-    vector<int> dist(5,0);
+    vector<vector<int>> graph={ {},
+                                {0,0,1,3,21},
+                                {0,INT_MAX,0,1,3},
+                                {0,INT_MAX,INT_MAX,0,1},
+                                {0,INT_MAX,INT_MAX,INT_MAX,INT_MAX}};
+
+    vector<int> path(5,-1);
+
+    vector<int> dist(5,INT_MAX);
+    dist[1]=0;
     int vernum=4;
-    if( bellman(graph,dist,vernum)== true){
+    if( bellman(graph,dist,path,vernum)==true){
         for( int i = 1; i <= vernum; ++i )
             printf("%d%s", dist[i], i == vernum ? "\n":" ");
-        for( int i = V2; i != -1; i = Path[i] )
+        for( int i = 4; i != -1; i = path[i] )
             printf("%d ", i);
-        printf("\n%d", nPath[V2]);
     }
     else
         printf("FALSE");
     return 0;
 }
-
 
 ```
 

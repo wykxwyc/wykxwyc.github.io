@@ -289,13 +289,9 @@ $$
 记录一个参考链接：      
 [Fusion of Velodyne and Camera Data for Scene Parsing](http://fusion.isif.org/proceedings/fusion12CD/html/pdf/159_331.pdf)
 
-##### C++程序变量在内存中保存的区域
-* 静态内存      
-静态内存用来保存局部static对象、类static数据成员以及定义在任何函数之外的变量。      
-* 栈内存      
-栈内存用来保存定义在函数内的非static对象。      
-* 自由空间(free store)/堆(heap)      
-程序用堆来存储动态分配的对象，动态对象不再使用时，我们的代码必须显式地销毁它们。      
+
+##### Heyijia写的粒子滤波器(经过其他人合并)
+[https://blog.csdn.net/piaoxuezhong/article/details/78619150](https://blog.csdn.net/piaoxuezhong/article/details/78619150)  s  
 
 ##### 罗德里格斯公式的推导过程
 罗德里格斯公式(Rodrigues's Formula)的推导过程：      
@@ -402,3 +398,6 @@ $$
 * Zhang Zhengyou相机标定每次求出两个Circular Point，通过6个Circular Point求得Absolute Conic标定
 
 ##### 对一个点/向量/平面进行坐标系变换的公式表示？
+
+##### PCA
+[PCA]https://blog.csdn.net/program_developer/article/details/80632779

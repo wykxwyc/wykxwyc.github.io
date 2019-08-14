@@ -87,6 +87,59 @@ int main() {
 0 1 2 3 4 5 6 7 8 9 
 9 8 7 6 5 4 3 2 1 0
 ```
+
+##### C++中map的知识
+map默认是以从小到大的方式排序的，代码例子：      
+```
+// constructing maps
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+int main ()
+{
+  std::map<char,int> first;
+
+  first['a']=10;
+  first['b']=30;
+  first['c']=50;
+  first['d']=70;
+
+  std::map<char,int,greater<int>> second (first.begin(),first.end());
+
+  cout<<"first:"<<endl;
+  for(auto i=first.begin();i!=first.end();++i){
+      cout<<i->first<<", "<<i->second<<endl;
+  }
+
+  cout<<endl<<"second:"<<endl;
+  for(auto i=second.begin();i!=second.end();++i){
+      cout<<i->first<<", "<<i->second<<endl;
+  }
+
+  return 0;
+}
+
+
+/*
+输出结果：
+first:
+a, 10
+b, 30
+c, 50
+d, 70
+
+second:
+d, 70
+c, 50
+b, 30
+a, 10
+*/
+```
+
+
+
 ##### sort函数和priority_queue定义时的区别
 **sort是函数模板**
 ```
@@ -108,6 +161,9 @@ explicit priority_queue (const Compare& comp = Compare(),
 [sort](http://www.cplusplus.com/reference/algorithm/sort/)     
 [priority_queue](http://www.cplusplus.com/reference/queue/priority_queue/)      
 
+
+
+
 ##### 记录一个C++设计模式的网站
 [https://blog.csdn.net/u011012932/column/info/15392](https://blog.csdn.net/u011012932/column/info/15392)
 
@@ -116,10 +172,7 @@ explicit priority_queue (const Compare& comp = Compare(),
 
 ##### 卡特兰数是什么，有什么用
 [https://blog.csdn.net/wookaikaiko/article/details/81105031](https://blog.csdn.net/wookaikaiko/article/details/81105031)      
-[http://lanqi.org/skills/10939/](http://lanqi.org/skills/10939/)      
-
-##### Heyijia写的粒子滤波器(经过其他人合并)
-[https://blog.csdn.net/piaoxuezhong/article/details/78619150](https://blog.csdn.net/piaoxuezhong/article/details/78619150)      
+[http://lanqi.org/skills/10939/](http://lanqi.org/skills/10939/)          
 
 ##### 记录一个基础知识的github账号地址 
 [https://github.com/CyC2018/CS-Notes/tree/master/docs/notes](https://github.com/CyC2018/CS-Notes/tree/master/docs/notes)      
@@ -147,34 +200,6 @@ std::vector<int> v={10, 10, 10, 20, 20, 20, 30, 30};
 lower_bound at position 3
 upper_bound at position 6
 ```
-
-##### Unix网络编程中的五种IO模型
-* Blocking IO - 阻塞IO      
-* NoneBlocking IO - 非阻塞IO
-* IO multiplexing - IO多路复用
-* signal driven IO - 信号驱动IO
-* asynchronous IO - 异步IO      
-
-摘录地址：[https://www.jianshu.com/p/b8203d46895c](https://www.jianshu.com/p/b8203d46895c)      
-
-##### IO多路复用的三种机制select，poll，epoll
-**1.select**      
-1)使用select函数进行IO请求和同步阻塞模型没有太大的区别,甚至还多了添加监视socket，以及调用select函数的额外操作，效率更差.但在一个线程内同时处理多个socket的IO请求。      
-2）每次调用select，都需要把fd_set集合从用户态拷贝到内核态，如果fd_set集合很大时，那这个开销也很大      
-3）每次调用select都需要在内核遍历传递进来的所有fd_set，如果fd_set集合很大时，那这个开销也很大      
-4）为了减少数据拷贝带来的性能损坏，内核对被监控的fd_set集合大小做了限制，并且这个是通过宏控制的，大小不可改变(限制为1024)      
-
-**2.poll**      
-poll只解决了上面的问题4，并没有解决问题2，3的性能开销问题。      
-
-**3.epoll**      
-1）基于事件驱动的I/O方式      
-2）epoll没有描述符个数限制，使用一个文件描述符管理多个描述符      
-3）将用户关心的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次      
-
-参考链接：      
-1.[https://www.jianshu.com/p/397449cadc9a](https://www.jianshu.com/p/397449cadc9a)      
-2.[https://blog.csdn.net/daaikuaichuan/article/details/83862311](https://blog.csdn.net/daaikuaichuan/article/details/83862311)      
 
 
 ##### C++动态分配内存类名后有无括号的区别
@@ -287,7 +312,13 @@ delete x;
 ##### 虚函数可以声明为内联函数吗？
 不可以，因为内联函数在编译时就要绑定，但虚函数在运行时才能绑定。
 
-
+##### C++程序变量在内存中保存的区域
+* 静态内存      
+静态内存用来保存局部static对象、类static数据成员以及定义在任何函数之外的变量。      
+* 栈内存      
+栈内存用来保存定义在函数内的非static对象。      
+* 自由空间(free store)/堆(heap)      
+程序用堆来存储动态分配的对象，动态对象不再使用时，我们的代码必须显式地销毁它们。    
 
 
 
