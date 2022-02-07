@@ -232,11 +232,26 @@ MyISAM压缩每个索引块的方法是：先完全保存索引块中的第一�
 | 比较项目  | 主键                    | 外键                            | 索引                   |
 | :---:     | :---:                   | :---:                           | :---:                  |
 | 定义      | 唯一标识，非重复，非空  | 是另一表主键, 可重复, 可以为空  | 非重复，可有一个空值   |
-| 作用      | 保证数据完整性          | 用来和其他表建立联系用的        | 是提高查询排序的速度   |
+| 作用      | 保证数据完整性          | 用来和其他表建立联系用的        | 提高查询排序的速度     |
 | 个数      | 只能有一个              | 可以有多个外键                  | 可以有多个惟一索引     |
 
 摘录地址：[https://blog.csdn.net/f45056231p/article/details/81070437](https://blog.csdn.net/f45056231p/article/details/81070437)
 
+
+##### left join、join、right join和inner join的区别
+**用一张图来说明各种join的区别**    
+![](/img/in-post/post-Database/sql_join.png)      
+
+**left join**      
+左连接，表1左连接表2，以左为主，表示以表1为主，关联上表2的数据，查出来的结果显示左边的所有数据，然后右边显示的是和左边有交集部分的数据。      
+
+**right join**      
+右连接，表1右连接表2，以右为主，表示以表2为主，关联查询表1的数据，查出表2所有数据以及表1和表2有交集的数据。      
+
+**join**      
+`join`，其实就是`inner join`，为了简写才写成`join`，两个是表示一个的，内连接，表示以两个表的交集为主，查出来是两个表有交集的部分，其余没有关联就不额外显示出来。      
+
+摘录地址：[https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins](https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins)
 
 
 ##### MyISAM 和 InnoDB 两种引擎所使用的索引的数据结构是什么？
