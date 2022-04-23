@@ -2,7 +2,7 @@
 layout:     post
 title:      "游戏中的AOI总结与思考"
 subtitle:   "How AOI Work in Games"
-date:       2021-04-23
+date:       2022-04-23
 author:     "wykxwyc"
 header-img: "img/post-bg-common-seiigi-punch.jpg"
 tags:
