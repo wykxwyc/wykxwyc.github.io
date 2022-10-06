@@ -300,45 +300,5 @@ SELECT xxx FROM xxx LEFT OUTER JOIN xxx ON xxx
 内连接与外连接的区别就在于**内连接中不匹配的就不列出来了**。
 
 
-### Redis读书总结与小记
-
-##### Redis持久化      
-Redis 是内存型数据库，为了保证数据在断电后不会丢失，需要将内存中的数据持久化到硬盘上。
-
-**RDB 持久化**      
-(RDB)Redis DB    
-将某个时间点的所有数据都存放到硬盘上。   
-可以将快照复制到其它服务器从而创建具有相同数据的服务器副本。   
-如果系统发生故障，将会丢失最后一次创建快照之后的数据。   
-如果数据量很大，保存快照的时间会很长。   
-
-
-**AOF 持久化**      
-将写命令添加到 AOF 文件（Append Only File）的末尾。   
-
-使用 AOF 持久化需要设置同步选项，从而确保写命令同步到磁盘文件上的时机。      
-这是因为对文件进行写入并不会马上将内容同步到磁盘上，而是先存储到缓冲区，然后由操作系统决定什么时候同步到磁盘。      
-
-**AOF同步选项**      
-
-|  选项	    | 同步频率               |
-| :---:     | :---:                  |
-| always    | 每个写命令都同步       |
-| everysec  | 每秒同步一次           |
-| no        | 操作系统决定何时同步   |
-
-参考：[github@CyC2018](https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/Redis.md#%E5%85%AB%E6%8C%81%E4%B9%85%E5%8C%96)      
-
-
-##### Redis内部rehash的实现
-重哈希的实现步骤：      
-1.选择重哈希是要减小哈希表的表长还是增大表长？       
-2.将保存在 ht[0] 中的所有键值对 rehash 到 ht[1] 上面： rehash 指的是重新计算键的哈希值和索引值， 然后将键值对放置到 ht[1] 哈希表的指定位置上。      
-3.当 ht[0] 包含的所有键值对都迁移到了 ht[1] 之后 （ht[0] 变为空表）， 释放 ht[0] ， 将 ht[1] 设置为 ht[0] ， 并在 ht[1] 新创建一个空白哈希表， 为下一次 rehash 做准备。      
-
-参考：[http://redisbook.com/preview/dict/rehashing.html](http://redisbook.com/preview/dict/rehashing.html)      
-
-
-
 ### 参考文献
 1.[https://mp.weixin.qq.com/s/4gztFew5FdA2hUv1c0WdLw](https://mp.weixin.qq.com/s/4gztFew5FdA2hUv1c0WdLw)      
