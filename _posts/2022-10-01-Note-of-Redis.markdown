@@ -146,7 +146,7 @@ Redis 是内存型数据库，为了保证数据在断电后不会丢失，需�
 
 
 ### 参考文献    
-1.《Redis设计与实现》-黄健宏著
-2.[github.com/CyC2018/CS-Notes](https://github.com/CyC2018/CS-Notes/blob/master/notes/Redis.md#%E4%BA%8C%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B)
-3.[What Redis data structures look like](https://redis.com/ebook/part-1-getting-started/chapter-1-getting-to-know-redis/1-2-what-redis-data-structures-look-like/)
+1.《Redis设计与实现》-黄健宏著      
+2.[github.com/CyC2018/CS-Notes](https://github.com/CyC2018/CS-Notes/blob/master/notes/Redis.md#%E4%BA%8C%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B)     
+3.[What Redis data structures look like](https://redis.com/ebook/part-1-getting-started/chapter-1-getting-to-know-redis/1-2-what-redis-data-structures-look-like/)     
 4.[http://redisbook.com/preview/dict/rehashing.html](http://redisbook.com/preview/dict/rehashing.html)      
