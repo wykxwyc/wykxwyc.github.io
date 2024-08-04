@@ -102,6 +102,19 @@ u'\u4e2d\u6587'
 =========================
 ```
 
+### Python3中的bytes与unicode的转换
+python发展过程中，最初设计使用ASCII编码，后来扩充到Latin-1， 再后来扩展到unicode。       
+unicode首先使用2字节代表一个字符，再后来扩展到4字节代表一个字符，空间有浪费，所以有了utf-8这种变长的编码方式。      
+bytes -- decode --> unicode      
+bytes <-- encode -- unicode      
+
+### Python3与python2的文件区别
+python *.py --> .pyc      
+pyhton -O   --> .pyo      
+pyhton -O   --> .pyo      
+
+Python3中取消了pyo文件，统一使用pyc      
+Python3      --> .pyc      
 
 ### 判断unicode是不是控制字符      
 判断字符串s中是否有控制字符, s为unicode字符串    
