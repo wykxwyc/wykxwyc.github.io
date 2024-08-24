@@ -108,14 +108,6 @@ unicode首先使用2字节代表一个字符，再后来扩展到4字节代表�
 bytes -- decode --> unicode      
 bytes <-- encode -- unicode      
 
-### Python3与python2的文件区别
-python *.py --> .pyc      
-pyhton -O   --> .pyo      
-pyhton -O   --> .pyo      
-
-Python3中取消了pyo文件，统一使用pyc      
-Python3      --> .pyc      
-
 ### 判断unicode是不是控制字符      
 判断字符串s中是否有控制字符, s为unicode字符串    
 通过unicodedata.category对unicode字符进行分类，对于控制字符，分类信息以'C'开头      
